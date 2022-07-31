@@ -1,2 +1,3 @@
 # api-auditor
-NodeJS library for integrational testing
+
+NodeJS library for integration testing

@@ -13,11 +13,56 @@ export function valueMatcher(
   return new ValueMatcher(name, performTest);
 }
 
+class MatchSuccess {
+}
+
+class MatchError {
+  constructor(
+    readonly message: string,
+    readonly options: any[],
+  ) {
+  }
+}
+
 export class ValueMatcher {
   constructor(
-    readonly name: string,
-    readonly performTest: (value: any) => any,
+    private readonly name: string,
+    private readonly performTest: (value: any) => any,
   ) {
+  }
+
+  static hasOption<T>(options: T[], expectedOption: T): boolean {
+    return options.indexOf(expectedOption) > 0;
+  }
+
+  static noOption<T>(options: T[], expectedOption: T): boolean {
+    return !ValueMatcher.hasOption(options, expectedOption);
+  }
+
+  static success(): MatchSuccess {
+    return new MatchSuccess();
+  }
+
+  static error(message: string, options?: any[]): MatchError {
+    return new MatchError(message, options);
+  }
+
+  testValue(value: any): any {
+    let matchResult = this.performTest(value);
+    if (matchResult instanceof MatchSuccess) {
+      return value;
+    }
+    if (matchResult instanceof MatchError) {
+      let resultObject: any = {
+        matcher: this.name,
+        message: matchResult.message,
+      };
+      if (matchResult.options != null && matchResult.options.length > 0) {
+        resultObject.options = matchResult.options;
+      }
+      return resultObject;
+    }
+    throw new Error('Unknown result from matcher [' + this.name + ']. Should be ValueMatcher.success() or ValueMatcher.error()');
   }
 
   /**
@@ -47,7 +92,7 @@ export class ValueMatcher {
       });
       return result;
     } else if (expected instanceof ValueMatcher) {
-      return expected.performTest(actual);
+      return expected.testValue(actual);
     } else {
       if (expected instanceof Date) {
         return expected.toISOString();

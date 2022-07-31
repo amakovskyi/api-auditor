@@ -15,7 +15,7 @@ export function matchAll(...matchesArray: any) {
   return valueMatcher('matchAll', value => {
     for (let match of matchesArray) {
       if (match instanceof ValueMatcher) {
-        let expectationResponse = match.performTest(value);
+        let expectationResponse = match.testValue(value);
         if (!isDeepStrictEqual(value, expectationResponse)) {
           return expectationResponse;
         }
@@ -34,7 +34,7 @@ export function matchAny(...matchesArray: any) {
   return valueMatcher('matchAny', value => {
     for (let match of matchesArray) {
       if (match instanceof ValueMatcher) {
-        let expectationResponse = match.performTest(value);
+        let expectationResponse = match.testValue(value);
         if (isDeepStrictEqual(value, expectationResponse)) {
           return value;
         }

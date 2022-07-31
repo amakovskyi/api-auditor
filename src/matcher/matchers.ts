@@ -2,6 +2,8 @@ import { ValueMatcher, valueMatcher } from './value.matcher';
 import { MatcherUtils } from './matcher.utils';
 import { UuidUtils } from '../utils/uuid.utils';
 
+export declare type StringMatcherOptions = 'can-be-empty' | 'can-be-null'
+
 export class Matchers {
 
   /**
@@ -142,18 +144,18 @@ export class Matchers {
   /**
    * Any not empty string
    */
-  static anyString(canBeEmpty: boolean = false, canBeNull: boolean = false) {
-    return valueMatcher('anyString', value => {
-      if (canBeNull && value === null) {
-        return value;
+  static anyString(...options: StringMatcherOptions[]) {
+    return valueMatcher('anyString', (value) => {
+      if (value == null && ValueMatcher.noOption(options, 'can-be-null')) {
+        return ValueMatcher.error('value cannot be [null]', options);
       }
       if (typeof value != 'string') {
-        return '[string value expected]';
+        return ValueMatcher.error('[string] value expected');
       }
-      if (!canBeEmpty && value.length == 0) {
-        return '[not empty string expected]';
+      if (value.length == 0 && ValueMatcher.noOption(options, 'can-be-null')) {
+        return ValueMatcher.error('value cannot be empty', options);
       }
-      return value;
+      return ValueMatcher.success();
     });
   }
 
