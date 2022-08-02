@@ -5,150 +5,109 @@ import { UuidUtils } from '../utils/uuid.utils';
 export class Matchers {
 
   /**
-   * Strict equality
+   * Always successful match, including [null] and missing value [undefined]
+   */
+  static anything() {
+    return valueMatcher('Matchers.anything', value => ValueMatcher.success());
+  }
+
+  /**
+   * Strict equality to [other]
    * @param other
    */
   static equalsTo(other: any) {
-    return valueMatcher('equalsTo', value => {
-      return other;
+    return valueMatcher('Matchers.equalsTo', value => {
+      return ValueMatcher.value(other);
     });
   }
 
   /**
-   * Expect that value is NOT PRESENT
+   * Value should be absent ([undefined])
    */
-  static valueAbsent() {
-    return valueMatcher('undefined', value => {
-      if (typeof value != 'undefined') {
-        return '[expected not present]';
+  static absent() {
+    return valueMatcher('Matchers.absent', value => {
+      if (typeof value == 'undefined') {
+        return ValueMatcher.success();
       }
-      return value;
+      return ValueMatcher.value(undefined);
     });
   }
 
   /**
-   * Any JsonObject
+   * Value should be absent ([undefined]) or [null]
    */
-  static anyObject(canBeNull: boolean = false, expected: any = null) {
-    return valueMatcher('anyObject', value => {
-      if (typeof value != 'undefined' && value == null && canBeNull) {
-        return null;
+  static absentOrNull() {
+    return valueMatcher('Matchers.absentOrNull', value => {
+      if (typeof value == 'undefined' || value == null) {
+        return ValueMatcher.success();
       }
-      if (!MatcherUtils.isObject(value)) {
-        return '[expected JsonObject]';
-      }
-      if (expected != null) {
-        return ValueMatcher.copyWithExpectedMatch(value, expected);
-      }
-      return value;
+      return ValueMatcher.error('Expected no value or null');
     });
   }
 
   /**
-   * Any UUID
-   */
-  static anyUuid(canBeNull: boolean = false) {
-    return valueMatcher('anyUuid', value => {
-      if (canBeNull && value === null) {
-        return value;
-      }
-      if (typeof value != 'string') {
-        return '[UUID value expected]';
-      }
-      if (!UuidUtils.isValidUuid(value)) {
-        return '[UUID value expected]';
-      }
-      return value;
-    });
-  }
-
-  /**
-   * Any DATE
-   */
-  static anyDate(canBeNull: boolean = false) {
-    return valueMatcher('anyDate', value => {
-      if (canBeNull && typeof value != 'undefined' && value == null) {
-        return value;
-      }
-      if (value instanceof Date) {
-        return value;
-      }
-      if (typeof value != 'string') {
-        return '[date value expected]';
-      }
-      let date = Date.parse(value);
-      if (!Number.isInteger(date)) {
-        return '[date value expected]';
-      }
-      return value;
-    });
-  }
-
-  /**
-   * Any number (not NaN)
-   */
-  static anyNumber(canBeNull: boolean = false) {
-    return valueMatcher('anyNumber', value => {
-      if (canBeNull && typeof value != 'undefined' && value == null) {
-        return value;
-      }
-      if (typeof value !== 'number' || !isFinite(value)) {
-        return '[number value expected]';
-      }
-      return value;
-    });
-  }
-
-  /**
-   * Any boolean
-   */
-  static anyBoolean(canBeNull: boolean = false) {
-    return valueMatcher('anyBoolean', value => {
-      if (canBeNull && typeof value != 'undefined' && value == null) {
-        return value;
-      }
-      if (typeof value !== 'boolean') {
-        return '[boolean value expected]';
-      }
-
-      return value;
-    });
-  }
-
-  /**
-   * Any NOT NULL and NOT UNDEFINED
-   */
-  static anyValue() {
-    return valueMatcher('anyValue', value => {
-      if (value == null) {
-        return '[expected some not null value]';
-      }
-      return value;
-    });
-  }
-
-  /**
-   * Any value or NULL
+   * Any value should be present, including [null]
    */
   static anyDefined() {
-    return valueMatcher('anyDefined', value => {
-      if (typeof value == 'undefined') {
-        return '[expected some defined value]';
+    return valueMatcher('Matchers.anyDefined', value => {
+      if (typeof value != 'undefined') {
+        return ValueMatcher.success();
       }
-      return value;
+      return ValueMatcher.error('Expected any defined value');
     });
   }
 
   /**
-   * Any not empty string
+   * Value should present and be not [null]
    */
-  static anyString(options?: { canBeNull?: boolean, canBeEmpty?: boolean }) {
-    return valueMatcher('Matchers.anyString', (value) => {
-      if (value == null && options?.canBeNull != true) {
-        return ValueMatcher.error('value cannot be [null]', options);
+  static anyNotNull() {
+    return valueMatcher('Matchers.anyNotNull', value => {
+      if (typeof value == 'undefined') {
+        return ValueMatcher.error('Expected some value');
+      }
+      if (value == null) {
+        return ValueMatcher.error('Expected value is not null');
+      }
+      return ValueMatcher.success();
+    });
+  }
+
+  static object(options?: {
+    canBeNull?: boolean,
+    match?: any
+  }) {
+    return valueMatcher('Matchers.object', value => {
+      if (typeof value == 'undefined') {
+        return ValueMatcher.error('expected [JsonObject] value', options);
+      }
+      if (value == null) {
+        if (options?.canBeNull == true) {
+          return ValueMatcher.success();
+        } else {
+          return ValueMatcher.error('value cannot be null', options);
+        }
+      }
+      if (!MatcherUtils.isObject(value)) {
+        return ValueMatcher.error('expected value of type [JsonObject]');
+      }
+      if (options?.match != null) {
+        return ValueMatcher.value(ValueMatcher.copyWithExpectedMatch(value, options.match));
+      }
+      return ValueMatcher.success();
+    });
+  }
+
+  static string(options?: { canBeNull?: boolean, canBeEmpty?: boolean }) {
+    return valueMatcher('Matchers.string', (value) => {
+      if (value == null) {
+        if (options?.canBeNull == true) {
+          return ValueMatcher.success();
+        } else {
+          return ValueMatcher.error('value cannot be [null]', options);
+        }
       }
       if (typeof value != 'string') {
-        return ValueMatcher.error('[string] value expected');
+        return ValueMatcher.error('[string] value expected', options);
       }
       if (value == '' && options?.canBeEmpty != true) {
         return ValueMatcher.error('value cannot be empty', options);
@@ -157,18 +116,132 @@ export class Matchers {
     });
   }
 
+  // DONE UNTIL HERE
+
   /**
-   * Any integer (not NaN)
+   * Any UUID
    */
-  static anyInteger() {
-    return valueMatcher('anyInteger', value => {
-      if (typeof value !== 'number' || !isFinite(value)) {
-        return '[integer number value expected]';
+  static uuid(options?: {
+    canBeNull?: boolean
+  }) {
+    return valueMatcher('Matchers.uuid', value => {
+      if (value == null) {
+        if (options?.canBeNull == true) {
+          return ValueMatcher.success();
+        } else {
+          return ValueMatcher.error('value cannot be [null]', options);
+        }
       }
-      if (!Number.isInteger(value)) {
-        return '[integer number value expected]';
+      if (typeof value != 'string') {
+        return ValueMatcher.error('[uuid] value expected', options);
       }
-      return value;
+      if (!UuidUtils.isValidUuid(value)) {
+        return ValueMatcher.error('[uuid] value expected', options);
+      }
+      return ValueMatcher.success();
+    });
+  }
+
+  /**
+   * Any DATE
+   */
+  static date(options?: {
+    canBeNull?: boolean
+  }) {
+    return valueMatcher('Matchers.date', value => {
+      if (value == null) {
+        if (options?.canBeNull == true) {
+          return ValueMatcher.success();
+        } else {
+          return ValueMatcher.error('value cannot be [null]', options);
+        }
+      }
+      if (value instanceof Date) {
+        return ValueMatcher.success();
+      }
+      if (typeof value != 'string') {
+        return ValueMatcher.error('[Date] value or date [string] expected', options);
+      }
+      let date = Date.parse(value);
+      if (!Number.isInteger(date)) {
+        return ValueMatcher.error('[Date] value or date [string] expected', options);
+      }
+      return ValueMatcher.success();
+    });
+  }
+
+  static number(options: {
+    canBeNull?: boolean,
+    shouldBeInteger?: boolean,
+    bounds?: {
+      min?: number,
+      max?: number
+    },
+    near?: {
+      value: number,
+      maxDifference: number,
+    }
+    canBeNaN?: boolean
+  }) {
+    if (options.near != null && options.near.maxDifference < 0) {
+      throw new Error('[options.near.maxDifference] cannot be negative');
+    }
+    return valueMatcher('Matchers.number', value => {
+      if (value == null) {
+        if (options?.canBeNull == true) {
+          return ValueMatcher.success();
+        } else {
+          return ValueMatcher.error('value cannot be [null]', options);
+        }
+      }
+      if (typeof value != 'number' || !isFinite(value)) {
+        return ValueMatcher.error('[number] value expected', options);
+      }
+      if (options?.canBeNaN != true) {
+        if (!isFinite(value)) {
+          return ValueMatcher.error('value cannot be NaN', options);
+        }
+      }
+      if (options?.shouldBeInteger == true) {
+        if (!Number.isInteger(value)) {
+          return ValueMatcher.error('value should be integer', options);
+        }
+      }
+      if (options?.bounds != null) {
+        if (options.bounds?.min != null && value < options.bounds?.min) {
+          return ValueMatcher.error('value is out of bounds', options);
+        }
+        if (options.bounds?.max != null && value > options.bounds?.max) {
+          return ValueMatcher.error('value is out of bounds', options);
+        }
+      }
+      if (options?.near != null) {
+        if (value < options.near.value - options.near.maxDifference) {
+          return ValueMatcher.error('value is not near expected', options);
+        }
+        if (value > options.near.value + options.near.maxDifference) {
+          return ValueMatcher.error('value is not near expected', options);
+        }
+      }
+      return ValueMatcher.success();
+    });
+  }
+
+  static boolean(options?: {
+    canBeNull?: boolean
+  }) {
+    return valueMatcher('anyBoolean', value => {
+      if (value == null) {
+        if (options?.canBeNull == true) {
+          return ValueMatcher.success();
+        } else {
+          return ValueMatcher.error('value cannot be [null]', options);
+        }
+      }
+      if (typeof value !== 'boolean') {
+        return ValueMatcher.error('[boolean] value expected]', options);
+      }
+      return ValueMatcher.success();
     });
   }
 

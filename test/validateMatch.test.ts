@@ -9,7 +9,7 @@ describe('validateMatch', () => {
         value: 123,
       },
       match: {
-        value: Matchers.anyString(),
+        value: Matchers.string(),
       },
       errorMatch: {
         value: {
@@ -24,7 +24,7 @@ describe('validateMatch', () => {
     validateMatch({
       data: 123,
     }, {
-      data: Matchers.anyString(),
+      data: Matchers.string(),
     });
   });
 

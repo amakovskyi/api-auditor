@@ -8,6 +8,13 @@ function doValidateMatchFail(params: {
 }) {
   try {
     validateMatch(params.data, params.match);
+    let matched = ValueMatcher.copyWithExpectedMatch(params.data, params.match);
+    ConsoleLogger.log('DATA');
+    ConsoleLogger.log(JSON.stringify(params.data, null, 2));
+    ConsoleLogger.log('EXPECTED ERROR MATCH');
+    ConsoleLogger.log(JSON.stringify(params.errorMatch, null, 2));
+    ConsoleLogger.log('REAL MATCH');
+    ConsoleLogger.log(JSON.stringify(matched, null, 2));
     throw new Error('Expected match failed');
   } catch (e) {
     if (e?.matcherResult?.message != null) {
@@ -15,8 +22,19 @@ function doValidateMatchFail(params: {
       ConsoleLogger.log('MATCH FAILED AS EXPECTED');
       ConsoleLogger.log(e.matcherResult.message);
       ConsoleLogger.println();
+
       let matchedWithError = ValueMatcher.copyWithExpectedMatch(params.data, params.match);
-      expect(matchedWithError).toEqual(params.errorMatch);
+      try {
+        expect(matchedWithError).toEqual(params.errorMatch);
+      } catch (e) {
+        ConsoleLogger.log('DATA');
+        ConsoleLogger.log(JSON.stringify(params.data, null, 2));
+        ConsoleLogger.log('EXPECTED ERROR MATCH');
+        ConsoleLogger.log(JSON.stringify(params.errorMatch, null, 2));
+        ConsoleLogger.log('REAL ERROR MATCH');
+        ConsoleLogger.log(JSON.stringify(matchedWithError, null, 2));
+        throw e;
+      }
     } else {
       throw e;
     }

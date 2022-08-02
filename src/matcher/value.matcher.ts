@@ -24,6 +24,22 @@ class MatchError {
   }
 }
 
+class MathValue {
+  constructor(
+    readonly value: any,
+  ) {
+  }
+}
+
+export class FailedMatch {
+  constructor(
+    readonly matcher: string,
+    readonly message: string,
+    readonly options?: any,
+  ) {
+  }
+}
+
 export class ValueMatcher {
   constructor(
     private readonly name: string,
@@ -47,20 +63,31 @@ export class ValueMatcher {
     return new MatchError(message, options);
   }
 
+  static value(value: any): MathValue {
+    return new MathValue(value);
+  }
+
   testValue(value: any): any {
     let matchResult = this.performTest(value);
     if (matchResult instanceof MatchSuccess) {
       return value;
     }
     if (matchResult instanceof MatchError) {
-      let resultObject: any = {
-        matcher: this.name,
-        message: matchResult.message,
-      };
-      if (matchResult.options != null) {
-        resultObject.options = matchResult.options;
+      if (matchResult.options == null) {
+        return new FailedMatch(
+          this.name,
+          matchResult.message,
+        );
+      } else {
+        return new FailedMatch(
+          this.name,
+          matchResult.message,
+          matchResult.options,
+        );
       }
-      return resultObject;
+    }
+    if (matchResult instanceof MathValue) {
+      return matchResult.value;
     }
     throw new Error('Unknown result from matcher [' + this.name + ']. Should be ValueMatcher.success() or ValueMatcher.error()');
   }
