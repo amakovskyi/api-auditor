@@ -116,8 +116,6 @@ export class Matchers {
     });
   }
 
-  // DONE UNTIL HERE
-
   /**
    * Any UUID
    */
@@ -141,6 +139,8 @@ export class Matchers {
       return ValueMatcher.success();
     });
   }
+
+  // DONE UNTIL HERE
 
   /**
    * Any DATE

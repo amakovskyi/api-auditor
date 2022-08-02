@@ -46,19 +46,15 @@ describe('Matchers.string()', () => {
   test('FAIL: [string] value expected', () => {
     validateMatchFailArray({
       dataArray: [
-        { data: 123 },
-        { data: true },
-        { data: [1, 2, 3] },
-        { data: { test: 'object' } },
+        123,
+        true,
+        [1, 2, 3],
+        {},
       ],
-      match: {
-        data: Matchers.string(),
-      },
+      match: Matchers.string(),
       errorMatch: {
-        data: {
-          matcher: 'Matchers.string',
-          message: '[string] value expected',
-        },
+        matcher: 'Matchers.string',
+        message: '[string] value expected',
       },
     });
   });
