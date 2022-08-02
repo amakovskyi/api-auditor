@@ -1,21 +1,5 @@
 import { expectThrowException, generateUuid, utcDate } from './utils';
-import {
-  anyArray,
-  anyArrayContaining,
-  anyArrayNotContaining,
-  anyBoolean,
-  anyDate,
-  anyDefined,
-  anyInteger,
-  anyObject,
-  anyUuid,
-  anyValue,
-  fileUrl,
-  matchAll,
-  matchAny,
-  validateMatch,
-  valueAbsent,
-} from '../src/matcher/matcher.validation';
+import { matchAll, matchAny, validateMatch } from '../src/matcher/matcher.validation';
 import { anyString } from '../dist/validation/generic/any.string.expectation';
 
 function validateContentFail(data, expected) {

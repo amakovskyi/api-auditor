@@ -4,7 +4,7 @@ export { HttpLogger } from './logging/http.logger';
 // MATCHERS
 export { ArrayMatchers } from './matcher/array.matchers';
 export { validateMatch, matchAny, matchAll } from './matcher/matcher.validation';
-export { Matchers, StringMatcherOptions } from './matcher/matchers';
+export { Matchers } from './matcher/matchers';
 export { valueMatcher } from './matcher/value.matcher';
 // POOL
 export { ObjectPool } from './pool/object.pool';

@@ -19,7 +19,7 @@ class MatchSuccess {
 class MatchError {
   constructor(
     readonly message: string,
-    readonly options: any[],
+    readonly options?: any,
   ) {
   }
 }
@@ -43,7 +43,7 @@ export class ValueMatcher {
     return new MatchSuccess();
   }
 
-  static error(message: string, options?: any[]): MatchError {
+  static error(message: string, options?: any): MatchError {
     return new MatchError(message, options);
   }
 
@@ -57,7 +57,7 @@ export class ValueMatcher {
         matcher: this.name,
         message: matchResult.message,
       };
-      if (matchResult.options != null && matchResult.options.length > 0) {
+      if (matchResult.options != null) {
         resultObject.options = matchResult.options;
       }
       return resultObject;
@@ -67,23 +67,23 @@ export class ValueMatcher {
 
   /**
    * Create a copy of [actual] but override all keys/values present in [expected]
-   * @param actual
-   * @param expected
+   * @param data
+   * @param match
    */
-  static copyWithExpectedMatch(actual: any, expected: any): any {
-    if (MatcherUtils.isArray(actual) && MatcherUtils.isArray(expected)) {
+  static copyWithExpectedMatch(data: any, match: any): any {
+    if (MatcherUtils.isArray(data) && MatcherUtils.isArray(match)) {
       // making copy with size of EXPECTED
       let result = [];
-      for (let i = 0; i < expected.length; i++) {
-        let actualItem = actual[i];
-        let expectedItem = expected[i];
+      for (let i = 0; i < match.length; i++) {
+        let actualItem = data[i];
+        let expectedItem = match[i];
         result.push(ValueMatcher.copyWithExpectedMatch(actualItem, expectedItem));
       }
       return result;
-    } else if (MatcherUtils.isObject(actual) && MatcherUtils.isObject(expected)) {
-      let result = Object.assign({}, actual);
-      Object.keys(expected).forEach(key => {
-        const expectedValue = ValueMatcher.copyWithExpectedMatch(actual[key], expected[key]);
+    } else if (MatcherUtils.isObject(data) && MatcherUtils.isObject(match)) {
+      let result = Object.assign({}, data);
+      Object.keys(match).forEach(key => {
+        const expectedValue = ValueMatcher.copyWithExpectedMatch(data[key], match[key]);
         if (typeof expectedValue != 'undefined') {
           result[key] = expectedValue;
         } else {
@@ -91,13 +91,13 @@ export class ValueMatcher {
         }
       });
       return result;
-    } else if (expected instanceof ValueMatcher) {
-      return expected.testValue(actual);
+    } else if (match instanceof ValueMatcher) {
+      return match.testValue(data);
     } else {
-      if (expected instanceof Date) {
-        return expected.toISOString();
+      if (match instanceof Date) {
+        return match.toISOString();
       }
-      return expected;
+      return match;
     }
   }
 }

@@ -6,8 +6,8 @@ import { ValueMatcher, valueMatcher } from './value.matcher';
  * but [data] itself CAN contain other information which is not noticed in [expected] and that information will not cause
  * fail.
  */
-export function validateMatch(data: any, expected: any) {
-  let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, expected);
+export function validateMatch(data: any, match: any) {
+  let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, match);
   expect(data).toEqual(dataAsExpected);
 }
 
