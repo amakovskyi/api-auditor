@@ -6,7 +6,7 @@ export function expectMatcherError(message: string, expectedMatcher: ValueMatche
   return new ExpectedMatcherErrorPlace(message, expectedMatcher);
 }
 
-function doValidateMatchFail(params: {
+export function doValidateMatchFail(params: {
   data: any,
   match: any,
   errorMatch: any

@@ -20,7 +20,7 @@ describe('ArrayMatchers.any()', () => {
     });
   });
 
-  test('Any arrays or null', () => {
+  test('Null', () => {
     validateMatchSuccessArray({
       dataArray: [
         null,
@@ -34,6 +34,20 @@ describe('ArrayMatchers.any()', () => {
     });
   });
 
+  test('Optional', () => {
+    validateMatchSuccessArray({
+      dataArray: [
+        undefined,
+        [],
+        [1, 2, 3, 4, 5],
+        [{ text: 'text' }],
+      ],
+      matchers: [
+        ArrayMatchers.any({ optional: true }),
+      ],
+    });
+  });
+
   test('FAIL: null', () => {
     validateMatchFail({
       data: null,
@@ -43,14 +57,16 @@ describe('ArrayMatchers.any()', () => {
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
     });
+  });
+
+  test('FAIL: undefined', () => {
     validateMatchFail({
-      data: null,
-      matchers: ArrayMatchers.any({ canBeNull: false }),
-      errorMatch: {
-        matcher: 'ArrayMatchers.any',
-        message: ValueMatcher.VALUE_CANNOT_BE_NULL,
-        options: { canBeNull: false },
-      },
+      data: undefined,
+      matchers: [
+        ArrayMatchers.any(),
+        ArrayMatchers.any({ canBeNull: true }),
+      ],
+      errorMatch: expectMatcherError(ValueMatcher.VALUE_IS_REQUIRED),
     });
   });
 

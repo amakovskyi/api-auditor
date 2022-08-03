@@ -105,9 +105,6 @@ export class Matchers {
     });
   }
 
-  /**
-   * Any UUID
-   */
   static uuid(options?: {
     canBeNull?: boolean,
     optional?: boolean,
@@ -123,7 +120,17 @@ export class Matchers {
     });
   }
 
-  // DONE UNTIL HERE
+  static boolean(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+  }) {
+    return valueMatcher('anyBoolean', options, value => {
+      if (typeof value != 'boolean') {
+        return ValueMatcher.typeError('boolean');
+      }
+      return ValueMatcher.success();
+    });
+  }
 
   /**
    * Any DATE
@@ -137,17 +144,21 @@ export class Matchers {
         return ValueMatcher.success();
       }
       if (typeof value != 'string') {
-        return ValueMatcher.typeError('Date|string-date');
+        return ValueMatcher.typeError('Date|string-ISO-date');
       }
       let date = Date.parse(value);
       if (!Number.isInteger(date)) {
-        return ValueMatcher.typeError('Date|string-date');
+        return ValueMatcher.typeError('Date|string-ISO-date');
+      }
+      let isoFormat = new Date(date).toISOString();
+      if (isoFormat != value) {
+        return ValueMatcher.typeError('Date|string-ISO-date');
       }
       return ValueMatcher.success();
     });
   }
 
-  static number(options: {
+  static number(options?: {
     canBeNull?: boolean,
     optional?: boolean,
     shouldBeInteger?: boolean,
@@ -161,7 +172,7 @@ export class Matchers {
     }
     canBeNaN?: boolean
   }) {
-    if (options.near != null && options.near.maxDifference < 0) {
+    if (options?.near != null && options.near.maxDifference < 0) {
       throw new Error('[options.near.maxDifference] cannot be negative');
     }
     return valueMatcher('Matchers.number', options, value => {
@@ -175,7 +186,7 @@ export class Matchers {
       }
       if (options?.shouldBeInteger == true) {
         if (!Number.isInteger(value)) {
-          return ValueMatcher.error('Value should be integer');
+          return ValueMatcher.error('Value should be an integer');
         }
       }
       if (options?.bounds != null) {
@@ -188,23 +199,11 @@ export class Matchers {
       }
       if (options?.near != null) {
         if (value < options.near.value - options.near.maxDifference) {
-          return ValueMatcher.error('value is not near expected');
+          return ValueMatcher.error('Value is not near expected');
         }
         if (value > options.near.value + options.near.maxDifference) {
-          return ValueMatcher.error('value is not near expected');
+          return ValueMatcher.error('Value is not near expected');
         }
-      }
-      return ValueMatcher.success();
-    });
-  }
-
-  static boolean(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-  }) {
-    return valueMatcher('anyBoolean', options, value => {
-      if (typeof value != 'boolean') {
-        return ValueMatcher.typeError('boolean');
       }
       return ValueMatcher.success();
     });

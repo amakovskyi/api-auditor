@@ -35,11 +35,28 @@ describe('Matchers.string()', () => {
   });
 
   test('Null value', () => {
-    validateMatchSuccess({
-      data: null,
+    validateMatchSuccessArray({
+      dataArray: [
+        null,
+        'test',
+        'someString',
+      ],
       matchers: [
         Matchers.string({ canBeNull: true }),
         Matchers.string({ canBeNull: true, canBeEmpty: true }),
+      ],
+    });
+  });
+
+  test('Optional value', () => {
+    validateMatchSuccessArray({
+      dataArray: [
+        undefined,
+        'test',
+      ],
+      matchers: [
+        Matchers.string({ optional: true }),
+        Matchers.string({ optional: true, canBeEmpty: true }),
       ],
     });
   });
@@ -54,6 +71,20 @@ describe('Matchers.string()', () => {
       ],
       matchers: Matchers.string(),
       errorMatch: expectMatcherError('Expected value of type [string]'),
+    });
+  });
+
+  test('FAIL: undefined', () => {
+    validateMatchFail({
+      data: undefined,
+      matchers: [
+        Matchers.string(),
+        Matchers.string({ canBeEmpty: true }),
+        Matchers.string({ canBeEmpty: false }),
+        Matchers.string({ canBeEmpty: true, canBeNull: false }),
+        Matchers.string({ canBeEmpty: false, canBeNull: false }),
+      ],
+      errorMatch: expectMatcherError(ValueMatcher.VALUE_IS_REQUIRED),
     });
   });
 

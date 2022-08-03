@@ -34,6 +34,20 @@ describe('Matchers.object()', () => {
     });
   });
 
+  test('Optional', () => {
+    validateMatchSuccessArray({
+      dataArray: [
+        undefined,
+        {},
+        { test: 1 },
+        { arraysSome: [1, 2, 3] },
+      ],
+      matchers: [
+        Matchers.object({ optional: true }),
+      ],
+    });
+  });
+
   test('Some objects with match', () => {
     validateMatchSuccessArray({
       dataArray: [
