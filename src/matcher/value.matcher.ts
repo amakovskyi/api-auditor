@@ -8,9 +8,21 @@ import { MatcherUtils } from './matcher.utils';
 
 export function valueMatcher(
   name: string,
+  options: {
+    canBeNull?: boolean,
+    optional?: boolean
+  },
   performTest: (value: any) => any,
 ): ValueMatcher {
-  return new ValueMatcher(name, performTest);
+  return new ValueMatcher(name, false, options, performTest);
+}
+
+export function customValueMatcher(
+  name: string,
+  options: any,
+  performTest: (value: any) => any,
+): ValueMatcher {
+  return new ValueMatcher(name, true, options, performTest);
 }
 
 class MatchSuccess {
@@ -19,7 +31,6 @@ class MatchSuccess {
 class MatchError {
   constructor(
     readonly message: string,
-    readonly options?: any,
   ) {
   }
 }
@@ -42,10 +53,18 @@ export class FailedMatch {
 
 export class ValueMatcher {
   constructor(
-    private readonly name: string,
-    private readonly performTest: (value: any) => any,
+    readonly name: string,
+    readonly custom: boolean,
+    readonly options: {
+      canBeNull?: boolean,
+      optional?: boolean,
+    },
+    readonly performTest: (value: any) => any,
   ) {
   }
+
+  static VALUE_IS_REQUIRED = 'Value is required';
+  static VALUE_CANNOT_BE_NULL = 'Value cannot be [null]';
 
   static hasOption<T>(options: T[], expectedOption: T): boolean {
     return options.indexOf(expectedOption) > 0;
@@ -59,8 +78,16 @@ export class ValueMatcher {
     return new MatchSuccess();
   }
 
-  static error(message: string, options?: any): MatchError {
-    return new MatchError(message, options);
+  static error(message: string): MatchError {
+    return new MatchError(message);
+  }
+
+  static missing(): MatchError {
+    return new MatchError(ValueMatcher.VALUE_IS_REQUIRED);
+  }
+
+  static typeError(expectedType: string): MatchError {
+    return new MatchError(`Expected value of type [${expectedType}]`);
   }
 
   static value(value: any): MathValue {
@@ -68,12 +95,36 @@ export class ValueMatcher {
   }
 
   testValue(value: any): any {
-    let matchResult = this.performTest(value);
+    let matchResult: any = null;
+    if (!this.custom) {
+      // STANDARD CHECKS
+      if (typeof value == 'undefined') {
+        if (this.options?.optional == true) {
+          matchResult = ValueMatcher.success();
+        } else {
+          matchResult = ValueMatcher.error(ValueMatcher.VALUE_IS_REQUIRED);
+        }
+      } else if (value == null) {
+        if (this.options?.canBeNull == true) {
+          matchResult = ValueMatcher.success();
+        } else {
+          matchResult = ValueMatcher.error(ValueMatcher.VALUE_CANNOT_BE_NULL);
+        }
+      }
+    }
+    // EXACT MATCHER CHECK IF STANDARD CHECKS HAS NOT RESULT
+    if (matchResult == null) {
+      matchResult = this.performTest(value);
+    }
+    // VALIDATE MATCH RESULT
+    if (matchResult == null) {
+      throw new Error(`Result from matcher [${this.name}] is null. Value = ${JSON.stringify(value)}.`);
+    }
     if (matchResult instanceof MatchSuccess) {
       return value;
     }
     if (matchResult instanceof MatchError) {
-      if (matchResult.options == null) {
+      if (this.options == null) {
         return new FailedMatch(
           this.name,
           matchResult.message,
@@ -82,14 +133,14 @@ export class ValueMatcher {
         return new FailedMatch(
           this.name,
           matchResult.message,
-          matchResult.options,
+          this.options,
         );
       }
     }
     if (matchResult instanceof MathValue) {
       return matchResult.value;
     }
-    throw new Error('Unknown result from matcher [' + this.name + ']. Should be ValueMatcher.success() or ValueMatcher.error()');
+    throw new Error(`Unknown from matcher [${this.name}] is null. Value = ${JSON.stringify(value)}; result=${JSON.stringify(matchResult)}.`);
   }
 
   /**

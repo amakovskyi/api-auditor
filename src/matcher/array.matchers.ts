@@ -1,30 +1,42 @@
 import { valueMatcher, ValueMatcher } from './value.matcher';
 import { MatcherUtils } from './matcher.utils';
-import { matchAll } from './matcher.validation';
 import { isDeepStrictEqual } from 'util';
 
 export class ArrayMatchers {
 
-  /**
-   * Any JsonArray
-   */
-  static any(expectedLength: number | null = null) {
-    return valueMatcher('anyArray', value => {
+  static any(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    expectedLength?: number,
+    itemMatch?: any
+  }) {
+    return valueMatcher('ArrayMatchers.any', options, value => {
       if (!MatcherUtils.isArray(value)) {
-        return '[expected JsonArray]';
+        return ValueMatcher.typeError('JsonArray');
       }
-      if (expectedLength != null && value.length != expectedLength) {
-        return '[expected JsonArray with length ' + expectedLength + ']';
+      if (options?.expectedLength != null) {
+        if (options.expectedLength != value.length) {
+          return ValueMatcher.error(`Expected [JsonArray] with length=${options.expectedLength}`);
+        }
       }
-      return value;
+      if (typeof options?.itemMatch != 'undefined') {
+        let resultValue = [];
+        for (let item of value) {
+          resultValue.push(ValueMatcher.copyWithExpectedMatch(item, options.itemMatch));
+        }
+        return ValueMatcher.value(resultValue);
+      }
+      return ValueMatcher.success();
     });
   }
+
+  // DONE UNTIL HERE
 
   /**
    * Expect value is array with unique items
    */
   static uniqueItems(): ValueMatcher {
-    return valueMatcher('uniqueItems', (value) => {
+    return valueMatcher('uniqueItems', null, (value) => {
       if (!MatcherUtils.isArray(value)) {
         return '[expected JsonArray]';
       }
@@ -48,7 +60,7 @@ export class ArrayMatchers {
    * Expect value is any array which is not containing [args]
    */
   static anyArrayNotContaining(args: any[]) {
-    return valueMatcher('anyArrayNotContaining', value => {
+    return valueMatcher('anyArrayNotContaining', null, value => {
       if (!MatcherUtils.isArray(value)) {
         return '[expected JsonArray]';
       }
@@ -84,7 +96,7 @@ export class ArrayMatchers {
    * Expect value is any where all items match [match]
    */
   static arrayWithAllItemsMatch(match: any) {
-    return valueMatcher('arrayWithAllItemsMatch', value => {
+    return valueMatcher('arrayWithAllItemsMatch', null, value => {
       if (!MatcherUtils.isArray(value)) {
         return '[expected JsonArray]';
       }
@@ -101,7 +113,7 @@ export class ArrayMatchers {
    * Expect value is any where all [args] match at least one item
    */
   static anyArrayContaining(...args: any) {
-    return valueMatcher('anyArrayContaining', value => {
+    return valueMatcher('anyArrayContaining', null, value => {
       if (!MatcherUtils.isArray(value)) {
         return '[expected JsonArray]';
       }
@@ -137,7 +149,7 @@ export class ArrayMatchers {
    * Expect value is any where at least one of [args] match at least one item
    */
   static anyArrayContainingSome(...args: any) {
-    return valueMatcher('anyArrayContainingSome', value => {
+    return valueMatcher('anyArrayContainingSome', null, value => {
       if (!MatcherUtils.isArray(value)) {
         return '[expected JsonArray]';
       }
@@ -170,11 +182,12 @@ export class ArrayMatchers {
     });
   }
 
-  static arrayContainingOnly(args: any[]) {
-    return matchAll(
-      ArrayMatchers.any(args.length),
-      ArrayMatchers.anyArrayContaining(...args),
-    );
+  static withItems(args: any[]) {
+    // return matchAll(
+    //   ArrayMatchers.any({ expectedLength: args.length }),
+    //   ArrayMatchers.anyArrayContaining(...args),
+    // );
+    throw new Error('TODO');
   }
 
 }

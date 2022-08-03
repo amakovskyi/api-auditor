@@ -1,4 +1,4 @@
-import { ValueMatcher, valueMatcher } from './value.matcher';
+import { customValueMatcher, ValueMatcher, valueMatcher } from './value.matcher';
 import { MatcherUtils } from './matcher.utils';
 import { UuidUtils } from '../utils/uuid.utils';
 
@@ -8,7 +8,7 @@ export class Matchers {
    * Always successful match, including [null] and missing value [undefined]
    */
   static anything() {
-    return valueMatcher('Matchers.anything', value => ValueMatcher.success());
+    return customValueMatcher('Matchers.anything', null, value => ValueMatcher.success());
   }
 
   /**
@@ -16,7 +16,7 @@ export class Matchers {
    * @param other
    */
   static equalsTo(other: any) {
-    return valueMatcher('Matchers.equalsTo', value => {
+    return customValueMatcher('Matchers.equalsTo', null, value => {
       return ValueMatcher.value(other);
     });
   }
@@ -25,7 +25,7 @@ export class Matchers {
    * Value should be absent ([undefined])
    */
   static absent() {
-    return valueMatcher('Matchers.absent', value => {
+    return customValueMatcher('Matchers.absent', null, value => {
       if (typeof value == 'undefined') {
         return ValueMatcher.success();
       }
@@ -37,7 +37,7 @@ export class Matchers {
    * Value should be absent ([undefined]) or [null]
    */
   static absentOrNull() {
-    return valueMatcher('Matchers.absentOrNull', value => {
+    return customValueMatcher('Matchers.absentOrNull', null, value => {
       if (typeof value == 'undefined' || value == null) {
         return ValueMatcher.success();
       }
@@ -49,7 +49,7 @@ export class Matchers {
    * Any value should be present, including [null]
    */
   static anyDefined() {
-    return valueMatcher('Matchers.anyDefined', value => {
+    return customValueMatcher('Matchers.anyDefined', null, value => {
       if (typeof value != 'undefined') {
         return ValueMatcher.success();
       }
@@ -61,12 +61,12 @@ export class Matchers {
    * Value should present and be not [null]
    */
   static anyNotNull() {
-    return valueMatcher('Matchers.anyNotNull', value => {
+    return customValueMatcher('Matchers.anyNotNull', null, value => {
       if (typeof value == 'undefined') {
-        return ValueMatcher.error('Expected some value');
+        return ValueMatcher.error(ValueMatcher.VALUE_IS_REQUIRED);
       }
       if (value == null) {
-        return ValueMatcher.error('Expected value is not null');
+        return ValueMatcher.error(ValueMatcher.VALUE_CANNOT_BE_NULL);
       }
       return ValueMatcher.success();
     });
@@ -74,21 +74,12 @@ export class Matchers {
 
   static object(options?: {
     canBeNull?: boolean,
+    optional?: boolean,
     match?: any
   }) {
-    return valueMatcher('Matchers.object', value => {
-      if (typeof value == 'undefined') {
-        return ValueMatcher.error('expected [JsonObject] value', options);
-      }
-      if (value == null) {
-        if (options?.canBeNull == true) {
-          return ValueMatcher.success();
-        } else {
-          return ValueMatcher.error('value cannot be null', options);
-        }
-      }
+    return valueMatcher('Matchers.object', options, value => {
       if (!MatcherUtils.isObject(value)) {
-        return ValueMatcher.error('expected value of type [JsonObject]');
+        return ValueMatcher.typeError('JsonObject');
       }
       if (options?.match != null) {
         return ValueMatcher.value(ValueMatcher.copyWithExpectedMatch(value, options.match));
@@ -97,20 +88,18 @@ export class Matchers {
     });
   }
 
-  static string(options?: { canBeNull?: boolean, canBeEmpty?: boolean }) {
-    return valueMatcher('Matchers.string', (value) => {
-      if (value == null) {
-        if (options?.canBeNull == true) {
-          return ValueMatcher.success();
-        } else {
-          return ValueMatcher.error('value cannot be [null]', options);
-        }
-      }
+  static string(options?: {
+                  canBeNull?: boolean,
+                  optional?: boolean,
+                  canBeEmpty?: boolean
+                },
+  ) {
+    return valueMatcher('Matchers.string', options, (value) => {
       if (typeof value != 'string') {
-        return ValueMatcher.error('[string] value expected', options);
+        return ValueMatcher.typeError('string');
       }
       if (value == '' && options?.canBeEmpty != true) {
-        return ValueMatcher.error('value cannot be empty', options);
+        return ValueMatcher.error('Value cannot be empty');
       }
       return ValueMatcher.success();
     });
@@ -120,21 +109,15 @@ export class Matchers {
    * Any UUID
    */
   static uuid(options?: {
-    canBeNull?: boolean
+    canBeNull?: boolean,
+    optional?: boolean,
   }) {
-    return valueMatcher('Matchers.uuid', value => {
-      if (value == null) {
-        if (options?.canBeNull == true) {
-          return ValueMatcher.success();
-        } else {
-          return ValueMatcher.error('value cannot be [null]', options);
-        }
-      }
+    return valueMatcher('Matchers.uuid', options, value => {
       if (typeof value != 'string') {
-        return ValueMatcher.error('[uuid] value expected', options);
+        return ValueMatcher.typeError('uuid');
       }
       if (!UuidUtils.isValidUuid(value)) {
-        return ValueMatcher.error('[uuid] value expected', options);
+        return ValueMatcher.typeError('uuid');
       }
       return ValueMatcher.success();
     });
@@ -146,25 +129,19 @@ export class Matchers {
    * Any DATE
    */
   static date(options?: {
-    canBeNull?: boolean
+    canBeNull?: boolean,
+    optional?: boolean,
   }) {
-    return valueMatcher('Matchers.date', value => {
-      if (value == null) {
-        if (options?.canBeNull == true) {
-          return ValueMatcher.success();
-        } else {
-          return ValueMatcher.error('value cannot be [null]', options);
-        }
-      }
+    return valueMatcher('Matchers.date', options, value => {
       if (value instanceof Date) {
         return ValueMatcher.success();
       }
       if (typeof value != 'string') {
-        return ValueMatcher.error('[Date] value or date [string] expected', options);
+        return ValueMatcher.typeError('Date|string-date');
       }
       let date = Date.parse(value);
       if (!Number.isInteger(date)) {
-        return ValueMatcher.error('[Date] value or date [string] expected', options);
+        return ValueMatcher.typeError('Date|string-date');
       }
       return ValueMatcher.success();
     });
@@ -172,6 +149,7 @@ export class Matchers {
 
   static number(options: {
     canBeNull?: boolean,
+    optional?: boolean,
     shouldBeInteger?: boolean,
     bounds?: {
       min?: number,
@@ -186,41 +164,34 @@ export class Matchers {
     if (options.near != null && options.near.maxDifference < 0) {
       throw new Error('[options.near.maxDifference] cannot be negative');
     }
-    return valueMatcher('Matchers.number', value => {
-      if (value == null) {
-        if (options?.canBeNull == true) {
-          return ValueMatcher.success();
-        } else {
-          return ValueMatcher.error('value cannot be [null]', options);
-        }
-      }
-      if (typeof value != 'number' || !isFinite(value)) {
-        return ValueMatcher.error('[number] value expected', options);
+    return valueMatcher('Matchers.number', options, value => {
+      if (typeof value != 'number') {
+        return ValueMatcher.typeError('number');
       }
       if (options?.canBeNaN != true) {
         if (!isFinite(value)) {
-          return ValueMatcher.error('value cannot be NaN', options);
+          return ValueMatcher.error('Value cannot be NaN');
         }
       }
       if (options?.shouldBeInteger == true) {
         if (!Number.isInteger(value)) {
-          return ValueMatcher.error('value should be integer', options);
+          return ValueMatcher.error('Value should be integer');
         }
       }
       if (options?.bounds != null) {
         if (options.bounds?.min != null && value < options.bounds?.min) {
-          return ValueMatcher.error('value is out of bounds', options);
+          return ValueMatcher.error('Value is out of bounds');
         }
         if (options.bounds?.max != null && value > options.bounds?.max) {
-          return ValueMatcher.error('value is out of bounds', options);
+          return ValueMatcher.error('Value is out of bounds');
         }
       }
       if (options?.near != null) {
         if (value < options.near.value - options.near.maxDifference) {
-          return ValueMatcher.error('value is not near expected', options);
+          return ValueMatcher.error('value is not near expected');
         }
         if (value > options.near.value + options.near.maxDifference) {
-          return ValueMatcher.error('value is not near expected', options);
+          return ValueMatcher.error('value is not near expected');
         }
       }
       return ValueMatcher.success();
@@ -228,18 +199,12 @@ export class Matchers {
   }
 
   static boolean(options?: {
-    canBeNull?: boolean
+    canBeNull?: boolean,
+    optional?: boolean,
   }) {
-    return valueMatcher('anyBoolean', value => {
-      if (value == null) {
-        if (options?.canBeNull == true) {
-          return ValueMatcher.success();
-        } else {
-          return ValueMatcher.error('value cannot be [null]', options);
-        }
-      }
-      if (typeof value !== 'boolean') {
-        return ValueMatcher.error('[boolean] value expected]', options);
+    return valueMatcher('anyBoolean', options, value => {
+      if (typeof value != 'boolean') {
+        return ValueMatcher.typeError('boolean');
       }
       return ValueMatcher.success();
     });

@@ -26,7 +26,7 @@ describe('Matchers.absent()', () => {
   test('FAIL: null', () => {
     validateMatchFail({
       data: null,
-      match: Matchers.absent(),
+      matchers: Matchers.absent(),
       errorMatch: undefined,
     });
   });
@@ -34,17 +34,17 @@ describe('Matchers.absent()', () => {
   test('FAIL: value', () => {
     validateMatchFail({
       data: 'string',
-      match: Matchers.absent(),
+      matchers: Matchers.absent(),
       errorMatch: undefined,
     });
     validateMatchFail({
       data: 123,
-      match: Matchers.absent(),
+      matchers: Matchers.absent(),
       errorMatch: undefined,
     });
     validateMatchFail({
       data: false,
-      match: Matchers.absent(),
+      matchers: Matchers.absent(),
       errorMatch: undefined,
     });
   });
@@ -52,7 +52,7 @@ describe('Matchers.absent()', () => {
   test('FAIL: object', () => {
     validateMatchFail({
       data: { test: 1 },
-      match: Matchers.absent(),
+      matchers: Matchers.absent(),
       errorMatch: undefined,
     });
   });
@@ -60,7 +60,7 @@ describe('Matchers.absent()', () => {
   test('FAIL: array', () => {
     validateMatchFail({
       data: [1, 2, 3],
-      match: Matchers.absent(),
+      matchers: Matchers.absent(),
       errorMatch: undefined,
     });
   });

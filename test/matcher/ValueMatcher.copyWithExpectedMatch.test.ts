@@ -1,41 +1,44 @@
-import { ConsoleLogger, Matchers } from '../../src';
+import { Matchers } from '../../src';
 import { validateMatchResult } from '../test-utils/validateMatchResult';
-import { ValueMatcher } from '../../src/matcher/value.matcher';
 
 describe('ValueMatcher.copyWithExpectedMatch()', () => {
 
-  test('String', () => {
+  test('string -> string', () => {
     validateMatchResult({
       data: 'test',
       match: 'test',
       expectedResult: 'test',
     });
+  });
+
+  test('string -> Matchers.string()', () => {
     validateMatchResult({
       data: 'test',
       match: Matchers.string(),
       expectedResult: 'test',
     });
+  });
+
+  test('number -> Matchers.string()', () => {
     validateMatchResult({
       data: 123,
       match: Matchers.string(),
       expectedResult: {
-        matcher: 'Matchers.anyString',
-        message: '[string] value expected',
-      },
-    });
-    validateMatchResult({
-      data: '',
-      match: Matchers.string(),
-      expectedResult: {
-        matcher: 'Matchers.anyString',
-        message: 'value cannot be empty',
+        matcher: 'Matchers.string',
+        message: 'Expected value of type [string]',
       },
     });
   });
 
-  test('asdfsdaf', () => {
-    let result = ValueMatcher.copyWithExpectedMatch('', Matchers.string());
-    ConsoleLogger.log(JSON.stringify(result, null, 2));
+  test('empty string -> Matchers.string()', () => {
+    validateMatchResult({
+      data: '',
+      match: Matchers.string(),
+      expectedResult: {
+        matcher: 'Matchers.string',
+        message: 'Value cannot be empty',
+      },
+    });
   });
 
 });

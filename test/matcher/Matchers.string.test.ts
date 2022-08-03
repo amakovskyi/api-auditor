@@ -1,6 +1,7 @@
 import { Matchers, Random } from '../../src';
-import { validateMatchFail, validateMatchFailArray } from '../test-utils/validateMatchFail';
+import { expectMatcherError, validateMatchFail, validateMatchFailArray } from '../test-utils/validateMatchFail';
 import { validateMatchSuccess, validateMatchSuccessArray } from '../test-utils/validateMatchSuccess';
+import { ValueMatcher } from '../../src/matcher/value.matcher';
 
 describe('Matchers.string()', () => {
 
@@ -51,51 +52,37 @@ describe('Matchers.string()', () => {
         [1, 2, 3],
         {},
       ],
-      match: Matchers.string(),
-      errorMatch: {
-        matcher: 'Matchers.string',
-        message: '[string] value expected',
-      },
+      matchers: Matchers.string(),
+      errorMatch: expectMatcherError('Expected value of type [string]'),
     });
   });
 
   test('FAIL: value cannot be [null]', () => {
     validateMatchFail({
       data: null,
-      match: Matchers.string(),
-      errorMatch: {
-        matcher: 'Matchers.string',
-        message: 'value cannot be [null]',
-      },
-    });
-    validateMatchFail({
-      data: null,
-      match: Matchers.string({ canBeEmpty: true }),
-      errorMatch: {
-        matcher: 'Matchers.string',
-        message: 'value cannot be [null]',
-        options: { canBeEmpty: true },
-      },
+      matchers: [
+        Matchers.string(),
+        Matchers.string({ canBeEmpty: true }),
+        Matchers.string({ canBeEmpty: false }),
+        Matchers.string({ canBeEmpty: true, canBeNull: false }),
+        Matchers.string({ canBeEmpty: false, canBeNull: false }),
+      ],
+      errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
     });
   });
 
   test('FAIL: value cannot be empty', () => {
     validateMatchFail({
       data: '',
-      match: Matchers.string(),
-      errorMatch: {
-        matcher: 'Matchers.string',
-        message: 'value cannot be empty',
-      },
-    });
-    validateMatchFail({
-      data: '',
-      match: Matchers.string({ canBeNull: true }),
-      errorMatch: {
-        matcher: 'Matchers.string',
-        message: 'value cannot be empty',
-        options: { canBeNull: true },
-      },
+      matchers: [
+        Matchers.string(),
+        Matchers.string({ canBeNull: true }),
+        Matchers.string({ canBeNull: false }),
+        Matchers.string({ canBeEmpty: false }),
+        Matchers.string({ canBeEmpty: false, canBeNull: true }),
+        Matchers.string({ canBeEmpty: false, canBeNull: false }),
+      ],
+      errorMatch: expectMatcherError('Value cannot be empty'),
     });
   });
 

@@ -34,17 +34,17 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: null to value', () => {
     validateMatchFail({
       data: null,
-      match: Matchers.equalsTo('value'),
+      matchers: Matchers.equalsTo('value'),
       errorMatch: 'value',
     });
     validateMatchFail({
       data: null,
-      match: Matchers.equalsTo({ test: 'value' }),
+      matchers: Matchers.equalsTo({ test: 'value' }),
       errorMatch: { test: 'value' },
     });
     validateMatchFail({
       data: null,
-      match: Matchers.equalsTo([1, 2, 3]),
+      matchers: Matchers.equalsTo([1, 2, 3]),
       errorMatch: [1, 2, 3],
     });
   });
@@ -52,7 +52,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: value to null', () => {
     validateMatchFail({
       data: 'value',
-      match: Matchers.equalsTo(null),
+      matchers: Matchers.equalsTo(null),
       errorMatch: null,
     });
   });
@@ -60,7 +60,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: different strings', () => {
     validateMatchFail({
       data: 'one',
-      match: Matchers.equalsTo('other'),
+      matchers: Matchers.equalsTo('other'),
       errorMatch: 'other',
     });
   });
@@ -68,7 +68,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: different numbers', () => {
     validateMatchFail({
       data: 12345,
-      match: Matchers.equalsTo(999),
+      matchers: Matchers.equalsTo(999),
       errorMatch: 999,
     });
   });
@@ -76,7 +76,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: different booleans', () => {
     validateMatchFail({
       data: true,
-      match: Matchers.equalsTo(false),
+      matchers: Matchers.equalsTo(false),
       errorMatch: false,
     });
   });
@@ -84,7 +84,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: different objects', () => {
     validateMatchFail({
       data: { test: '123' },
-      match: Matchers.equalsTo({ some: 'other' }),
+      matchers: Matchers.equalsTo({ some: 'other' }),
       errorMatch: { some: 'other' },
     });
   });
@@ -92,12 +92,12 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: different arrays', () => {
     validateMatchFail({
       data: [1, 2, 3],
-      match: Matchers.equalsTo([4, 5, 6]),
+      matchers: Matchers.equalsTo([4, 5, 6]),
       errorMatch: [4, 5, 6],
     });
     validateMatchFail({
       data: [{ test: '123' }],
-      match: Matchers.equalsTo([{ some: 'other' }]),
+      matchers: Matchers.equalsTo([{ some: 'other' }]),
       errorMatch: [{ some: 'other' }],
     });
   });
@@ -105,7 +105,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: value to object', () => {
     validateMatchFail({
       data: 1,
-      match: Matchers.equalsTo({ value: 1 }),
+      matchers: Matchers.equalsTo({ value: 1 }),
       errorMatch: { value: 1 },
     });
   });
@@ -113,7 +113,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: value to array', () => {
     validateMatchFail({
       data: 1,
-      match: Matchers.equalsTo([1]),
+      matchers: Matchers.equalsTo([1]),
       errorMatch: [1],
     });
   });
@@ -121,7 +121,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: object to value', () => {
     validateMatchFail({
       data: { test: 1 },
-      match: Matchers.equalsTo(1),
+      matchers: Matchers.equalsTo(1),
       errorMatch: 1,
     });
   });
@@ -129,7 +129,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: array to value', () => {
     validateMatchFail({
       data: [1],
-      match: Matchers.equalsTo(1),
+      matchers: Matchers.equalsTo(1),
       errorMatch: 1,
     });
   });
@@ -137,7 +137,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: object to array', () => {
     validateMatchFail({
       data: { test: 1 },
-      match: Matchers.equalsTo([1, 2, 3]),
+      matchers: Matchers.equalsTo([1, 2, 3]),
       errorMatch: [1, 2, 3],
     });
   });
@@ -145,7 +145,7 @@ describe('Matchers.equalsTo()', () => {
   test('FAIL: array to object', () => {
     validateMatchFail({
       data: [1, 2, 3],
-      match: Matchers.equalsTo({ test: 1 }),
+      matchers: Matchers.equalsTo({ test: 1 }),
       errorMatch: { test: 1 },
     });
   });

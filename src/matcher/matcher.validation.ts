@@ -11,27 +11,28 @@ export function validateMatch(data: any, match: any) {
   expect(data).toEqual(dataAsExpected);
 }
 
-export function matchAll(...matchesArray: any) {
-  return valueMatcher('matchAll', value => {
+export function matchAll(matchesArray: any[]) {
+  return valueMatcher('matchAll', null, value => {
     for (let match of matchesArray) {
       if (match instanceof ValueMatcher) {
         let expectationResponse = match.testValue(value);
         if (!isDeepStrictEqual(value, expectationResponse)) {
-          return expectationResponse;
+          throw new Error('TODO');
+          // return ValueMatcher.error();
         }
       } else {
         let result = ValueMatcher.copyWithExpectedMatch(value, match);
         if (!isDeepStrictEqual(value, result)) {
-          return result;
+          return ValueMatcher.value(result);
         }
       }
     }
-    return value;
+    return ValueMatcher.success();
   });
 }
 
 export function matchAny(...matchesArray: any) {
-  return valueMatcher('matchAny', value => {
+  return valueMatcher('matchAny', null, value => {
     for (let match of matchesArray) {
       if (match instanceof ValueMatcher) {
         let expectationResponse = match.testValue(value);

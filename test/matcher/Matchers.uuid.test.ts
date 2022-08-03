@@ -1,6 +1,7 @@
 import { Matchers, Random } from '../../src';
-import { validateMatchFail, validateMatchFailArray } from '../test-utils/validateMatchFail';
+import { expectMatcherError, validateMatchFail, validateMatchFailArray } from '../test-utils/validateMatchFail';
 import { validateMatchSuccess, validateMatchSuccessArray } from '../test-utils/validateMatchSuccess';
+import { ValueMatcher } from '../../src/matcher/value.matcher';
 
 describe('Matchers.uuid()', () => {
 
@@ -30,26 +31,6 @@ describe('Matchers.uuid()', () => {
     });
   });
 
-  test('FAIL: [string] value expected', () => {
-    validateMatchFailArray({
-      dataArray: [
-        { data: 123 },
-        { data: true },
-        { data: [1, 2, 3] },
-        { data: { test: 'object' } },
-      ],
-      match: {
-        data: Matchers.string(),
-      },
-      errorMatch: {
-        data: {
-          matcher: 'Matchers.string',
-          message: '[string] value expected',
-        },
-      },
-    });
-  });
-
   test('FAIL: some not-uuid strings and other values', () => {
     validateMatchFailArray({
       dataArray: [
@@ -62,22 +43,22 @@ describe('Matchers.uuid()', () => {
         [1, 2, 3],
         { test: 1 },
       ],
-      match: Matchers.uuid(),
-      errorMatch: {
-        matcher: 'Matchers.uuid',
-        message: '[uuid] value expected',
-      },
+      matchers: [
+        Matchers.uuid(),
+        Matchers.uuid({ canBeNull: false }),
+        Matchers.uuid({ canBeNull: true }),
+        Matchers.uuid({ optional: false }),
+        Matchers.uuid({ optional: true }),
+      ],
+      errorMatch: expectMatcherError('Expected value of type [uuid]'),
     });
   });
 
   test('FAIL: value cannot be [null]', () => {
     validateMatchFail({
       data: null,
-      match: Matchers.uuid(),
-      errorMatch: {
-        matcher: 'Matchers.uuid',
-        message: 'value cannot be [null]',
-      },
+      matchers: Matchers.uuid(),
+      errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
     });
   });
 

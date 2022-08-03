@@ -5,7 +5,7 @@ export { HttpLogger } from './logging/http.logger';
 export { ArrayMatchers } from './matcher/array.matchers';
 export { validateMatch, matchAny, matchAll } from './matcher/matcher.validation';
 export { Matchers } from './matcher/matchers';
-export { valueMatcher } from './matcher/value.matcher';
+export { valueMatcher, customValueMatcher } from './matcher/value.matcher';
 // POOL
 export { ObjectPool } from './pool/object.pool';
 // RANDOM

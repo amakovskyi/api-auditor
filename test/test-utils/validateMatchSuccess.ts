@@ -24,7 +24,7 @@ function doValidateMatch(params: {
 
 export function validateMatchSuccess(params: {
   data: any,
-  matchers: any[],
+  matchers: any,
 }) {
   ConsoleLogger.log('VALIDATING MATCH');
   ConsoleLogger.log(JSON.stringify(params, null, 2));

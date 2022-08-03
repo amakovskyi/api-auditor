@@ -1,6 +1,7 @@
 import { Matchers } from '../../src';
-import { validateMatchFail } from '../test-utils/validateMatchFail';
+import { expectMatcherError, validateMatchFail } from '../test-utils/validateMatchFail';
 import { validateMatchSuccessArray } from '../test-utils/validateMatchSuccess';
+import { ValueMatcher } from '../../src/matcher/value.matcher';
 
 describe('Matchers.anyNotNull()', () => {
 
@@ -22,22 +23,16 @@ describe('Matchers.anyNotNull()', () => {
   test('FAIL: undefined', () => {
     validateMatchFail({
       data: undefined,
-      match: Matchers.anyNotNull(),
-      errorMatch: {
-        matcher: 'Matchers.anyNotNull',
-        message: 'Expected some value',
-      },
+      matchers: Matchers.anyNotNull(),
+      errorMatch: expectMatcherError(ValueMatcher.VALUE_IS_REQUIRED),
     });
   });
 
   test('FAIL: null', () => {
     validateMatchFail({
       data: null,
-      match: Matchers.anyNotNull(),
-      errorMatch: {
-        matcher: 'Matchers.anyNotNull',
-        message: 'Expected value is not null',
-      },
+      matchers: Matchers.anyNotNull(),
+      errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
     });
   });
 
