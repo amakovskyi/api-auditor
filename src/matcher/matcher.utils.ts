@@ -10,4 +10,8 @@ export class MatcherUtils {
     return !(value instanceof ValueMatcher) && Object(value) === value && !Array.isArray(value);
   }
 
+  static isStrictNull(value: any): boolean {
+    return value == null && typeof value != 'undefined';
+  }
+
 }

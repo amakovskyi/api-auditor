@@ -48,6 +48,18 @@ describe('ArrayMatchers.any()', () => {
     });
   });
 
+  test('FAIL: requireNotEmpty', () => {
+    validateMatchFail({
+      data: [],
+      matchers: [
+        ArrayMatchers.any({ requireNotEmpty: true }),
+        ArrayMatchers.any({ optional: true, requireNotEmpty: true }),
+        ArrayMatchers.any({ canBeNull: true, requireNotEmpty: true }),
+      ],
+      errorMatch: expectMatcherError('[JsonArray] should be not empty'),
+    });
+  });
+
   test('FAIL: null', () => {
     validateMatchFail({
       data: null,

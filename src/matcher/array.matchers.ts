@@ -1,4 +1,4 @@
-import { valueMatcher, ValueMatcher } from './value.matcher';
+import { FailedMatch, valueMatcher, ValueMatcher } from './value.matcher';
 import { MatcherUtils } from './matcher.utils';
 import { isDeepStrictEqual } from 'util';
 
@@ -7,12 +7,16 @@ export class ArrayMatchers {
   static any(options?: {
     canBeNull?: boolean,
     optional?: boolean,
+    requireNotEmpty?: boolean,
     expectedLength?: number,
     itemMatch?: any
   }) {
     return valueMatcher('ArrayMatchers.any', options, value => {
       if (!MatcherUtils.isArray(value)) {
         return ValueMatcher.typeError('JsonArray');
+      }
+      if (options?.requireNotEmpty == true && value.length == 0) {
+        return ValueMatcher.error('[JsonArray] should be not empty');
       }
       if (options?.expectedLength != null) {
         if (options.expectedLength != value.length) {
@@ -30,31 +34,47 @@ export class ArrayMatchers {
     });
   }
 
-  // DONE UNTIL HERE
-
-  /**
-   * Expect value is array with unique items
-   */
-  static uniqueItems(): ValueMatcher {
-    return valueMatcher('uniqueItems', null, (value) => {
+  static uniqueItems(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    requireNotEmpty?: boolean,
+  }): ValueMatcher {
+    return valueMatcher('ArrayMatchers.uniqueItems', options, (value) => {
       if (!MatcherUtils.isArray(value)) {
-        return '[expected JsonArray]';
+        return ValueMatcher.typeError('JsonArray');
       }
-      let nonUniqueItems = new Set<any>();
-      value.forEach((item, index) => {
-        if (index != value.indexOf(item)) {
-          nonUniqueItems.add(item);
+      if (options?.requireNotEmpty == true && value.length == 0) {
+        return ValueMatcher.error('[JsonArray] should be not empty');
+      }
+      let result: any[] = [];
+      for (let itemIndex = 0; itemIndex < value.length; itemIndex++) {
+        let isDuplicated = false;
+        let item = value[itemIndex];
+        for (let seekDuplicateIndex = 0; seekDuplicateIndex < value.length; seekDuplicateIndex++) {
+          if (seekDuplicateIndex != itemIndex) {
+            let seekItem = value[seekDuplicateIndex];
+            if (typeof item == 'undefined' && typeof seekItem == 'undefined') {
+              isDuplicated = true;
+            } else if (MatcherUtils.isStrictNull(item) && MatcherUtils.isStrictNull(seekItem)) {
+              isDuplicated = true;
+            } else if (isDeepStrictEqual(value[itemIndex], value[seekDuplicateIndex])) {
+              isDuplicated = true;
+            }
+          }
         }
-      });
-      if (nonUniqueItems.size > 0) {
-        let data = {
-          allItems: value,
-          duplicatedItems: [...nonUniqueItems],
-        };
-        throw new Error(`Items is not unique: ` + JSON.stringify(data, null, 2));
+        if (isDuplicated) {
+          let resultItem: any = new FailedMatch('ArrayMatchers.uniqueItems', 'Item is duplicated');
+          resultItem.item = item;
+          result.push(resultItem);
+        } else {
+          result.push(item);
+        }
       }
+      return ValueMatcher.value(result);
     });
   }
+
+  // DONE UNTIL HERE
 
   /**
    * Expect value is any array which is not containing [args]
