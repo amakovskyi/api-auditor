@@ -1,4 +1,5 @@
 import { ValueMatcher } from './value.matcher';
+import { isDeepStrictEqual } from 'util';
 
 export class MatcherUtils {
 
@@ -12,6 +13,19 @@ export class MatcherUtils {
 
   static isStrictNull(value: any): boolean {
     return value == null && typeof value != 'undefined';
+  }
+
+  static isFullyEquals(left: any, right: any): boolean {
+    if (typeof left == 'undefined' && typeof right == 'undefined') {
+      return true;
+    }
+    if (MatcherUtils.isStrictNull(left) && MatcherUtils.isStrictNull(right)) {
+      return true;
+    }
+    if (isDeepStrictEqual(left, right)) {
+      return true;
+    }
+    return false;
   }
 
 }
