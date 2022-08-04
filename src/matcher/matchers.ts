@@ -132,9 +132,6 @@ export class Matchers {
     });
   }
 
-  /**
-   * Any DATE
-   */
   static date(options?: {
     canBeNull?: boolean,
     optional?: boolean,

@@ -153,6 +153,7 @@ export class ArrayMatchers {
   static notContaining(expectedNoMatches: any[], options?: {
     canBeNull?: boolean,
     optional?: boolean,
+    requireNotEmpty?: boolean,
   }) {
     return valueMatcher('ArrayMatchers.notContaining', options, value => {
       if (!MatcherUtils.isArray(value)) {

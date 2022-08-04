@@ -1,3 +1,365 @@
 # api-auditor
 
-NodeJS library for integration testing
+A NodeJS library for integration testing.
+
+## Matchers
+
+Allows to easily validate objects, mainly API responses.
+
+EXAMPLE
+
+Assume we need to validate API response.
+
+```typescript
+let response = client.get('https://api.com/myUserInfo')
+```
+
+Response content:
+
+```json
+{
+  "id": "98837f2e-69f9-4083-b3f6-a9f90699a0bd",
+  "firstName": "John",
+  "lastName": "Doe",
+  "numberOfPosts": 18,
+  "description": null
+}
+```
+
+It needed to validate only id format and first/last name.
+
+Pure Jest way:
+
+```typescript
+expect(UuidUtils.isValid(response.id)).toBeThruly()
+expect(response.firstName).toEqual('John')
+expect(response.lastName).toEqual('Doe')
+```
+
+**api-auditor** matcher way:
+
+```typescript
+validateMatch(response, {
+  id: Matchers.uuid(),
+  firstName: 'John',
+  lastName: 'Doe',
+})
+```
+
+It needed to validate general response format.
+
+Pure Jest way:
+
+```typescript
+expect(UuidUtils.isValid(response.id)).toBeThruly()
+expect(typeof response.firstName).toEqual('string')
+expect(typeof response.lastName).toEqual('string')
+expect(typeof response.numberOfPosts).toEqual('number')
+expect(Number.isInteger(response.numberOfPosts)).toBeThruly()
+if (response.description != null) {
+  expect(typeof response.description).toEqual('string')
+}
+```
+
+**api-auditor** matcher way:
+
+```typescript
+validateMatch(response, {
+  id: Matchers.uuid(),
+  firstName: Matchers.string(),
+  lastName: Matchers.string(),
+  numberOfPosts: Matchers.number({ shouldBeInteger: true }),
+  description: Matchers.string({ canBeNull: true }),
+})
+```
+
+In addition to simple and clear way of writing the code there will be a clear and understandable diff in console log in
+case of match error.
+
+HOW TO USE
+
+```typescript
+validateMatch(objectToValidate, expectedMatch)
+```
+
+```expectedMatch``` need contain only fields needed to validate. Anything else, which is not described
+in ```expectedMatch``` but present in ```objectToValidate``` is ignored, so it is possible to put only those which
+needed to be validated in ```objectToValidate```.
+
+VALUES
+
+Place any primitive value to validate strict equality: ```undefined```, ```null```, ```string```,```number``` etc.
+
+```typescript
+validateMatch(objectToValidate, {
+  index: 1,
+  name: 'Some name',
+  description: null,
+})
+```
+
+OBJECTS
+
+Place object inside object or array to validate object contents. Fields, not included in match, are not validated.
+
+```typescript
+validateMatch(objectToValidate, {
+  someInnerObject: {
+    index: 1,
+    id: Matchers.uuid(),
+    name: 'Some name',
+    innerItems: ArrayMatchers.any(),
+  }
+})
+```
+
+ARRAYS
+
+Place items inside array to validate array contents directly.
+
+```typescript
+validateMatch(arrayToValidate, [1, 2, 3])
+
+validateMatch(arrayToValidate, [Matchers.number(), Matchers.string()])
+
+validateMatch(arrayToValidate, [
+  { index: 1, id: Matchers.uuid(), name: 'One' },
+  { index: 2, id: Matchers.uuid(), name: 'Two' },
+  { index: 3, id: Matchers.uuid(), name: 'Three' },
+])
+```
+
+MATCHERS
+
+```
+Matchers.anything()
+```
+
+Always successful validation.
+
+```
+Matchers.equalsTo(other: any)
+```
+
+Validates strict equality to ```other```.
+
+```
+Matchers.absent()
+```
+
+Validates value is not present on place of strictly equal to ```undefined``` (```null``` cause validation fail).
+
+```
+Matchers.absentOrNull()
+```
+
+Validates value is not present on place, strictly equal to ```undefined``` or ```null```.
+
+```
+Matchers.anyDefined()
+```
+
+Validates value is present on place (```undefined``` or missing value cause validation fail).
+
+```
+Matchers.anyNotNull()
+```
+
+Validates value is present on place (```undefined``` or missing value cause validation fail) and not null.
+
+```
+Matchers.object(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    match?: any
+}
+```
+
+Validates value is JsonObject.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
+* ```match``` perform matching of object (useful when ```canBeNull``` or ```optional``` is set to TRUE)
+
+```
+Matchers.string(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    canBeEmpty?: boolean
+}
+```
+
+Validates value is type of ```string```.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
+* ```canBeEmpty``` allows string to be empty (length=0)
+
+```
+Matchers.uuid(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+}
+```
+
+Validates value is type of ```string``` with UUID format.
+
+* ```canBeNull``` allows value to be null
+* ```optional``` allows value to be missing or ```undefined```
+
+```
+Matchers.boolean(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+}
+```
+
+Validates value is type of ```boolean```.
+
+* ```canBeNull``` allows value to be null
+* ```optional``` allows value to be missing or ```undefined```
+
+```
+Matchers.date(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+}
+```
+
+Validates value is type of ```string``` with ISO date format of value of class ```Date```.
+
+* ```canBeNull``` allows value to be null
+* ```optional``` allows value to be missing or ```undefined```
+
+```
+Matchers.number(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    shouldBeInteger?: boolean,
+    bounds?: {
+        min?: number,
+        max?: number
+    },
+    near?: {
+        value: number,
+        maxDifference: number,
+    }
+    canBeNaN?: boolean
+}
+```
+
+Validates value is type of ```string``` with ISO date format of value of class ```Date```.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
+* ```shouldBeInteger``` requires number to be integer
+* ```bounds``` requires number to be in bounds between ```min``` and ```max``` inclusive; allowed to set only lower or
+  upper bound;
+* ```near``` requires number to be near ```value``` with max allowed difference ```maxDifference```
+* ```canBeNaN``` allows number to be ```NaN```
+
+ARRAY MATCHERS
+
+```
+ArrayMatchers.any(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    requireNotEmpty?: boolean,
+    expectedLength?: number,
+    itemMatch?: any
+}
+```
+
+Validates value is type of ```JsonArray```.
+
+* ```canBeNull``` allows value to be null
+* ```optional``` allows value to be missing or ```undefined```
+* ```requireNotEmpty``` requires from array to be not empty
+* ```expectedLength``` requires array length ot be exactly equal to ```expectedLength```
+* ```itemMatch``` requires all items in array matches ```itemMatch```
+
+```
+ArrayMatchers.uniqueItems(options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    requireNotEmpty?: boolean,
+    expectedLength?: number,
+    itemMatch?: any
+}
+```
+
+Validates value is type of ```JsonArray``` has unique items.
+
+* ```canBeNull``` allows value to be null
+* ```optional``` allows value to be missing or ```undefined```
+* ```requireNotEmpty``` requires from array to be not empty
+
+```
+ArrayMatchers.containing(expectedMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    onlySpecifiedItems?: boolean,
+    allowDuplicateMatch?: boolean,
+}
+```
+
+Validates value is type of ```JsonArray``` and contains item match for each of ```expectedMatches```.
+
+* ```canBeNull``` allows value to be null
+* ```optional``` allows value to be missing or ```undefined```
+* ```onlySpecifiedItems``` requires that array does not contain any items except matched to ```expectedMatches```
+* ```allowDuplicateMatch``` allows multiple array items to match items of ```expectedMatches``` (by default matches
+  should be distinctive)
+
+```
+ArrayMatchers.notContaining(expectedNoMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    requireNotEmpty?: boolean,
+}
+```
+
+Validates value is type of ```JsonArray``` and NOT contains item matches for any of ```expectedNoMatches```.
+
+* ```canBeNull``` allows value to be null
+* ```optional``` allows value to be missing or ```undefined```
+* ```requireNotEmpty``` requires from array to be not empty
+
+```
+ArrayMatchers.containingAny(expectedAnyMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+}
+```
+
+Validates value is type of ```JsonArray``` and contains at least single items match for any of ```expectedAnyMatches```.
+
+* ```canBeNull``` allows value to be null
+* ```optional``` allows value to be missing or ```undefined```
+
+COMPOSITE MATCHERS
+
+```
+matchAll(matches: any[])
+```
+
+Matcher which validates object for all ```matches``` and raises first unmatched error in case if validation fail.
+
+```
+matchAll(matchAny: any[])
+```
+
+Matcher which validates object for first successful match from ```matches``` and raises error in case there are no
+successful matches.
+
+## Pool
+
+// TODO
+
+## Random
+
+// TODO
+
+## Logging
+
+// TODO
