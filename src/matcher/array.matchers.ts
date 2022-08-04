@@ -1,9 +1,15 @@
 import { FailedMatch, valueMatcher, ValueMatcher } from './value.matcher';
 import { MatcherUtils } from './matcher.utils';
-import { isDeepStrictEqual } from 'util';
 
 export class ArrayMatchers {
 
+  /**
+   * Validates is value is an array
+   * @param options
+   * @param options.requireNotEmpty is require from array to be not empty
+   * @param options.expectedLength require array with specific size
+   * @param options.itemMatch require all array items to match [itemMatch]
+   */
   static any(options?: {
     canBeNull?: boolean,
     optional?: boolean,
@@ -70,7 +76,14 @@ export class ArrayMatchers {
     });
   }
 
-  static withItems(expectedMatches: any[], options?: {
+  /**
+   * Validates is value is an array which contains items from witch exists matches for all of [expectedMatches]
+   * @param expectedMatches
+   * @param options
+   * @param options.onlySpecifiedItems array should contain ONLY items which matches one of [expectedMatches]
+   * @param options.allowDuplicateMatch array can contain items which matches several of [expectedMatches] (if not set to TRUE - matches should be distinctive)
+   */
+  static containing(expectedMatches: any[], options?: {
     canBeNull?: boolean,
     optional?: boolean,
     onlySpecifiedItems?: boolean,
@@ -132,78 +145,64 @@ export class ArrayMatchers {
     });
   }
 
-  // DONE UNTIL HERE
-
   /**
-   * Expect value is any array which is not containing [args]
+   * Validates is value is an array which contains no items which match any of [expectedNoMatches]
+   * @param expectedNoMatches
+   * @param options
    */
-  static anyArrayNotContaining(args: any[]) {
-    return valueMatcher('anyArrayNotContaining', null, value => {
+  static notContaining(expectedNoMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+  }) {
+    return valueMatcher('ArrayMatchers.notContaining', options, value => {
       if (!MatcherUtils.isArray(value)) {
-        return '[expected JsonArray]';
+        return ValueMatcher.typeError('JsonArray');
       }
-      let argsMatched: any[] = [];
-      let argsNotMatched: any[] = [];
-      for (let expectedItem of args) {
-        let isMatched = false;
-        for (let actualItem of value) {
-          let expectedMatch = ValueMatcher.copyWithExpectedMatch(actualItem, expectedItem);
-          if (isDeepStrictEqual(expectedMatch, actualItem)) {
-            isMatched = true;
+      let result: any[] = [];
+      for (let item of value) {
+        let foundMatches: boolean = false;
+        for (let match of expectedNoMatches) {
+          let matchResult = ValueMatcher.copyWithExpectedMatch(item, match);
+          if (MatcherUtils.isFullyEquals(item, matchResult)) {
+            foundMatches = true;
+            let failedMatchItem: any = new FailedMatch('ArrayMatchers.notContaining', 'Item match found');
+            failedMatchItem.item = item;
+            failedMatchItem.match = match;
+            result.push(failedMatchItem);
           }
         }
-        if (isMatched) {
-          argsMatched.push(expectedItem);
-        } else {
-          argsNotMatched.push(expectedItem);
+        if (!foundMatches) {
+          result.push(item);
         }
       }
-      if (argsMatched.length > 0) {
-        return {
-          error: 'Some of not expected items found in the array',
-          actual: value,
-          expectedAndMatched: argsNotMatched,
-          notMatchedButExpected: argsMatched,
-        };
-      }
-      return value;
+      return ValueMatcher.value(result);
     });
   }
 
+  // DONE UNTIL HERE
+
   /**
-   * Expect value is any where at least one of [args] match at least one item
+   * Validates is value is an array which contains at least one item which match any of [expectedAnyMatches]
+   * @param expectedAnyMatches
+   * @param options
    */
-  static anyArrayContainingSome(...args: any) {
-    return valueMatcher('anyArrayContainingSome', null, value => {
+  static containingAny(expectedAnyMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+  }) {
+    return valueMatcher('ArrayMatchers.containingAny', options, value => {
       if (!MatcherUtils.isArray(value)) {
-        return '[expected JsonArray]';
+        return ValueMatcher.typeError('JsonArray');
       }
-      let argsMatched: any[] = [];
-      let argsNotMatched: any[] = [];
-      let isMatched = false;
-      for (let expectedItem of args) {
-        for (let actualItem of value) {
-          let expectedMatch = ValueMatcher.copyWithExpectedMatch(actualItem, expectedItem);
-          if (isDeepStrictEqual(expectedMatch, actualItem)) {
-            isMatched = true;
+      for (let item of value) {
+        for (let match of expectedAnyMatches) {
+          let matchResult = ValueMatcher.copyWithExpectedMatch(item, match);
+          if (MatcherUtils.isFullyEquals(match, matchResult)) {
+            return ValueMatcher.success();
           }
         }
-        if (isMatched) {
-          argsMatched.push(expectedItem);
-        } else {
-          argsNotMatched.push(expectedItem);
-        }
       }
-
-      if (!argsMatched.length) {
-        return {
-          error: 'No matches found in array with expected items',
-          actual: value,
-          expectedAndMatched: argsMatched,
-          notMatchedButExpected: argsNotMatched,
-        };
-      }
-      return value;
+      return ValueMatcher.error('No items found matching expected');
     });
   }
 

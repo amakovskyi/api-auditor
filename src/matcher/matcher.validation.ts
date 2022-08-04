@@ -1,5 +1,5 @@
-import { isDeepStrictEqual } from 'util';
 import { ValueMatcher, valueMatcher } from './value.matcher';
+import { MatcherUtils } from './matcher.utils';
 
 /**
  * In comparison with strict equation this method validates that [data] contain all information as specified in [expected],
@@ -8,48 +8,35 @@ import { ValueMatcher, valueMatcher } from './value.matcher';
  */
 export function validateMatch(data: any, match: any) {
   let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, match);
-  expect(data).toEqual(dataAsExpected);
+  if (!MatcherUtils.isFullyEquals(data, dataAsExpected)) {
+    expect(data).toEqual(dataAsExpected);
+  }
 }
 
-export function matchAll(matchesArray: any[]) {
+export function matchAll(matches: any[]) {
   return valueMatcher('matchAll', null, value => {
-    for (let match of matchesArray) {
-      if (match instanceof ValueMatcher) {
-        let expectationResponse = match.testValue(value);
-        if (!isDeepStrictEqual(value, expectationResponse)) {
-          throw new Error('TODO');
-          // return ValueMatcher.error();
-        }
-      } else {
-        let result = ValueMatcher.copyWithExpectedMatch(value, match);
-        if (!isDeepStrictEqual(value, result)) {
-          return ValueMatcher.value(result);
-        }
+    for (let match of matches) {
+      let matchResult = ValueMatcher.copyWithExpectedMatch(value, match);
+      if (!MatcherUtils.isFullyEquals(value, matchResult)) {
+        return ValueMatcher.value(matchResult);
       }
     }
     return ValueMatcher.success();
   });
 }
 
-export function matchAny(...matchesArray: any) {
+export function matchAny(matches: any[]) {
   return valueMatcher('matchAny', null, value => {
-    for (let match of matchesArray) {
-      if (match instanceof ValueMatcher) {
-        let expectationResponse = match.testValue(value);
-        if (isDeepStrictEqual(value, expectationResponse)) {
-          return value;
-        }
-      } else {
-        let result = ValueMatcher.copyWithExpectedMatch(value, match);
-        if (isDeepStrictEqual(value, result)) {
-          return value;
-        }
+    if (matches.length == 0) {
+      return ValueMatcher.success();
+    }
+    for (let match of matches) {
+      let matchResult = ValueMatcher.copyWithExpectedMatch(value, match);
+      if (MatcherUtils.isFullyEquals(value, matchResult)) {
+        return ValueMatcher.success();
       }
     }
-    return {
-      error: 'No matches found in array with expected items',
-      expected: matchesArray,
-    };
+    return ValueMatcher.error('No matches found');
   });
 }
 

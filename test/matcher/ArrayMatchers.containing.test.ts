@@ -3,7 +3,7 @@ import { expectMatcherError, validateMatchFail } from '../test-utils/validateMat
 import { validateMatchSuccess } from '../test-utils/validateMatchSuccess';
 import { ValueMatcher } from '../../src/matcher/value.matcher';
 
-describe('ArrayMatchers.withItems()', () => {
+describe('ArrayMatchers.containing()', () => {
 
   test('Some array', () => {
     validateMatchSuccess({
@@ -25,7 +25,7 @@ describe('ArrayMatchers.withItems()', () => {
         new Date(),
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           undefined,
           null,
           1,
@@ -33,13 +33,13 @@ describe('ArrayMatchers.withItems()', () => {
           [1, 2, 3],
           { test: 1, other: 'two' },
         ]),
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           ArrayMatchers.any({ expectedLength: 3 }),
           Matchers.number({ bounds: { min: 0, max: 2 } }),
           { value: Matchers.string() },
           999,
         ]),
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           Matchers.uuid(),
           Matchers.date(),
           { test: Matchers.anyDefined() },
@@ -64,7 +64,7 @@ describe('ArrayMatchers.withItems()', () => {
         Random.uuid(),
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           Matchers.string(),
           Matchers.uuid(),
           Matchers.boolean(),
@@ -86,7 +86,7 @@ describe('ArrayMatchers.withItems()', () => {
         Random.uuid(),
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           'one',
           Matchers.uuid(),
           Matchers.boolean(),
@@ -114,7 +114,7 @@ describe('ArrayMatchers.withItems()', () => {
         Random.uuid(),
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           'one',
           'other',
           Matchers.uuid(),
@@ -134,7 +134,7 @@ describe('ArrayMatchers.withItems()', () => {
     validateMatchSuccess({
       data: null,
       matchers: [
-        ArrayMatchers.withItems([1, 2, 3], {
+        ArrayMatchers.containing([1, 2, 3], {
           canBeNull: true,
         }),
       ],
@@ -145,7 +145,7 @@ describe('ArrayMatchers.withItems()', () => {
     validateMatchSuccess({
       data: undefined,
       matchers: [
-        ArrayMatchers.withItems([1, 2, 3], {
+        ArrayMatchers.containing([1, 2, 3], {
           optional: true,
         }),
       ],
@@ -156,8 +156,8 @@ describe('ArrayMatchers.withItems()', () => {
     validateMatchFail({
       data: null,
       matchers: [
-        ArrayMatchers.withItems([1, 2, 3], { optional: true }),
-        ArrayMatchers.withItems([1, 2, 3], { allowDuplicateMatch: true }),
+        ArrayMatchers.containing([1, 2, 3], { optional: true }),
+        ArrayMatchers.containing([1, 2, 3], { allowDuplicateMatch: true }),
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
     });
@@ -167,8 +167,8 @@ describe('ArrayMatchers.withItems()', () => {
     validateMatchFail({
       data: undefined,
       matchers: [
-        ArrayMatchers.withItems([1, 2, 3], { canBeNull: true }),
-        ArrayMatchers.withItems([1, 2, 3], { allowDuplicateMatch: true }),
+        ArrayMatchers.containing([1, 2, 3], { canBeNull: true }),
+        ArrayMatchers.containing([1, 2, 3], { allowDuplicateMatch: true }),
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_IS_REQUIRED),
     });
@@ -181,7 +181,7 @@ describe('ArrayMatchers.withItems()', () => {
         2,
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           1,
           2,
           3,
@@ -206,7 +206,7 @@ describe('ArrayMatchers.withItems()', () => {
         [2],
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           [1],
           [2],
           [3],
@@ -231,7 +231,7 @@ describe('ArrayMatchers.withItems()', () => {
         { val: 'two' },
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           { val: 'one' },
           { val: 'two' },
           { val: 'three' },
@@ -257,7 +257,7 @@ describe('ArrayMatchers.withItems()', () => {
         true,
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           Matchers.number(),
           Matchers.boolean(),
           missingMatch,
@@ -283,7 +283,7 @@ describe('ArrayMatchers.withItems()', () => {
         3,
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           1,
           2,
         ], {
@@ -313,7 +313,7 @@ describe('ArrayMatchers.withItems()', () => {
         [3],
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           [1],
           [2],
         ], {
@@ -343,7 +343,7 @@ describe('ArrayMatchers.withItems()', () => {
         { val: 3 },
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           { val: 1 },
           { val: 2 },
         ], {
@@ -373,7 +373,7 @@ describe('ArrayMatchers.withItems()', () => {
         true,
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           Matchers.number(),
           Matchers.string(),
         ], {
@@ -404,7 +404,7 @@ describe('ArrayMatchers.withItems()', () => {
         true,
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           duplicateMatch,
         ]),
       ],
@@ -435,7 +435,7 @@ describe('ArrayMatchers.withItems()', () => {
         true,
       ],
       matchers: [
-        ArrayMatchers.withItems([
+        ArrayMatchers.containing([
           { index: 1 },
         ], {
           allowDuplicateMatch: false,
