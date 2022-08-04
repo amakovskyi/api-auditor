@@ -12,11 +12,11 @@ describe('Matchers.date()', () => {
         new Date().toISOString(),
       ],
       matchers: [
-        Matchers.date(),
-        Matchers.date({ canBeNull: false }),
-        Matchers.date({ canBeNull: true }),
-        Matchers.date({ optional: false }),
-        Matchers.date({ optional: true }),
+        Matchers.dateTime(),
+        Matchers.dateTime({ canBeNull: false }),
+        Matchers.dateTime({ canBeNull: true }),
+        Matchers.dateTime({ optional: false }),
+        Matchers.dateTime({ optional: true }),
       ],
     });
   });
@@ -29,9 +29,9 @@ describe('Matchers.date()', () => {
         new Date().toISOString(),
       ],
       matchers: [
-        Matchers.date({ canBeNull: true }),
-        Matchers.date({ canBeNull: true, optional: false }),
-        Matchers.date({ canBeNull: true, optional: true }),
+        Matchers.dateTime({ canBeNull: true }),
+        Matchers.dateTime({ canBeNull: true, optional: false }),
+        Matchers.dateTime({ canBeNull: true, optional: true }),
       ],
     });
   });
@@ -44,9 +44,9 @@ describe('Matchers.date()', () => {
         new Date().toISOString(),
       ],
       matchers: [
-        Matchers.date({ optional: true }),
-        Matchers.date({ optional: true, canBeNull: false }),
-        Matchers.date({ optional: true, canBeNull: true }),
+        Matchers.dateTime({ optional: true }),
+        Matchers.dateTime({ optional: true, canBeNull: false }),
+        Matchers.dateTime({ optional: true, canBeNull: true }),
       ],
     });
   });
@@ -64,11 +64,11 @@ describe('Matchers.date()', () => {
         { test: 1 },
       ],
       matchers: [
-        Matchers.date(),
-        Matchers.date({ canBeNull: false }),
-        Matchers.date({ canBeNull: true }),
-        Matchers.date({ optional: false }),
-        Matchers.date({ optional: true }),
+        Matchers.dateTime(),
+        Matchers.dateTime({ canBeNull: false }),
+        Matchers.dateTime({ canBeNull: true }),
+        Matchers.dateTime({ optional: false }),
+        Matchers.dateTime({ optional: true }),
       ],
       errorMatch: expectMatcherError('Expected value of type [Date|string-ISO-date]'),
     });
@@ -77,7 +77,7 @@ describe('Matchers.date()', () => {
   test('FAIL: undefined', () => {
     validateMatchFail({
       data: undefined,
-      matchers: Matchers.date(),
+      matchers: Matchers.dateTime(),
       errorMatch: expectMatcherError(ValueMatcher.VALUE_IS_REQUIRED),
     });
   });
@@ -85,7 +85,7 @@ describe('Matchers.date()', () => {
   test('FAIL: null', () => {
     validateMatchFail({
       data: null,
-      matchers: Matchers.date(),
+      matchers: Matchers.dateTime(),
       errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
     });
   });

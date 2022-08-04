@@ -41,7 +41,7 @@ describe('ArrayMatchers.containing()', () => {
         ]),
         ArrayMatchers.containing([
           Matchers.uuid(),
-          Matchers.date(),
+          Matchers.dateTime(),
           { test: Matchers.anyDefined() },
           true,
         ]),

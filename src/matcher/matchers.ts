@@ -132,7 +132,7 @@ export class Matchers {
     });
   }
 
-  static date(options?: {
+  static dateTime(options?: {
     canBeNull?: boolean,
     optional?: boolean,
   }) {

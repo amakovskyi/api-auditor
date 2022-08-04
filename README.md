@@ -83,8 +83,8 @@ validateMatch(objectToValidate, expectedMatch)
 ```
 
 ```expectedMatch``` need contain only fields needed to validate. Anything else, which is not described
-in ```expectedMatch``` but present in ```objectToValidate``` is ignored, so it is possible to put only those which
-needed to be validated in ```objectToValidate```.
+in ```expectedMatch``` but present in ```objectToValidate``` is ignored, so it is possible to put only those fields
+which needed to be validated in ```objectToValidate```.
 
 VALUES
 
@@ -147,25 +147,26 @@ Validates strict equality to ```other```.
 Matchers.absent()
 ```
 
-Validates value is not present on place of strictly equal to ```undefined``` (```null``` cause validation fail).
+Validates value is not present on place or strictly equal to ```undefined``` (```null``` cause validation fail).
 
 ```
 Matchers.absentOrNull()
 ```
 
-Validates value is not present on place, strictly equal to ```undefined``` or ```null```.
+Validates value is not present on place, or strictly equal to ```undefined``` or ```null```.
 
 ```
 Matchers.anyDefined()
 ```
 
-Validates value is present on place (```undefined``` or missing value cause validation fail).
+Validates value is present on place (```undefined``` or missing value cause validation fail, but ```null``` is
+acceptable).
 
 ```
 Matchers.anyNotNull()
 ```
 
-Validates value is present on place (```undefined``` or missing value cause validation fail) and not null.
+Validates value is present on place (```undefined``` or missing value cause validation fail) and not ```null```.
 
 ```
 Matchers.object(options?: {
@@ -193,7 +194,7 @@ Validates value is type of ```string```.
 
 * ```canBeNull``` allows value to be null; in case of this all further checks ignored
 * ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```canBeEmpty``` allows string to be empty (length=0)
+* ```canBeEmpty``` allows string to be empty (length=0); by default empty string not allowed
 
 ```
 Matchers.uuid(options?: {
@@ -220,13 +221,13 @@ Validates value is type of ```boolean```.
 * ```optional``` allows value to be missing or ```undefined```
 
 ```
-Matchers.date(options?: {
+Matchers.dateTime(options?: {
     canBeNull?: boolean,
     optional?: boolean,
 }
 ```
 
-Validates value is type of ```string``` with ISO date format of value of class ```Date```.
+Validates value is type of ```string``` with default javascript ISO date-time format or value of class ```Date```.
 
 * ```canBeNull``` allows value to be null
 * ```optional``` allows value to be missing or ```undefined```
@@ -248,12 +249,13 @@ Matchers.number(options?: {
 }
 ```
 
-Validates value is type of ```string``` with ISO date format of value of class ```Date```.
+Validates value is type of ```number```.
 
 * ```canBeNull``` allows value to be null; in case of this all further checks ignored
 * ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
 * ```shouldBeInteger``` requires number to be integer
-* ```bounds``` requires number to be in bounds between ```min``` and ```max``` inclusive; allowed to set only lower or
+* ```bounds``` requires number to be inside bounds between ```min``` and ```max``` inclusive; allowed to set only lower
+  or
   upper bound;
 * ```near``` requires number to be near ```value``` with max allowed difference ```maxDifference```
 * ```canBeNaN``` allows number to be ```NaN```
@@ -272,8 +274,8 @@ ArrayMatchers.any(options?: {
 
 Validates value is type of ```JsonArray```.
 
-* ```canBeNull``` allows value to be null
-* ```optional``` allows value to be missing or ```undefined```
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
 * ```requireNotEmpty``` requires from array to be not empty
 * ```expectedLength``` requires array length ot be exactly equal to ```expectedLength```
 * ```itemMatch``` requires all items in array matches ```itemMatch```
@@ -288,10 +290,10 @@ ArrayMatchers.uniqueItems(options?: {
 }
 ```
 
-Validates value is type of ```JsonArray``` has unique items.
+Validates value is type of ```JsonArray``` and has unique items.
 
-* ```canBeNull``` allows value to be null
-* ```optional``` allows value to be missing or ```undefined```
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
 * ```requireNotEmpty``` requires from array to be not empty
 
 ```
@@ -305,10 +307,10 @@ ArrayMatchers.containing(expectedMatches: any[], options?: {
 
 Validates value is type of ```JsonArray``` and contains item match for each of ```expectedMatches```.
 
-* ```canBeNull``` allows value to be null
-* ```optional``` allows value to be missing or ```undefined```
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
 * ```onlySpecifiedItems``` requires that array does not contain any items except matched to ```expectedMatches```
-* ```allowDuplicateMatch``` allows multiple array items to match items of ```expectedMatches``` (by default matches
+* ```allowDuplicateMatch``` allows multiple array items to match same item of ```expectedMatches``` (by default matches
   should be distinctive)
 
 ```
@@ -321,8 +323,8 @@ ArrayMatchers.notContaining(expectedNoMatches: any[], options?: {
 
 Validates value is type of ```JsonArray``` and NOT contains item matches for any of ```expectedNoMatches```.
 
-* ```canBeNull``` allows value to be null
-* ```optional``` allows value to be missing or ```undefined```
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
 * ```requireNotEmpty``` requires from array to be not empty
 
 ```
@@ -334,8 +336,8 @@ ArrayMatchers.containingAny(expectedAnyMatches: any[], options?: {
 
 Validates value is type of ```JsonArray``` and contains at least single items match for any of ```expectedAnyMatches```.
 
-* ```canBeNull``` allows value to be null
-* ```optional``` allows value to be missing or ```undefined```
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
 
 COMPOSITE MATCHERS
 
