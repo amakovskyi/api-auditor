@@ -412,26 +412,34 @@ Useful random utils.
 
 ### Random.int()
 
-```Random.int(maxInclusive: number): number```
+```
+Random.int(maxInclusive: number): number
+```
 
 Generate integer number from ```0``` to ```maxInclusive```.
 
 ### Random.intBetween()
 
-```Random.intBetween(minInclusive: number, maxInclusive: number): number```
+```
+Random.intBetween(minInclusive: number, maxInclusive: number): number
+```
 
 Generate integer number from ```minInclusive``` to ```maxInclusive```.
 
 ### Random.string()
 
-```Random.string(length: number, randomLengthAdder: number = 0): string```
+```
+Random.string(length: number, randomLengthAdder: number = 0): string
+```
 
 Generate random string with length equal to: ```length``` with randomly added up to ```randomLengthAdder```.
 Result contain lowercase and uppercase letters and numbers.
 
 ### Random.text()
 
-```Random.text(length: number = 64, randomLengthAdder: number = 64): string```
+```
+Random.text(length: number = 64, randomLengthAdder: number = 64): string
+```
 
 Generate random string with length equal to: ```length``` with randomly added up to ```randomLengthAdder```.
 
@@ -439,13 +447,17 @@ Result contain words separated by space. Words contain lowercase and uppercase l
 
 ### Random.uuid()
 
-```Random.uuid(): string```
+```
+Random.uuid(): string
+```
 
 Generate random string in UUID format.
 
 ### Random.boolean()
 
-```Random.boolean(trueThreshold: number = 0.5): boolean```
+```
+Random.boolean(trueThreshold: number = 0.5): boolean
+```
 
 Generate random boolean with default ```trueThreshold``` = 0.5 (equal change to return ```false``` and ```true```).
 
