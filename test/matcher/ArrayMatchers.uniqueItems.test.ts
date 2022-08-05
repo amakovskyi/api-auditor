@@ -17,7 +17,6 @@ describe('ArrayMatchers.uniqueItems()', () => {
       ],
       matchers: [
         ArrayMatchers.uniqueItems(),
-        ArrayMatchers.uniqueItems({ requireNotEmpty: false }),
         ArrayMatchers.uniqueItems({ canBeNull: true }),
         ArrayMatchers.uniqueItems({ canBeNull: true, optional: true }),
       ],
@@ -38,7 +37,6 @@ describe('ArrayMatchers.uniqueItems()', () => {
       matchers: [
         ArrayMatchers.uniqueItems({ canBeNull: true }),
         ArrayMatchers.uniqueItems({ canBeNull: true, optional: true }),
-        ArrayMatchers.uniqueItems({ canBeNull: true, requireNotEmpty: false }),
       ],
     });
   });
@@ -57,20 +55,7 @@ describe('ArrayMatchers.uniqueItems()', () => {
       matchers: [
         ArrayMatchers.uniqueItems({ optional: true }),
         ArrayMatchers.uniqueItems({ optional: true, canBeNull: true }),
-        ArrayMatchers.uniqueItems({ optional: true, requireNotEmpty: false }),
       ],
-    });
-  });
-
-  test('FAIL: requireNotEmpty', () => {
-    validateMatchFail({
-      data: [],
-      matchers: [
-        ArrayMatchers.uniqueItems({ requireNotEmpty: true }),
-        ArrayMatchers.uniqueItems({ optional: true, requireNotEmpty: true }),
-        ArrayMatchers.uniqueItems({ canBeNull: true, requireNotEmpty: true }),
-      ],
-      errorMatch: expectMatcherError('[JsonArray] should be not empty'),
     });
   });
 
@@ -80,7 +65,6 @@ describe('ArrayMatchers.uniqueItems()', () => {
       matchers: [
         ArrayMatchers.uniqueItems(),
         ArrayMatchers.uniqueItems({ canBeNull: false }),
-        ArrayMatchers.uniqueItems({ requireNotEmpty: true }),
         ArrayMatchers.uniqueItems({ optional: true }),
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
@@ -93,7 +77,6 @@ describe('ArrayMatchers.uniqueItems()', () => {
       matchers: [
         ArrayMatchers.uniqueItems(),
         ArrayMatchers.uniqueItems({ optional: false }),
-        ArrayMatchers.uniqueItems({ requireNotEmpty: true }),
         ArrayMatchers.uniqueItems({ canBeNull: true }),
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_IS_REQUIRED),
@@ -110,7 +93,7 @@ describe('ArrayMatchers.uniqueItems()', () => {
       ],
       matchers: [
         ArrayMatchers.uniqueItems(),
-        ArrayMatchers.uniqueItems({ requireNotEmpty: true }),
+        ArrayMatchers.uniqueItems({ canBeNull: true }),
         ArrayMatchers.uniqueItems({ optional: true }),
       ],
       errorMatch: expectMatcherError('Expected value of type [JsonArray]'),

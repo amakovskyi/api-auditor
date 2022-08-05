@@ -3,7 +3,7 @@ import { expectMatcherError, validateMatchFail } from '../test-utils/validateMat
 import { validateMatchSuccess } from '../test-utils/validateMatchSuccess';
 import { ValueMatcher } from '../../src/matcher/value.matcher';
 
-describe('ArrayMatchers.containing()', () => {
+describe('ArrayMatchers.containingAll()', () => {
 
   test('Some array', () => {
     validateMatchSuccess({
@@ -25,7 +25,7 @@ describe('ArrayMatchers.containing()', () => {
         new Date(),
       ],
       matchers: [
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           undefined,
           null,
           1,
@@ -33,13 +33,13 @@ describe('ArrayMatchers.containing()', () => {
           [1, 2, 3],
           { test: 1, other: 'two' },
         ]),
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           ArrayMatchers.any({ expectedLength: 3 }),
           Matchers.number({ bounds: { min: 0, max: 2 } }),
           { value: Matchers.string() },
           999,
         ]),
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           Matchers.uuid(),
           Matchers.dateTime(),
           { test: Matchers.anyDefined() },
@@ -64,7 +64,7 @@ describe('ArrayMatchers.containing()', () => {
         Random.uuid(),
       ],
       matchers: [
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           Matchers.string(),
           Matchers.uuid(),
           Matchers.boolean(),
@@ -76,65 +76,11 @@ describe('ArrayMatchers.containing()', () => {
     });
   });
 
-  test('onlySpecifiedItems', () => {
-    validateMatchSuccess({
-      data: [
-        123,
-        999,
-        'one',
-        true,
-        Random.uuid(),
-      ],
-      matchers: [
-        ArrayMatchers.containing([
-          'one',
-          Matchers.uuid(),
-          Matchers.boolean(),
-          123,
-          999,
-        ], {
-          onlySpecifiedItems: true,
-        }),
-      ],
-    });
-  });
-
-  test('allowDuplicateMatch & onlySpecifiedItems', () => {
-    validateMatchSuccess({
-      data: [
-        1,
-        123,
-        'one',
-        'other',
-        999,
-        true,
-        false,
-        Random.uuid(),
-        Random.uuid(),
-        Random.uuid(),
-      ],
-      matchers: [
-        ArrayMatchers.containing([
-          'one',
-          'other',
-          Matchers.uuid(),
-          Matchers.boolean(),
-          1,
-          123,
-          999,
-        ], {
-          allowDuplicateMatch: true,
-          onlySpecifiedItems: true,
-        }),
-      ],
-    });
-  });
-
   test('null', () => {
     validateMatchSuccess({
       data: null,
       matchers: [
-        ArrayMatchers.containing([1, 2, 3], {
+        ArrayMatchers.containingAll([1, 2, 3], {
           canBeNull: true,
         }),
       ],
@@ -145,7 +91,7 @@ describe('ArrayMatchers.containing()', () => {
     validateMatchSuccess({
       data: undefined,
       matchers: [
-        ArrayMatchers.containing([1, 2, 3], {
+        ArrayMatchers.containingAll([1, 2, 3], {
           optional: true,
         }),
       ],
@@ -156,8 +102,8 @@ describe('ArrayMatchers.containing()', () => {
     validateMatchFail({
       data: null,
       matchers: [
-        ArrayMatchers.containing([1, 2, 3], { optional: true }),
-        ArrayMatchers.containing([1, 2, 3], { allowDuplicateMatch: true }),
+        ArrayMatchers.containingAll([1, 2, 3], { optional: true }),
+        ArrayMatchers.containingAll([1, 2, 3], { allowDuplicateMatch: true }),
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
     });
@@ -167,8 +113,8 @@ describe('ArrayMatchers.containing()', () => {
     validateMatchFail({
       data: undefined,
       matchers: [
-        ArrayMatchers.containing([1, 2, 3], { canBeNull: true }),
-        ArrayMatchers.containing([1, 2, 3], { allowDuplicateMatch: true }),
+        ArrayMatchers.containingAll([1, 2, 3], { canBeNull: true }),
+        ArrayMatchers.containingAll([1, 2, 3], { allowDuplicateMatch: true }),
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_IS_REQUIRED),
     });
@@ -181,7 +127,7 @@ describe('ArrayMatchers.containing()', () => {
         2,
       ],
       matchers: [
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           1,
           2,
           3,
@@ -191,7 +137,7 @@ describe('ArrayMatchers.containing()', () => {
         1,
         2,
         {
-          matcher: 'ArrayMatchers.anyArrayContaining',
+          matcher: 'ArrayMatchers.containingAll',
           message: 'Item match not found',
           matchNotFound: 3,
         },
@@ -206,7 +152,7 @@ describe('ArrayMatchers.containing()', () => {
         [2],
       ],
       matchers: [
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           [1],
           [2],
           [3],
@@ -216,7 +162,7 @@ describe('ArrayMatchers.containing()', () => {
         [1],
         [2],
         {
-          matcher: 'ArrayMatchers.anyArrayContaining',
+          matcher: 'ArrayMatchers.containingAll',
           message: 'Item match not found',
           matchNotFound: [3],
         },
@@ -231,7 +177,7 @@ describe('ArrayMatchers.containing()', () => {
         { val: 'two' },
       ],
       matchers: [
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           { val: 'one' },
           { val: 'two' },
           { val: 'three' },
@@ -241,7 +187,7 @@ describe('ArrayMatchers.containing()', () => {
         { val: 'one' },
         { val: 'two' },
         {
-          matcher: 'ArrayMatchers.anyArrayContaining',
+          matcher: 'ArrayMatchers.containingAll',
           message: 'Item match not found',
           matchNotFound: { val: 'three' },
         },
@@ -257,7 +203,7 @@ describe('ArrayMatchers.containing()', () => {
         true,
       ],
       matchers: [
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           Matchers.number(),
           Matchers.boolean(),
           missingMatch,
@@ -267,129 +213,9 @@ describe('ArrayMatchers.containing()', () => {
         1,
         true,
         {
-          matcher: 'ArrayMatchers.anyArrayContaining',
+          matcher: 'ArrayMatchers.containingAll',
           message: 'Item match not found',
           matchNotFound: missingMatch,
-        },
-      ],
-    });
-  });
-
-  test('FAIL: onlySpecifiedItems 1', () => {
-    validateMatchFail({
-      data: [
-        1,
-        2,
-        3,
-      ],
-      matchers: [
-        ArrayMatchers.containing([
-          1,
-          2,
-        ], {
-          onlySpecifiedItems: true,
-        }),
-      ],
-      errorMatch: [
-        1,
-        2,
-        {
-          matcher: 'ArrayMatchers.anyArrayContaining',
-          message: 'Item does not match any of specified items',
-          item: 3,
-          options: {
-            onlySpecifiedItems: true,
-          },
-        },
-      ],
-    });
-  });
-
-  test('FAIL: onlySpecifiedItems 2', () => {
-    validateMatchFail({
-      data: [
-        [1],
-        [2],
-        [3],
-      ],
-      matchers: [
-        ArrayMatchers.containing([
-          [1],
-          [2],
-        ], {
-          onlySpecifiedItems: true,
-        }),
-      ],
-      errorMatch: [
-        [1],
-        [2],
-        {
-          matcher: 'ArrayMatchers.anyArrayContaining',
-          message: 'Item does not match any of specified items',
-          item: [3],
-          options: {
-            onlySpecifiedItems: true,
-          },
-        },
-      ],
-    });
-  });
-
-  test('FAIL: onlySpecifiedItems 3', () => {
-    validateMatchFail({
-      data: [
-        { val: 1 },
-        { val: 2 },
-        { val: 3 },
-      ],
-      matchers: [
-        ArrayMatchers.containing([
-          { val: 1 },
-          { val: 2 },
-        ], {
-          onlySpecifiedItems: true,
-        }),
-      ],
-      errorMatch: [
-        { val: 1 },
-        { val: 2 },
-        {
-          matcher: 'ArrayMatchers.anyArrayContaining',
-          message: 'Item does not match any of specified items',
-          item: { val: 3 },
-          options: {
-            onlySpecifiedItems: true,
-          },
-        },
-      ],
-    });
-  });
-
-  test('FAIL: onlySpecifiedItems 4', () => {
-    validateMatchFail({
-      data: [
-        1,
-        'two',
-        true,
-      ],
-      matchers: [
-        ArrayMatchers.containing([
-          Matchers.number(),
-          Matchers.string(),
-        ], {
-          onlySpecifiedItems: true,
-        }),
-      ],
-      errorMatch: [
-        1,
-        'two',
-        {
-          matcher: 'ArrayMatchers.anyArrayContaining',
-          message: 'Item does not match any of specified items',
-          item: true,
-          options: {
-            onlySpecifiedItems: true,
-          },
         },
       ],
     });
@@ -404,20 +230,20 @@ describe('ArrayMatchers.containing()', () => {
         true,
       ],
       matchers: [
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           duplicateMatch,
         ]),
       ],
       errorMatch: [
         {
-          matcher: 'ArrayMatchers.anyArrayContaining',
+          matcher: 'ArrayMatchers.containingAll',
           message: 'Item matches multiple times with duplications',
           item: 1,
           match: duplicateMatch,
 
         },
         {
-          matcher: 'ArrayMatchers.anyArrayContaining',
+          matcher: 'ArrayMatchers.containingAll',
           message: 'Item matches multiple times with duplications',
           item: 2,
           match: duplicateMatch,
@@ -435,7 +261,7 @@ describe('ArrayMatchers.containing()', () => {
         true,
       ],
       matchers: [
-        ArrayMatchers.containing([
+        ArrayMatchers.containingAll([
           { index: 1 },
         ], {
           allowDuplicateMatch: false,
@@ -443,14 +269,14 @@ describe('ArrayMatchers.containing()', () => {
       ],
       errorMatch: [
         {
-          matcher: 'ArrayMatchers.anyArrayContaining',
+          matcher: 'ArrayMatchers.containingAll',
           message: 'Item matches multiple times with duplications',
           item: { obj: 'test', index: 1 },
           match: { index: 1 },
           options: { allowDuplicateMatch: false },
         },
         {
-          matcher: 'ArrayMatchers.anyArrayContaining',
+          matcher: 'ArrayMatchers.containingAll',
           message: 'Item matches multiple times with duplications',
           item: { obj: 'other', index: 1 },
           match: { index: 1 },

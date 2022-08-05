@@ -43,14 +43,10 @@ export class ArrayMatchers {
   static uniqueItems(options?: {
     canBeNull?: boolean,
     optional?: boolean,
-    requireNotEmpty?: boolean,
   }): ValueMatcher {
     return valueMatcher('ArrayMatchers.uniqueItems', options, (value) => {
       if (!MatcherUtils.isArray(value)) {
         return ValueMatcher.typeError('JsonArray');
-      }
-      if (options?.requireNotEmpty == true && value.length == 0) {
-        return ValueMatcher.error('[JsonArray] should be not empty');
       }
       let result: any[] = [];
       for (let itemIndex = 0; itemIndex < value.length; itemIndex++) {
@@ -80,16 +76,14 @@ export class ArrayMatchers {
    * Validates is value is an array which contains items from witch exists matches for all of [expectedMatches]
    * @param expectedMatches
    * @param options
-   * @param options.onlySpecifiedItems array should contain ONLY items which matches one of [expectedMatches]
    * @param options.allowDuplicateMatch array can contain items which matches several of [expectedMatches] (if not set to TRUE - matches should be distinctive)
    */
-  static containing(expectedMatches: any[], options?: {
+  static containingAll(expectedMatches: any[], options?: {
     canBeNull?: boolean,
     optional?: boolean,
-    onlySpecifiedItems?: boolean,
     allowDuplicateMatch?: boolean,
   }) {
-    return valueMatcher('ArrayMatchers.withItems', options, value => {
+    return valueMatcher('ArrayMatchers.containingAll', options, value => {
       if (!MatcherUtils.isArray(value)) {
         return ValueMatcher.typeError('JsonArray');
       }
@@ -124,57 +118,17 @@ export class ArrayMatchers {
         }
         if (hasMatchInExpected) {
           if (matchedWithDuplication != null) {
-            resultItem = new FailedMatch('ArrayMatchers.anyArrayContaining', 'Item matches multiple times with duplications', options);
+            resultItem = new FailedMatch('ArrayMatchers.containingAll', 'Item matches multiple times with duplications', options);
             resultItem.item = item;
             resultItem.match = matchedWithDuplication;
-          }
-        } else {
-          if (options?.onlySpecifiedItems == true) {
-            resultItem = new FailedMatch('ArrayMatchers.anyArrayContaining', 'Item does not match any of specified items', options);
-            resultItem.item = item;
           }
         }
         result.push(resultItem);
       }
       for (let notFound of notFoundMatches) {
-        let resultItem: any = new FailedMatch('ArrayMatchers.anyArrayContaining', 'Item match not found');
+        let resultItem: any = new FailedMatch('ArrayMatchers.containingAll', 'Item match not found');
         resultItem.matchNotFound = notFound;
         result.push(resultItem);
-      }
-      return ValueMatcher.value(result);
-    });
-  }
-
-  /**
-   * Validates is value is an array which contains no items which match any of [expectedNoMatches]
-   * @param expectedNoMatches
-   * @param options
-   */
-  static notContaining(expectedNoMatches: any[], options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    requireNotEmpty?: boolean,
-  }) {
-    return valueMatcher('ArrayMatchers.notContaining', options, value => {
-      if (!MatcherUtils.isArray(value)) {
-        return ValueMatcher.typeError('JsonArray');
-      }
-      let result: any[] = [];
-      for (let item of value) {
-        let foundMatches: boolean = false;
-        for (let match of expectedNoMatches) {
-          let matchResult = ValueMatcher.copyWithExpectedMatch(item, match);
-          if (MatcherUtils.isFullyEquals(item, matchResult)) {
-            foundMatches = true;
-            let failedMatchItem: any = new FailedMatch('ArrayMatchers.notContaining', 'Item match found');
-            failedMatchItem.item = item;
-            failedMatchItem.match = match;
-            result.push(failedMatchItem);
-          }
-        }
-        if (!foundMatches) {
-          result.push(item);
-        }
       }
       return ValueMatcher.value(result);
     });
@@ -202,6 +156,97 @@ export class ArrayMatchers {
         }
       }
       return ValueMatcher.error('No items found matching expected');
+    });
+  }
+
+  /**
+   * Validates is value is an array which contains only items from witch exists matches for all of [expectedMatches]
+   * @param expectedMatches
+   * @param options
+   * @param options.allowDuplicateMatch array can contain items which matches several of [expectedMatches] (if not set to TRUE - matches should be distinctive)
+   * @param options.requireAll require from value to have matches for all of [expectedMatches]
+   */
+  static containingOnly(expectedMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    allowDuplicateMatch?: boolean,
+    requireAll?: boolean,
+  }) {
+    return valueMatcher('ArrayMatchers.containingOnly', options, value => {
+      if (!MatcherUtils.isArray(value)) {
+        return ValueMatcher.typeError('JsonArray');
+      }
+      let result: any[] = [];
+      for (let itemIndex = 0; itemIndex < value.length; itemIndex++) {
+        let item = value[itemIndex];
+        let resultItem: any = item;
+        let hasMatchInExpected = false;
+        let matchedWithDuplication: any = null;
+        for (let expectedMatchIndex = 0; expectedMatchIndex < expectedMatches.length; expectedMatchIndex++) {
+          let expectedMatch = expectedMatches[expectedMatchIndex];
+          let match = ValueMatcher.copyWithExpectedMatch(item, expectedMatch);
+          if (MatcherUtils.isFullyEquals(item, match)) {
+            hasMatchInExpected = true;
+            if (options?.allowDuplicateMatch != true) {
+              for (let seekDuplicateItemIndex = 0; seekDuplicateItemIndex < value.length; seekDuplicateItemIndex++) {
+                if (itemIndex != seekDuplicateItemIndex) {
+                  let seekDuplicateItem = value[seekDuplicateItemIndex];
+                  let matchDuplication = ValueMatcher.copyWithExpectedMatch(seekDuplicateItem, expectedMatch);
+                  if (MatcherUtils.isFullyEquals(seekDuplicateItem, matchDuplication)) {
+                    matchedWithDuplication = expectedMatch;
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (hasMatchInExpected) {
+          if (matchedWithDuplication != null) {
+            resultItem = new FailedMatch('ArrayMatchers.containingOnly', 'Item matches multiple times with duplications', options);
+            resultItem.item = item;
+            resultItem.match = matchedWithDuplication;
+          }
+        } else {
+          resultItem = new FailedMatch('ArrayMatchers.containingOnly', 'Item does not match any of specified matches', options);
+          resultItem.item = item;
+        }
+        result.push(resultItem);
+      }
+      return ValueMatcher.value(result);
+    });
+  }
+
+  /**
+   * Validates is value is an array which contains no items which match any of [expectedNoMatches]
+   * @param expectedNoMatches
+   * @param options
+   */
+  static notContaining(expectedNoMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+  }) {
+    return valueMatcher('ArrayMatchers.notContaining', options, value => {
+      if (!MatcherUtils.isArray(value)) {
+        return ValueMatcher.typeError('JsonArray');
+      }
+      let result: any[] = [];
+      for (let item of value) {
+        let foundMatches: boolean = false;
+        for (let match of expectedNoMatches) {
+          let matchResult = ValueMatcher.copyWithExpectedMatch(item, match);
+          if (MatcherUtils.isFullyEquals(item, matchResult)) {
+            foundMatches = true;
+            let failedMatchItem: any = new FailedMatch('ArrayMatchers.notContaining', 'Item match found');
+            failedMatchItem.item = item;
+            failedMatchItem.match = match;
+            result.push(failedMatchItem);
+          }
+        }
+        if (!foundMatches) {
+          result.push(item);
+        }
+      }
+      return ValueMatcher.value(result);
     });
   }
 

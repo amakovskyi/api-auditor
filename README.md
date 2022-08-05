@@ -297,10 +297,9 @@ Validates value is type of ```JsonArray``` and has unique items.
 * ```requireNotEmpty``` requires from array to be not empty
 
 ```
-ArrayMatchers.containing(expectedMatches: any[], options?: {
+ArrayMatchers.containingAll(expectedMatches: any[], options?: {
     canBeNull?: boolean,
     optional?: boolean,
-    onlySpecifiedItems?: boolean,
     allowDuplicateMatch?: boolean,
 }
 ```
@@ -309,23 +308,8 @@ Validates value is type of ```JsonArray``` and contains item match for each of `
 
 * ```canBeNull``` allows value to be null; in case of this all further checks ignored
 * ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```onlySpecifiedItems``` requires that array does not contain any items except matched to ```expectedMatches```
 * ```allowDuplicateMatch``` allows multiple array items to match same item of ```expectedMatches``` (by default matches
   should be distinctive)
-
-```
-ArrayMatchers.notContaining(expectedNoMatches: any[], options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    requireNotEmpty?: boolean,
-}
-```
-
-Validates value is type of ```JsonArray``` and NOT contains item matches for any of ```expectedNoMatches```.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```requireNotEmpty``` requires from array to be not empty
 
 ```
 ArrayMatchers.containingAny(expectedAnyMatches: any[], options?: {
@@ -335,6 +319,34 @@ ArrayMatchers.containingAny(expectedAnyMatches: any[], options?: {
 ```
 
 Validates value is type of ```JsonArray``` and contains at least single items match for any of ```expectedAnyMatches```.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
+
+```
+ArrayMatchers.containingOnly(expectedMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    allowDuplicateMatch?: boolean,
+    requireAll?: boolean,
+}
+```
+
+Validates value is type of ```JsonArray``` and contains only items which match any of ```expectedMatches```.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
+* ```allowDuplicateMatch``` allows multiple array items to match same item of ```expectedMatches``` (by default matches
+* ```requireAll``` requires that array contains matches to each of ```expectedMatches```
+
+```
+ArrayMatchers.notContaining(expectedNoMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+}
+```
+
+Validates value is type of ```JsonArray``` and NOT contains item matches for any of ```expectedNoMatches```.
 
 * ```canBeNull``` allows value to be null; in case of this all further checks ignored
 * ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
