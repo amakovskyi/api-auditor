@@ -13,8 +13,8 @@ export class Random {
     return minInclusive + Random.int(maxInclusive - minInclusive);
   }
 
-  static string(length: number, randomLengthAdded: number = 0): string {
-    let expectedResultLength = length + Random.int(randomLengthAdded);
+  static string(length: number, randomLengthAdder: number = 0): string {
+    let expectedResultLength = length + Random.int(randomLengthAdder);
     let result = '';
     while (result.length < expectedResultLength) {
       result += STRING_CHARS.charAt(Random.int(STRING_CHARS.length - 1));
@@ -22,8 +22,8 @@ export class Random {
     return result;
   }
 
-  static text(length: number = 64, randomLengthAdded: number = 64): string {
-    let expectedResultLength = length + Random.int(randomLengthAdded);
+  static text(length: number = 64, randomLengthAdder: number = 64): string {
+    let expectedResultLength = length + Random.int(randomLengthAdder);
     let result = '';
     while (result.length < expectedResultLength) {
       let nextWordMaxLength = Math.min(expectedResultLength - result.length, MAX_WORD_LENGTH);
@@ -40,6 +40,12 @@ export class Random {
   }
 
   static boolean(trueThreshold: number = 0.5): boolean {
+    if (trueThreshold < 0) {
+      trueThreshold = 0;
+    }
+    if (trueThreshold > 1) {
+      trueThreshold = 1;
+    }
     return Math.random() > trueThreshold;
   }
 
