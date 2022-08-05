@@ -13,7 +13,7 @@ export function validateMatch(data: any, expectedMatch: any) {
   }
 }
 
-export function matchAll(expectedMatches: any[]) {
+export function matchAll(...expectedMatches: any[]) {
   return valueMatcher('matchAll', null, value => {
     for (let match of expectedMatches) {
       let matchResult = ValueMatcher.copyWithExpectedMatch(value, match);
@@ -25,7 +25,7 @@ export function matchAll(expectedMatches: any[]) {
   });
 }
 
-export function matchAny(expectedMatches: any[]) {
+export function matchAny(...expectedMatches: any[]) {
   return valueMatcher('matchAny', null, value => {
     if (expectedMatches.length == 0) {
       return ValueMatcher.success();
@@ -39,5 +39,3 @@ export function matchAny(expectedMatches: any[]) {
     return ValueMatcher.error('No matches found');
   });
 }
-
-
