@@ -396,7 +396,7 @@ matchAll(matches: any[])
 Matcher which validates object for all ```matches``` and raises first unmatched error in case if validation fail.
 
 ```
-matchAll(matchAny: any[])
+matchAny(matches: any[])
 ```
 
 Matcher which validates object for first successful match from ```matches``` and raises error in case there are no
