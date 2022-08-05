@@ -1,4 +1,4 @@
-import { Matchers } from '../../src';
+import { ArrayMatchers, Matchers } from '../../src';
 import { validateMatchResult } from '../test-utils/validateMatchResult';
 
 describe('ValueMatcher.copyWithExpectedMatch()', () => {
@@ -38,6 +38,70 @@ describe('ValueMatcher.copyWithExpectedMatch()', () => {
         matcher: 'Matchers.string',
         message: 'Value cannot be empty',
       },
+    });
+  });
+
+  test('object -> object: 1', () => {
+    validateMatchResult({
+      data: {
+        one: 1,
+        two: 2,
+      },
+      match: {
+        one: Matchers.number(),
+      },
+      expectedResult: {
+        one: 1,
+        two: 2,
+      },
+    });
+  });
+
+  test('object -> object: 2', () => {
+    validateMatchResult({
+      data: {
+        one: 1,
+        two: 2,
+      },
+      match: {
+        one: 3,
+      },
+      expectedResult: {
+        one: 3,
+        two: 2,
+      },
+    });
+  });
+
+  test('array -> array: 1', () => {
+    validateMatchResult({
+      data: [1, 2, 3],
+      match: [1, 2, 3],
+      expectedResult: [1, 2, 3],
+    });
+  });
+
+  test('array -> array: 2', () => {
+    validateMatchResult({
+      data: [1, 2, 3],
+      match: ArrayMatchers.any({ expectedLength: 3 }),
+      expectedResult: [1, 2, 3],
+    });
+  });
+
+  test('array -> array: 3', () => {
+    validateMatchResult({
+      data: [1, 2, 3],
+      match: [1, 2, 4],
+      expectedResult: [1, 2, 4],
+    });
+  });
+
+  test('array -> array: 4', () => {
+    validateMatchResult({
+      data: [1, 2, 3],
+      match: [1, 2, 3, 4],
+      expectedResult: [1, 2, 3, 4],
     });
   });
 

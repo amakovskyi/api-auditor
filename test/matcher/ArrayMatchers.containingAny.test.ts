@@ -2,7 +2,7 @@ import { ArrayMatchers, Matchers, Random } from '../../src';
 import { expectMatcherError, validateMatchFail } from '../test-utils/validateMatchFail';
 import { validateMatchSuccess } from '../test-utils/validateMatchSuccess';
 
-describe('ArrayMatchers.containingcontainingAny()', () => {
+describe('ArrayMatchers.containingAny()', () => {
 
   test('Some array', () => {
     validateMatchSuccess({
