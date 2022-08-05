@@ -6,16 +6,16 @@ import { MatcherUtils } from './matcher.utils';
  * but [data] itself CAN contain other information which is not noticed in [expected] and that information will not cause
  * fail.
  */
-export function validateMatch(data: any, match: any) {
-  let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, match);
+export function validateMatch(data: any, expectedMatch: any) {
+  let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, expectedMatch);
   if (!MatcherUtils.isFullyEquals(data, dataAsExpected)) {
     expect(data).toEqual(dataAsExpected);
   }
 }
 
-export function matchAll(matches: any[]) {
+export function matchAll(expectedMatches: any[]) {
   return valueMatcher('matchAll', null, value => {
-    for (let match of matches) {
+    for (let match of expectedMatches) {
       let matchResult = ValueMatcher.copyWithExpectedMatch(value, match);
       if (!MatcherUtils.isFullyEquals(value, matchResult)) {
         return ValueMatcher.value(matchResult);
@@ -25,12 +25,12 @@ export function matchAll(matches: any[]) {
   });
 }
 
-export function matchAny(matches: any[]) {
+export function matchAny(expectedMatches: any[]) {
   return valueMatcher('matchAny', null, value => {
-    if (matches.length == 0) {
+    if (expectedMatches.length == 0) {
       return ValueMatcher.success();
     }
-    for (let match of matches) {
+    for (let match of expectedMatches) {
       let matchResult = ValueMatcher.copyWithExpectedMatch(value, match);
       if (MatcherUtils.isFullyEquals(value, matchResult)) {
         return ValueMatcher.success();

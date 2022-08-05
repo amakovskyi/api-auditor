@@ -2,9 +2,9 @@
 
 A NodeJS library for integration testing.
 
-## Matchers
+# Validate API responses easily
 
-Allows to easily validate objects, mainly API responses.
+**Matchers** API allows to easily validate objects.
 
 EXAMPLE
 
@@ -36,7 +36,7 @@ expect(response.firstName).toEqual('John')
 expect(response.lastName).toEqual('Doe')
 ```
 
-**api-auditor** matcher way:
+**api-auditor** matchers way:
 
 ```typescript
 validateMatch(response, {
@@ -61,7 +61,7 @@ if (response.description != null) {
 }
 ```
 
-**api-auditor** matcher way:
+**api-auditor** matchers way:
 
 ```typescript
 validateMatch(response, {

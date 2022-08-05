@@ -16,6 +16,8 @@ export function doValidateMatchFail(params: {
     let matched = ValueMatcher.copyWithExpectedMatch(params.data, params.match);
     ConsoleLogger.log('DATA');
     ConsoleLogger.log(JSON.stringify(params.data, null, 2));
+    ConsoleLogger.log('MATCH');
+    ConsoleLogger.log(JSON.stringify(params.match, null, 2));
     ConsoleLogger.log('EXPECTED ERROR MATCH');
     ConsoleLogger.log(JSON.stringify(params.errorMatch, null, 2));
     ConsoleLogger.log('REAL MATCH');

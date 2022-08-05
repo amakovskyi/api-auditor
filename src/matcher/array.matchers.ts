@@ -180,8 +180,6 @@ export class ArrayMatchers {
     });
   }
 
-  // DONE UNTIL HERE
-
   /**
    * Validates is value is an array which contains at least one item which match any of [expectedAnyMatches]
    * @param expectedAnyMatches
@@ -198,7 +196,7 @@ export class ArrayMatchers {
       for (let item of value) {
         for (let match of expectedAnyMatches) {
           let matchResult = ValueMatcher.copyWithExpectedMatch(item, match);
-          if (MatcherUtils.isFullyEquals(match, matchResult)) {
+          if (MatcherUtils.isFullyEquals(item, matchResult)) {
             return ValueMatcher.success();
           }
         }
