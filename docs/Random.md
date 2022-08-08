@@ -1,6 +1,6 @@
 _________________________________________
 
-### Random.int
+### Random int
 
 ```
 Random.int(maxInclusive: number): number

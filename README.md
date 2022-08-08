@@ -177,9 +177,9 @@ Below is list of all matcher with link to documentation
 
 Useful random utils for generating random values, and also randomizing arrays.
 
-| RANDOM LIST                                                                                       |
-|---------------------------------------------------------------------------------------------------|
-| [Random.int()](docs/Random.md#Random.int)                                                       |
+| RANDOM LIST                                                                                     |
+|-------------------------------------------------------------------------------------------------|
+| [Random.int()](docs/Random.md#Random int)                                                       |
 | [Random.intBetween()](docs/Random.md#Random.intBetween)                                         |
 | [Random.string()](docs/Random.md#Random.string)                                                 |
 | [Random.text()](docs/Random.md#Random.text)                                                     |
