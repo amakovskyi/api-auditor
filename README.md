@@ -148,26 +148,26 @@ successful matches.
 
 Below is list of all matcher with link to documentation
 
-| MATCHERS LIST                                                                     |
-|-----------------------------------------------------------------------------------|
-| [Matchers.anything()](docs/Matchers.md#Matchers.anything)                       |
-| [Matchers.equalsTo()](docs/Matchers.md#Matchers.equalsTo)                       |
-| [Matchers.absent()](docs/Matchers.md#Matchers.absent)                           |
-| [Matchers.absentOrNull()](docs/Matchers.md#Matchers.absentOrNull)               |
-| [Matchers.anyDefined()](docs/Matchers.md#Matchers.anyDefined)                   |
-| [Matchers.anyNotNull()](docs/Matchers.md#Matchers.anyNotNull)                   |
-| [Matchers.object()](docs/Matchers.md#Matchers.object)                           |
-| [Matchers.string()](docs/Matchers.md#Matchers.string)                           |
-| [Matchers.uuid()](docs/Matchers.md#Matchers.uuid)                               |
-| [Matchers.boolean()](docs/Matchers.md#Matchers.boolean)                         |
-| [Matchers.dateTime()](docs/Matchers.md#Matchers.dateTime)                       |
-| [Matchers.number()](docs/Matchers.md#Matchers.number)                           |
-| [ArrayMatchers.any()](docs/Matchers.md#ArrayMatchers.any)                       |
-| [ArrayMatchers.uniqueItems()](docs/Matchers.md#ArrayMatchers.uniqueItems)       |
-| [ArrayMatchers.containingAll()](docs/Matchers.md#ArrayMatchers.containingAll)   |
-| [ArrayMatchers.containingAny()](docs/Matchers.md#ArrayMatchers.containingAny)   |
-| [ArrayMatchers.containingOnly()](docs/Matchers.md#ArrayMatchers.containingOnly) |
-| [ArrayMatchers.notContaining()](docs/Matchers.md#ArrayMatchers.notContaining)   |
+| MATCHERS LIST                                                                  |
+|--------------------------------------------------------------------------------|
+| [Matchers.anything()](docs/Matchers.md#Matchersanything)                       |
+| [Matchers.equalsTo()](docs/Matchers.md#MatchersequalsTo)                       |
+| [Matchers.absent()](docs/Matchers.md#Matchersabsent)                           |
+| [Matchers.absentOrNull()](docs/Matchers.md#MatchersabsentOrNull)               |
+| [Matchers.anyDefined()](docs/Matchers.md#MatchersanyDefined)                   |
+| [Matchers.anyNotNull()](docs/Matchers.md#MatchersanyNotNull)                   |
+| [Matchers.object()](docs/Matchers.md#Matchersobject)                           |
+| [Matchers.string()](docs/Matchers.md#Matchersstring)                           |
+| [Matchers.uuid()](docs/Matchers.md#Matchersuuid)                               |
+| [Matchers.boolean()](docs/Matchers.md#Matchersboolean)                         |
+| [Matchers.dateTime()](docs/Matchers.md#MatchersdateTime)                       |
+| [Matchers.number()](docs/Matchers.md#Matchersnumber)                           |
+| [ArrayMatchers.any()](docs/Matchers.md#ArrayMatchersany)                       |
+| [ArrayMatchers.uniqueItems()](docs/Matchers.md#ArrayMatchersuniqueItems)       |
+| [ArrayMatchers.containingAll()](docs/Matchers.md#ArrayMatcherscontainingAll)   |
+| [ArrayMatchers.containingAny()](docs/Matchers.md#ArrayMatcherscontainingAny)   |
+| [ArrayMatchers.containingOnly()](docs/Matchers.md#ArrayMatcherscontainingOnly) |
+| [ArrayMatchers.notContaining()](docs/Matchers.md#ArrayMatchersnotContaining)   |
 
 # Pool
 
@@ -177,17 +177,17 @@ Below is list of all matcher with link to documentation
 
 Useful random utils for generating random values, and also randomizing arrays.
 
-| RANDOM LIST                                                                                     |
-|-------------------------------------------------------------------------------------------------|
-| [Random.int()](docs/Random.md#Random int)                                                       |
-| [Random.intBetween()](docs/Random.md#Random.intBetween)                                         |
-| [Random.string()](docs/Random.md#Random.string)                                                 |
-| [Random.text()](docs/Random.md#Random.text)                                                     |
-| [Random.uuid()](docs/Random.md#Random.uuid)                                                     |
-| [Random.boolean()](docs/Random.md#Random.boolean)                                               |
-| [RandomArray.singleItem()](docs/Random.md#RandomArray.singleItem)                               |
-| [RandomArray.mixedCopyOf()](docs/Random.md#RandomArray.mixedCopyOf)                             |
-| [RandomArray.someItems()](docs/Random.md#RandomArray.someItems)                                 |
-| [RandomArray.splitAll()](docs/Random.md#RandomArray.splitAll)                                   |
+| RANDOM LIST                                                                                    |
+|------------------------------------------------------------------------------------------------|
+| [Random.int()](docs/Random.md#Randomint)                                                       |
+| [Random.intBetween()](docs/Random.md#RandomintBetween)                                         |
+| [Random.string()](docs/Random.md#Randomstring)                                                 |
+| [Random.text()](docs/Random.md#Randomtext)                                                     |
+| [Random.uuid()](docs/Random.md#Randomuuid)                                                     |
+| [Random.boolean()](docs/Random.md#Randomboolean)                                               |
+| [RandomArray.singleItem()](docs/Random.md#RandomArraysingleItem)                               |
+| [RandomArray.mixedCopyOf()](docs/Random.md#RandomArraymixedCopyOf)                             |
+| [RandomArray.someItems()](docs/Random.md#RandomArraysomeItems)                                 |
+| [RandomArray.splitAll()](docs/Random.md#RandomArraysplitAll)                                   |
 | [RandomArray.splitToLengths()](docs/Random.md#RandomArraysplitToLengths)                       |
 | [RandomArray.splitToLengthsWithOverlap()](docs/Random.md#RandomArraysplitToLengthsWithOverlap) |

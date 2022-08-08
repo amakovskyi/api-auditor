@@ -1,4 +1,4 @@
-### Matchers.anything
+### Matchers.anything()
 
 ```
 Matchers.anything()
@@ -9,7 +9,7 @@ needed.
 
 _________________________________________
 
-### Matchers.equalsTo
+### Matchers.equalsTo()
 
 ```
 Matchers.equalsTo(other: any)
@@ -19,7 +19,7 @@ Validates strict equality to ```other```.
 
 _________________________________________
 
-### Matchers.absent
+### Matchers.absent()
 
 ```
 Matchers.absent()
@@ -29,7 +29,7 @@ Validates value is not present on place or strictly equal to ```undefined``` (``
 
 _________________________________________
 
-### Matchers.absentOrNull
+### Matchers.absentOrNull()
 
 ```
 Matchers.absentOrNull()
@@ -39,7 +39,7 @@ Validates value is not present on place, or strictly equal to ```undefined``` or
 
 _________________________________________
 
-### Matchers.anyDefined
+### Matchers.anyDefined()
 
 ```
 Matchers.anyDefined()
@@ -50,7 +50,7 @@ acceptable).
 
 _________________________________________
 
-### Matchers.anyNotNull
+### Matchers.anyNotNull()
 
 ```
 Matchers.anyNotNull()
@@ -60,7 +60,7 @@ Validates value is present on place (```undefined``` or missing value cause vali
 
 _________________________________________
 
-### Matchers.object
+### Matchers.object()
 
 ```
 Matchers.object(options?: {
@@ -78,7 +78,7 @@ Validates value is JsonObject.
 
 _________________________________________
 
-### Matchers.string
+### Matchers.string()
 
 ```
 Matchers.string(options?: {
@@ -96,7 +96,7 @@ Validates value is type of ```string```.
 
 _________________________________________
 
-### Matchers.uuid
+### Matchers.uuid()
 
 ```
 Matchers.uuid(options?: {
@@ -112,7 +112,7 @@ Validates value is type of ```string``` with UUID format.
 
 _________________________________________
 
-### Matchers.boolean
+### Matchers.boolean()
 
 ```
 Matchers.boolean(options?: {
@@ -128,7 +128,7 @@ Validates value is type of ```boolean```.
 
 _________________________________________
 
-### Matchers.dateTime
+### Matchers.dateTime()
 
 ```
 Matchers.dateTime(options?: {
@@ -144,7 +144,7 @@ Validates value is type of ```string``` with default javascript ISO date-time fo
 
 _________________________________________
 
-### Matchers.number
+### Matchers.number()
 
 ```
 Matchers.number(options?: {
@@ -176,7 +176,7 @@ Validates value is type of ```number```.
 
 _________________________________________
 
-### ArrayMatchers.any
+### ArrayMatchers.any()
 
 ```
 ArrayMatchers.any(options?: {
@@ -198,7 +198,7 @@ Validates value is type of ```JsonArray```.
 
 _________________________________________
 
-### ArrayMatchers.uniqueItems
+### ArrayMatchers.uniqueItems()
 
 ```
 ArrayMatchers.uniqueItems(options?: {
@@ -218,7 +218,7 @@ Validates value is type of ```JsonArray``` and has unique items.
 
 _________________________________________
 
-### ArrayMatchers.containingAll
+### ArrayMatchers.containingAll()
 
 ```
 ArrayMatchers.containingAll(expectedMatches: any[], options?: {
@@ -237,7 +237,7 @@ Validates value is type of ```JsonArray``` and contains item match for each of `
 
 _________________________________________
 
-### ArrayMatchers.containingAny
+### ArrayMatchers.containingAny()
 
 ```
 ArrayMatchers.containingAny(expectedAnyMatches: any[], options?: {
@@ -253,7 +253,7 @@ Validates value is type of ```JsonArray``` and contains at least single items ma
 
 _________________________________________
 
-### ArrayMatchers.containingOnly
+### ArrayMatchers.containingOnly()
 
 ```
 ArrayMatchers.containingOnly(expectedMatches: any[], options?: {
@@ -273,7 +273,7 @@ Validates value is type of ```JsonArray``` and contains only items which match a
 
 _________________________________________
 
-### ArrayMatchers.notContaining
+### ArrayMatchers.notContaining()
 
 ```
 ArrayMatchers.notContaining(expectedNoMatches: any[], options?: {
