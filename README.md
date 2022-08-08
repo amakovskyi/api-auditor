@@ -459,10 +459,58 @@ Generate random string in UUID format.
 Random.boolean(trueThreshold: number = 0.5): boolean
 ```
 
-Generate random boolean with default ```trueThreshold``` = 0.5 (equal change to return ```false``` and ```true```).
+### RandomArray.singleItemFrom()
 
-Specify ```trueThreshold``` between ```0``` and ```1``` to set more chance to false or true.
+```
+RandomArray.singleItemFrom<T>(source: T[]): T
+```
 
-# Logging
+Get random single item from array
 
-// TODO
+### RandomArray.mixedCopyOf()
+
+```
+RandomArray.mixedCopyOf<T>(source: T[]): T[]
+```
+
+Get copy of ```source``` with all it's items randomly mixed
+
+### RandomArray.someItemsFrom()
+
+```
+RandomArray.someItemsFrom<T>(source: T[], length: number, randomLengthAdder: number = 0): T[]
+```
+
+Get array which containing randomly mixed part of ```source``` with length ```length``` plus randomly
+added ```randomLengthAdder```
+
+Get copy of ```source``` with all it's items randomly mixed
+
+### RandomArray.splitAll()
+
+```
+RandomArray.splitAll<T>(source: T[], resultArraysCount: number, equally: boolean = false): T[][]
+```
+
+Randomly split ```source``` to ```resultArraysCount``` arrays.
+
+When ```equally``` set to FALSE then result array lengths may be any, but not less than ```1```.
+When ```equally``` set to TRUE then result array lengths are equal or near equal (if equal split is impossible).
+
+### RandomArray.splitToLengths()
+
+```
+RandomArray.splitToLengths<T>(source: T[], lengths: number[]): T[][] 
+```
+
+Randomly split ```source``` to an arrays with exactly specified by ```lengths``` lengths.
+
+Sum of ```lengths``` should be less or equal than length of ```source``` as split is distinctive.
+
+### RandomArray.splitToLengthsWithOverlap()
+
+```
+RandomArray.splitToLengthsWithOverlap<T>(source: T[], lengths: number[]): T[][] 
+```
+
+Randomly split ```source``` to an arrays with exactly specified by ```lengths``` lengths, but allows item overlaps.
