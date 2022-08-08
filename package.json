@@ -1,6 +1,6 @@
 {
   "name": "api-auditor",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "NodeJS library for integration testing",
   "type": "module",
   "private": false,
