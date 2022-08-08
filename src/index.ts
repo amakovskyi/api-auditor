@@ -6,6 +6,7 @@ export { validateMatch, matchAny, matchAll } from './matcher/matcher.validation'
 export { Matchers } from './matcher/matchers';
 export { ArrayMatchers } from './matcher/array.matchers';
 export { valueMatcher, customValueMatcher } from './matcher/value.matcher';
+export { MatcherUtils } from './matcher/matcher.utils';
 // POOL
 export { ObjectPool } from './pool/object.pool';
 // RANDOM

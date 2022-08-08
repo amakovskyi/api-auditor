@@ -124,7 +124,7 @@ export class Matchers {
     canBeNull?: boolean,
     optional?: boolean,
   }) {
-    return valueMatcher('anyBoolean', options, value => {
+    return valueMatcher('boolean', options, value => {
       if (typeof value != 'boolean') {
         return ValueMatcher.typeError('boolean');
       }
@@ -136,7 +136,7 @@ export class Matchers {
     canBeNull?: boolean,
     optional?: boolean,
   }) {
-    return valueMatcher('Matchers.date', options, value => {
+    return valueMatcher('Matchers.dateTime', options, value => {
       if (value instanceof Date) {
         return ValueMatcher.success();
       }

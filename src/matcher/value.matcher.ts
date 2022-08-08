@@ -66,24 +66,12 @@ export class ValueMatcher {
   static VALUE_IS_REQUIRED = 'Value is required';
   static VALUE_CANNOT_BE_NULL = 'Value cannot be [null]';
 
-  static hasOption<T>(options: T[], expectedOption: T): boolean {
-    return options.indexOf(expectedOption) > 0;
-  }
-
-  static noOption<T>(options: T[], expectedOption: T): boolean {
-    return !ValueMatcher.hasOption(options, expectedOption);
-  }
-
   static success(): MatchSuccess {
     return new MatchSuccess();
   }
 
   static error(message: string): MatchError {
     return new MatchError(message);
-  }
-
-  static missing(): MatchError {
-    return new MatchError(ValueMatcher.VALUE_IS_REQUIRED);
   }
 
   static typeError(expectedType: string): MatchError {

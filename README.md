@@ -144,6 +144,22 @@ matchAny(matches: any[])
 Matcher which validates object for first successful match from ```matches``` and raises error in case there are no
 successful matches.
 
+### HOW IT WORKS
+
+```typescript
+// make a structural copy of "data" variable with expectation it matches to "innerExpectedMatcher"
+let expectedMatch = ValueMatcher.copyWithExpectedMatch(data, expectedMatcher)
+// natural Jest comparison way
+expect(data).toEqual(expectedMatch);
+```
+
+```ValueMatcher.copyWithExpectedMatch``` just making comparable copy of ```data```, which is named **comparison value**.
+
+After that natural Jest comparator is used. In case, if ```data``` is not matches to ```expectedMatcher```
+then ```ValueMatcher.copyWithExpectedMatch``` will generate error object, which will raise comparison error
+inside ```expect(data).toEqual(expectedMatch)```. With this way log exactly shows place and structure of matcher
+failure, easy to read and understand.
+
 ### FULL LIST OF MATCHERS
 
 Below is list of all matcher with link to documentation
@@ -168,6 +184,77 @@ Below is list of all matcher with link to documentation
 | [ArrayMatchers.containingAny()](docs/Matchers.md#arraymatcherscontainingany)   |
 | [ArrayMatchers.containingOnly()](docs/Matchers.md#arraymatcherscontainingonly) |
 | [ArrayMatchers.notContaining()](docs/Matchers.md#arraymatchersnotcontaining)   |
+
+### CUSTOM VALUE MATCHERS
+
+It is possible to create you own matchers.
+
+Type 1. Standard matcher with auto check for ```canBeNull``` and ```optional``` before pass value in you match
+validation code.
+
+```typescript
+export function ownMatcher(options?: {
+  canBeNull?: boolean,
+  optional?: boolean,
+  yourCustomOption?: boolean,
+}) {
+  return valueMatcher('ownMatcher', options, value => {
+    if (value instanceof YourType) {
+      return ValueMatcher.typeError('YourType');
+    }
+    if (yourCustomOption) {
+      // DO CHECK
+    }
+    return ValueMatcher.success();
+  });
+}
+```
+
+Type 2: Matcher with only your own match validation checks.
+
+```typescript
+export function ownCustomMatcher(options?: {
+  yourCustomOption?: boolean,
+}) {
+  return customValueMatcher('ownCustomMatcher', options, value => {
+    if (value == null) {
+      return ValueMatcher.error('Message');
+    }
+    if (value instanceof SomeType) {
+      return ValueMatcher.typeError('SomeType');
+    }
+    if (yourCustomOption) {
+      // DO CHECK
+    }
+    return ValueMatcher.success();
+  });
+}
+```
+
+**Type 1** matcher automatically do checks for options ```canBeNull``` and ```optional``` if they are
+passed and by default does not accept missing value, ```undefined``` or ```null``` no matter is ```canBeNull```
+and ```optional``` passed at all. **Type 2** immediately passes value to you validation code.
+
+You need to return one of following from your validation code:
+
+* ```ValueMatcher.success()``` - validation is successful
+* ```ValueMatcher.error(message)``` - validation is failed, pass a corresponding message to it
+* ```ValueMatcher.typeError(typeName)``` - validation is failed because of wrong type of ```value```
+* ```ValueMatcher.value(value)``` - specific case when you need to return **comparison value**. When previous error will
+  build a specific error object which will raise specific error in comparison log, this value will be just compared to
+  actual value and raise natural diff in case if they are different.
+
+Using inner matcher validations.
+
+If you try to use ```validateMatch()``` inside validation code it will just throw error. If it needed to build inner
+validation use specific methods:
+
+```typescript
+let expectedMatch = ValueMatcher.copyWithExpectedMatch(value, innerExpectedMatcher)
+let isMatch = MatcherUtils.isFullyEquals(expectedMatch, value)
+```
+
+In result ```isMatch``` will contain your match result, when expectedMatch will contain **comparison value**.
 
 # Pool
 
