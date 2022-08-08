@@ -256,10 +256,6 @@ let isMatch = MatcherUtils.isFullyEquals(expectedMatch, value)
 
 In result ```isMatch``` will contain your match result, when expectedMatch will contain **comparison value**.
 
-# Pool
-
-// TODO
-
 # Random
 
 Useful random utils for generating random values, and also randomizing arrays.
@@ -278,3 +274,8 @@ Useful random utils for generating random values, and also randomizing arrays.
 | [RandomArray.splitAll()](docs/Random.md#randomarraysplitall)                                   |
 | [RandomArray.splitToLengths()](docs/Random.md#randomarraysplittolengths)                       |
 | [RandomArray.splitToLengthsWithOverlap()](docs/Random.md#randomarraysplittolengthswithoverlap) |
+
+# Pool
+
+Under development
+

@@ -8,7 +8,7 @@ export { ArrayMatchers } from './matcher/array.matchers';
 export { valueMatcher, customValueMatcher } from './matcher/value.matcher';
 export { MatcherUtils } from './matcher/matcher.utils';
 // POOL
-export { ObjectPool } from './pool/object.pool';
+// export { ObjectPool } from './pool/object.pool';
 // RANDOM
 export { Random } from './random/random';
 export { RandomArray } from './random/random.array';
