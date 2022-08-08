@@ -2,6 +2,8 @@
 
 A NodeJS library for integration testing.
 
+Source code: [https://github.com/amakovskyi/api-auditor](https://github.com/amakovskyi/api-auditor)
+
 # Matchers. Validate API responses easily
 
 **Matchers** API allows to easily validate objects.
