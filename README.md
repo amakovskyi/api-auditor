@@ -190,4 +190,4 @@ Useful random utils for generating random values, and also randomizing arrays.
 | [RandomArray.someItems()](docs/Random.md#RandomArray.someItems)                                 |
 | [RandomArray.splitAll()](docs/Random.md#RandomArray.splitAll)                                   |
 | [RandomArray.splitToLengths()](docs/Random.md#RandomArray.splitToLengths)                       |
-| [RandomArray.splitToLengthsWithOverlap()](docs/Random.md#RandomArray.splitToLengthsWithOverlap) |
+| [RandomArray.splitToLengthsWithOverlap()](docs/Random.md#RandomArray-splitToLengthsWithOverlap) |

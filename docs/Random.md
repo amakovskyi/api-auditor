@@ -1,6 +1,6 @@
 _________________________________________
 
-### Random-int
+### Random.int
 
 ```
 Random.int(maxInclusive: number): number
@@ -119,7 +119,7 @@ Sum of ```lengths``` should be less or equal than length of ```source``` as spli
 
 _________________________________________
 
-### RandomArray.splitToLengthsWithOverlap
+### RandomArray splitToLengthsWithOverlap
 
 ```
 RandomArray.splitToLengthsWithOverlap<T>(source: T[], lengths: number[]): T[][] 
