@@ -1,6 +1,6 @@
 _________________________________________
 
-### Random.int
+### Random.int()
 
 ```
 Random.int(maxInclusive: number): number
@@ -10,7 +10,7 @@ Generate integer number from ```0``` to ```maxInclusive```.
 
 _________________________________________
 
-### Random.intBetween
+### Random.intBetween()
 
 ```
 Random.intBetween(minInclusive: number, maxInclusive: number): number
@@ -20,7 +20,7 @@ Generate integer number from ```minInclusive``` to ```maxInclusive```.
 
 _________________________________________
 
-### Random.string
+### Random.string()
 
 ```
 Random.string(length: number, randomLengthAdder: number = 0): string
@@ -31,7 +31,7 @@ Result contain lowercase and uppercase letters and numbers.
 
 _________________________________________
 
-### Random.text
+### Random.text()
 
 ```
 Random.text(length: number = 64, randomLengthAdder: number = 64): string
@@ -43,7 +43,7 @@ Result contain words separated by space. Words contain lowercase and uppercase l
 
 _________________________________________
 
-### Random.uuid
+### Random.uuid()
 
 ```
 Random.uuid(): string
@@ -53,7 +53,7 @@ Generate random string in UUID format.
 
 _________________________________________
 
-### Random.boolean
+### Random.boolean()
 
 ```
 Random.boolean(trueThreshold: number = 0.5): boolean
@@ -61,7 +61,7 @@ Random.boolean(trueThreshold: number = 0.5): boolean
 
 _________________________________________
 
-### RandomArray.singleItem
+### RandomArray.singleItem()
 
 ```
 RandomArray.singleItem<T>(source: T[]): T
@@ -71,7 +71,7 @@ Get random single item from array
 
 _________________________________________
 
-### RandomArray.mixedCopyOf
+### RandomArray.mixedCopyOf()
 
 ```
 RandomArray.mixedCopyOf<T>(source: T[]): T[]
@@ -81,7 +81,7 @@ Get copy of ```source``` with all it's items randomly mixed
 
 _________________________________________
 
-### RandomArray.someItems
+### RandomArray.someItems()
 
 ```
 RandomArray.someItems<T>(source: T[], length: number, randomLengthAdder: number = 0): T[]
@@ -94,7 +94,7 @@ Get copy of ```source``` with all it's items randomly mixed
 
 _________________________________________
 
-### RandomArray.splitAll
+### RandomArray.splitAll()
 
 ```
 RandomArray.splitAll<T>(source: T[], resultArraysCount: number, equally: boolean = false): T[][]
@@ -107,7 +107,7 @@ When ```equally``` set to TRUE then result array lengths are equal or near equal
 
 _________________________________________
 
-### RandomArray.splitToLengths
+### RandomArray.splitToLengths()
 
 ```
 RandomArray.splitToLengths<T>(source: T[], lengths: number[]): T[][] 
@@ -119,7 +119,7 @@ Sum of ```lengths``` should be less or equal than length of ```source``` as spli
 
 _________________________________________
 
-### RandomArray splitToLengthsWithOverlap
+### RandomArray.splitToLengthsWithOverlap()
 
 ```
 RandomArray.splitToLengthsWithOverlap<T>(source: T[], lengths: number[]): T[][] 
