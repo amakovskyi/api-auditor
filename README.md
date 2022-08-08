@@ -129,264 +129,6 @@ validateMatch(arrayToValidate, [
 ])
 ```
 
-### VALUE MATCHERS
-
-### Matchers.anything()
-
-```
-Matchers.anything()
-```
-
-Always successful validation.
-
-### Matchers.equalsTo()
-
-```
-Matchers.equalsTo(other: any)
-```
-
-Validates strict equality to ```other```.
-
-### Matchers.absent()
-
-```
-Matchers.absent()
-```
-
-Validates value is not present on place or strictly equal to ```undefined``` (```null``` cause validation fail).
-
-### Matchers.absentOrNull()
-
-```
-Matchers.absentOrNull()
-```
-
-Validates value is not present on place, or strictly equal to ```undefined``` or ```null```.
-
-### Matchers.anyDefined()
-
-```
-Matchers.anyDefined()
-```
-
-Validates value is present on place (```undefined``` or missing value cause validation fail, but ```null``` is
-acceptable).
-
-### Matchers.anyNotNull()
-
-```
-Matchers.anyNotNull()
-```
-
-Validates value is present on place (```undefined``` or missing value cause validation fail) and not ```null```.
-
-### Matchers.object()
-
-```
-Matchers.object(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    match?: any
-}
-```
-
-Validates value is JsonObject.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```match``` perform matching of object (useful when ```canBeNull``` or ```optional``` is set to TRUE)
-
-### Matchers.string()
-
-```
-Matchers.string(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    canBeEmpty?: boolean
-}
-```
-
-Validates value is type of ```string```.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```canBeEmpty``` allows string to be empty (length=0); by default empty string not allowed
-
-### Matchers.uuid()
-
-```
-Matchers.uuid(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-}
-```
-
-Validates value is type of ```string``` with UUID format.
-
-* ```canBeNull``` allows value to be null
-* ```optional``` allows value to be missing or ```undefined```
-
-### Matchers.boolean()
-
-```
-Matchers.boolean(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-}
-```
-
-Validates value is type of ```boolean```.
-
-* ```canBeNull``` allows value to be null
-* ```optional``` allows value to be missing or ```undefined```
-
-### Matchers.dateTime()
-
-```
-Matchers.dateTime(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-}
-```
-
-Validates value is type of ```string``` with default javascript ISO date-time format or value of class ```Date```.
-
-* ```canBeNull``` allows value to be null
-* ```optional``` allows value to be missing or ```undefined```
-
-### Matchers.number()
-
-```
-Matchers.number(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    shouldBeInteger?: boolean,
-    bounds?: {
-        min?: number,
-        max?: number
-    },
-    near?: {
-        value: number,
-        maxDifference: number,
-    }
-    canBeNaN?: boolean
-}
-```
-
-Validates value is type of ```number```.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```shouldBeInteger``` requires number to be integer
-* ```bounds``` requires number to be inside bounds between ```min``` and ```max``` inclusive; allowed to set only lower
-  or
-  upper bound;
-* ```near``` requires number to be near ```value``` with max allowed difference ```maxDifference```
-* ```canBeNaN``` allows number to be ```NaN```
-
-### ARRAY MATCHERS
-
-### ArrayMatchers.any()
-
-```
-ArrayMatchers.any(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    requireNotEmpty?: boolean,
-    expectedLength?: number,
-    itemMatch?: any
-}
-```
-
-Validates value is type of ```JsonArray```.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```requireNotEmpty``` requires from array to be not empty
-* ```expectedLength``` requires array length ot be exactly equal to ```expectedLength```
-* ```itemMatch``` requires all items in array matches ```itemMatch```
-
-### ArrayMatchers.uniqueItems()
-
-```
-ArrayMatchers.uniqueItems(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    requireNotEmpty?: boolean,
-    expectedLength?: number,
-    itemMatch?: any
-}
-```
-
-Validates value is type of ```JsonArray``` and has unique items.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```requireNotEmpty``` requires from array to be not empty
-
-### ArrayMatchers.containingAll()
-
-```
-ArrayMatchers.containingAll(expectedMatches: any[], options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    allowDuplicateMatch?: boolean,
-}
-```
-
-Validates value is type of ```JsonArray``` and contains item match for each of ```expectedMatches```.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```allowDuplicateMatch``` allows multiple array items to match same item of ```expectedMatches``` (by default matches
-  should be distinctive)
-
-### ArrayMatchers.containingAny()
-
-```
-ArrayMatchers.containingAny(expectedAnyMatches: any[], options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-}
-```
-
-Validates value is type of ```JsonArray``` and contains at least single items match for any of ```expectedAnyMatches```.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-
-### ArrayMatchers.containingOnly()
-
-```
-ArrayMatchers.containingOnly(expectedMatches: any[], options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    allowDuplicateMatch?: boolean,
-    requireAll?: boolean,
-}
-```
-
-Validates value is type of ```JsonArray``` and contains only items which match any of ```expectedMatches```.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```allowDuplicateMatch``` allows multiple array items to match same item of ```expectedMatches``` (by default matches
-* ```requireAll``` requires that array contains matches to each of ```expectedMatches```
-
-### ArrayMatchers.notContaining()
-
-```
-ArrayMatchers.notContaining(expectedNoMatches: any[], options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-}
-```
-
-Validates value is type of ```JsonArray``` and NOT contains item matches for any of ```expectedNoMatches```.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-
 ### COMPOSITE MATCHERS
 
 ```
@@ -402,115 +144,50 @@ matchAny(matches: any[])
 Matcher which validates object for first successful match from ```matches``` and raises error in case there are no
 successful matches.
 
+### FULL LIST OF MATCHERS
+
+Below is list of all matcher with link to documentation
+
+| MATCHERS LIST                                                                     |
+|-----------------------------------------------------------------------------------|
+| [Matchers.anything()](docs/Matchers.md#Matchers.anything())                       |
+| [Matchers.equalsTo()](docs/Matchers.md#Matchers.equalsTo())                       |
+| [Matchers.absent()](docs/Matchers.md#Matchers.absent())                           |
+| [Matchers.absentOrNull()](docs/Matchers.md#Matchers.absentOrNull())               |
+| [Matchers.anyDefined()](docs/Matchers.md#Matchers.anyDefined())                   |
+| [Matchers.anyNotNull()](docs/Matchers.md#Matchers.anyNotNull())                   |
+| [Matchers.object()](docs/Matchers.md#Matchers.object())                           |
+| [Matchers.string()](docs/Matchers.md#Matchers.string())                           |
+| [Matchers.uuid()](docs/Matchers.md#Matchers.uuid())                               |
+| [Matchers.boolean()](docs/Matchers.md#Matchers.boolean())                         |
+| [Matchers.dateTime()](docs/Matchers.md#Matchers.dateTime())                       |
+| [Matchers.number()](docs/Matchers.md#Matchers.number())                           |
+| [ArrayMatchers.any()](docs/Matchers.md#ArrayMatchers.any())                       |
+| [ArrayMatchers.uniqueItems()](docs/Matchers.md#ArrayMatchers.uniqueItems())       |
+| [ArrayMatchers.containingAll()](docs/Matchers.md#ArrayMatchers.containingAll())   |
+| [ArrayMatchers.containingAny()](docs/Matchers.md#ArrayMatchers.containingAny())   |
+| [ArrayMatchers.containingOnly()](docs/Matchers.md#ArrayMatchers.containingOnly()) |
+| [ArrayMatchers.notContaining()](docs/Matchers.md#ArrayMatchers.notContaining())   |
+
 # Pool
 
 // TODO
 
 # Random
 
-Useful random utils.
+Useful random utils for generating random values, and also randomizing arrays.
 
-### Random.int()
-
-```
-Random.int(maxInclusive: number): number
-```
-
-Generate integer number from ```0``` to ```maxInclusive```.
-
-### Random.intBetween()
-
-```
-Random.intBetween(minInclusive: number, maxInclusive: number): number
-```
-
-Generate integer number from ```minInclusive``` to ```maxInclusive```.
-
-### Random.string()
-
-```
-Random.string(length: number, randomLengthAdder: number = 0): string
-```
-
-Generate random string with length equal to: ```length``` with randomly added up to ```randomLengthAdder```.
-Result contain lowercase and uppercase letters and numbers.
-
-### Random.text()
-
-```
-Random.text(length: number = 64, randomLengthAdder: number = 64): string
-```
-
-Generate random string with length equal to: ```length``` with randomly added up to ```randomLengthAdder```.
-
-Result contain words separated by space. Words contain lowercase and uppercase letters and numbers.
-
-### Random.uuid()
-
-```
-Random.uuid(): string
-```
-
-Generate random string in UUID format.
-
-### Random.boolean()
-
-```
-Random.boolean(trueThreshold: number = 0.5): boolean
-```
-
-### RandomArray.singleItemFrom()
-
-```
-RandomArray.singleItemFrom<T>(source: T[]): T
-```
-
-Get random single item from array
-
-### RandomArray.mixedCopyOf()
-
-```
-RandomArray.mixedCopyOf<T>(source: T[]): T[]
-```
-
-Get copy of ```source``` with all it's items randomly mixed
-
-### RandomArray.someItemsFrom()
-
-```
-RandomArray.someItemsFrom<T>(source: T[], length: number, randomLengthAdder: number = 0): T[]
-```
-
-Get array which containing randomly mixed part of ```source``` with length ```length``` plus randomly
-added ```randomLengthAdder```
-
-Get copy of ```source``` with all it's items randomly mixed
-
-### RandomArray.splitAll()
-
-```
-RandomArray.splitAll<T>(source: T[], resultArraysCount: number, equally: boolean = false): T[][]
-```
-
-Randomly split ```source``` to ```resultArraysCount``` arrays.
-
-When ```equally``` set to FALSE then result array lengths may be any, but not less than ```1```.
-When ```equally``` set to TRUE then result array lengths are equal or near equal (if equal split is impossible).
-
-### RandomArray.splitToLengths()
-
-```
-RandomArray.splitToLengths<T>(source: T[], lengths: number[]): T[][] 
-```
-
-Randomly split ```source``` to an arrays with exactly specified by ```lengths``` lengths.
-
-Sum of ```lengths``` should be less or equal than length of ```source``` as split is distinctive.
-
-### RandomArray.splitToLengthsWithOverlap()
-
-```
-RandomArray.splitToLengthsWithOverlap<T>(source: T[], lengths: number[]): T[][] 
-```
-
-Randomly split ```source``` to an arrays with exactly specified by ```lengths``` lengths, but allows item overlaps.
+| RANDOM LIST                                                                                       |
+|---------------------------------------------------------------------------------------------------|
+| [Random.int()](docs/Random.md#Random.int())                                                       |
+| [Random.intBetween()](docs/Random.md#Random.intBetween())                                         |
+| [Random.string()](docs/Random.md#Random.string())                                                 |
+| [Random.text()](docs/Random.md#Random.text())                                                     |
+| [Random.uuid()](docs/Random.md#Random.uuid())                                                     |
+| [Random.boolean()](docs/Random.md#Random.boolean())                                               |
+| [RandomArray.singleItem()](docs/Random.md#RandomArray.singleItem())                               |
+| [RandomArray.mixedCopyOf()](docs/Random.md#RandomArray.mixedCopyOf())                             |
+| [RandomArray.someItems()](docs/Random.md#RandomArray.someItems())                                 |
+| [RandomArray.splitAll()](docs/Random.md#RandomArray.splitAll())                                   |
+| [RandomArray.splitToLengths()](docs/Random.md#RandomArray.splitToLengths())                       |
+| [RandomArray.splitToLengthsWithOverlap()](docs/Random.md#RandomArray.splitToLengthsWithOverlap()) |

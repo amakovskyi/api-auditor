@@ -6,7 +6,7 @@ export class RandomArray {
    * Get random single item from array
    * @param source
    */
-  static singleItemFrom<T>(source: T[]): T {
+  static singleItem<T>(source: T[]): T {
     return source[Random.int(source.length - 1)];
   }
 
@@ -24,7 +24,7 @@ export class RandomArray {
     return result;
   }
 
-  static someItemsFrom<T>(source: T[], length: number, randomLengthAdder: number = 0): T[] {
+  static someItems<T>(source: T[], length: number, randomLengthAdder: number = 0): T[] {
     let mixedCopy = RandomArray.mixedCopyOf(source);
     let resultCount = Math.min(mixedCopy.length, length + Random.int(randomLengthAdder));
     return mixedCopy.splice(0, resultCount);
@@ -51,7 +51,7 @@ export class RandomArray {
       if (equally) {
         target = resultArrays[arrayIndex++ % resultArrays.length];
       } else {
-        target = RandomArray.singleItemFrom(resultArrays);
+        target = RandomArray.singleItem(resultArrays);
       }
       target.push(...mixedCopy.splice(0, 1));
     }
@@ -84,7 +84,7 @@ export class RandomArray {
     }
     let result: T[][] = [];
     for (let count of lengths) {
-      result.push(RandomArray.someItemsFrom(source, count));
+      result.push(RandomArray.someItems(source, count));
     }
     return result;
   }

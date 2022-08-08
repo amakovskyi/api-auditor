@@ -9,7 +9,7 @@ describe('RandomArray.mixedCopyOf()', () => {
       let source = generateRandomValueArray(10);
       validateMatch(source, ArrayMatchers.uniqueItems());
 
-      let result = RandomArray.someItemsFrom(source, 4, 4);
+      let result = RandomArray.someItems(source, 4, 4);
       expect(source).not.toEqual(result);
       validateMatch(result.length, Matchers.number({ bounds: { min: 4, max: 8 } }));
       validateMatch(result, matchAll(

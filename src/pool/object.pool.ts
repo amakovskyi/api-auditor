@@ -23,7 +23,7 @@ export abstract class ObjectPool<T> {
    */
   async get(): Promise<T> {
     await this.requireItems(1);
-    let [result] = RandomArray.someItemsFrom(this.arrayOfItems, 1);
+    let [result] = RandomArray.someItems(this.arrayOfItems, 1);
     return result;
   }
 
@@ -34,7 +34,7 @@ export abstract class ObjectPool<T> {
    */
   async getArray(count: number, randomCountAdder: number = 0): Promise<T[]> {
     await this.requireItems(count);
-    return RandomArray.someItemsFrom(this.arrayOfItems, count, randomCountAdder);
+    return RandomArray.someItems(this.arrayOfItems, count, randomCountAdder);
   }
 
   /**
