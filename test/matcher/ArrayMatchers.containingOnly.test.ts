@@ -1,4 +1,4 @@
-import { ArrayMatchers, Matchers, Random } from '../../src';
+import { ArrayMatchers, Matchers, ObjectMatchers, Random } from '../../src';
 import { expectMatcherError, validateMatchFail } from '../test-utils/validateMatchFail';
 import { validateMatchSuccess } from '../test-utils/validateMatchSuccess';
 import { ValueMatcher } from '../../src/matcher/value.matcher';
@@ -105,7 +105,7 @@ describe('ArrayMatchers.containingOnly()', () => {
           Matchers.uuid(),
           Matchers.boolean(),
           Matchers.number(),
-          Matchers.object(),
+          ObjectMatchers.any(),
           12345678,
         ], {
           allowDuplicateMatch: true,

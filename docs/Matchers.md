@@ -60,24 +60,6 @@ Validates value is present on place (```undefined``` or missing value cause vali
 
 _________________________________________
 
-### Matchers.object()
-
-```
-Matchers.object(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    match?: any
-}
-```
-
-Validates value is JsonObject.
-
-* ```canBeNull``` allows value to be null; in case of this all further checks ignored
-* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
-* ```match``` perform matching of object (useful when ```canBeNull``` or ```optional``` is set to TRUE)
-
-_________________________________________
-
 ### Matchers.string()
 
 ```
@@ -173,6 +155,63 @@ Validates value is type of ```number```.
   upper bound;
 * ```near``` requires number to be near ```value``` with max allowed difference ```maxDifference```
 * ```canBeNaN``` allows number to be ```NaN```
+
+_________________________________________
+
+### ObjectMatchers.any()
+
+```
+ObjectMatchers.any(
+    match: any = null,
+    options?: {
+      canBeNull?: boolean,
+      optional?: boolean,
+    },
+)
+```
+
+Validates value is JsonObject and matches it with ```match``` if value passed.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
+
+_________________________________________
+
+### ObjectMatchers.only()
+
+```
+ObjectMatchers.only(
+    match: any,
+    options?: {
+      canBeNull?: boolean,
+      optional?: boolean,
+    },
+)
+```
+
+Validates value is JsonObject, value contains only fields mentioned in ```match``` and these fields matches corresponding ```match``` fields.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
+
+_________________________________________
+
+### ObjectMatchers.exactly()
+
+```
+ObjectMatchers.exactly(
+    match: any,
+    options?: {
+      canBeNull?: boolean,
+      optional?: boolean,
+    },
+)
+```
+
+Validates value is JsonObject, value contains exactly same fields as ```match``` and these fields matches corresponding ```match``` fields.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
 
 _________________________________________
 

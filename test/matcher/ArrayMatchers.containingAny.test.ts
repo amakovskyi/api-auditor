@@ -1,4 +1,4 @@
-import { ArrayMatchers, Matchers, Random } from '../../src';
+import { ArrayMatchers, Matchers, ObjectMatchers, Random } from '../../src';
 import { expectMatcherError, validateMatchFail } from '../test-utils/validateMatchFail';
 import { validateMatchSuccess } from '../test-utils/validateMatchSuccess';
 
@@ -28,7 +28,7 @@ describe('ArrayMatchers.containingAny()', () => {
         ArrayMatchers.containingAny([null]),
         ArrayMatchers.containingAny([Matchers.number()]),
         ArrayMatchers.containingAny([Matchers.string()]),
-        ArrayMatchers.containingAny([Matchers.object()]),
+        ArrayMatchers.containingAny([ObjectMatchers.any()]),
         ArrayMatchers.containingAny([ArrayMatchers.any({ expectedLength: 2 })]),
         ArrayMatchers.containingAny(['one', 'super']),
         ArrayMatchers.containingAny([1, 2, 3, 4, 5]),
@@ -78,7 +78,7 @@ describe('ArrayMatchers.containingAny()', () => {
         ArrayMatchers.containingAny([
           { value: 999 },
           { value: Matchers.string() },
-          { other: Matchers.object() },
+          { other: ObjectMatchers.any() },
           { other: [2] },
         ]),
       ],

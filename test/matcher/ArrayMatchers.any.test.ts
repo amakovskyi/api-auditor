@@ -1,4 +1,4 @@
-import { ArrayMatchers, Matchers } from '../../src';
+import { ArrayMatchers, Matchers, ObjectMatchers } from '../../src';
 import { expectMatcherError, validateMatchFail, validateMatchFailArray } from '../test-utils/validateMatchFail';
 import { validateMatchSuccess, validateMatchSuccessArray } from '../test-utils/validateMatchSuccess';
 import { ValueMatcher } from '../../src/matcher/value.matcher';
@@ -172,11 +172,9 @@ describe('ArrayMatchers.any()', () => {
     });
   });
 
-  test('Item validation - Matchers.object())', () => {
-    let itemMatch = Matchers.object({
-      match: {
-        test: Matchers.anyDefined(),
-      },
+  test('Item validation - ObjectMatchers.any())', () => {
+    let itemMatch = ObjectMatchers.any({
+      test: Matchers.anyDefined(),
     });
     validateMatchSuccess({
       data: [
@@ -234,7 +232,7 @@ describe('ArrayMatchers.any()', () => {
     });
   });
 
-  test('FAIL: item validation - Matchers.object()', () => {
+  test('FAIL: item validation - ObjectMatchers.any()', () => {
     validateMatchFail({
       data: [
         1,
@@ -242,13 +240,13 @@ describe('ArrayMatchers.any()', () => {
         { object: 1 },
       ],
       matchers: [
-        ArrayMatchers.any({ itemMatch: Matchers.object() }),
-        ArrayMatchers.any({ expectedLength: 3, itemMatch: Matchers.object() }),
-        ArrayMatchers.any({ canBeNull: false, itemMatch: Matchers.object() }),
+        ArrayMatchers.any({ itemMatch: ObjectMatchers.any() }),
+        ArrayMatchers.any({ expectedLength: 3, itemMatch: ObjectMatchers.any() }),
+        ArrayMatchers.any({ canBeNull: false, itemMatch: ObjectMatchers.any() }),
       ],
       errorMatch: [
-        expectMatcherError('Expected value of type [JsonObject]', Matchers.object()),
-        expectMatcherError('Expected value of type [JsonObject]', Matchers.object()),
+        expectMatcherError('Expected value of type [JsonObject]', ObjectMatchers.any()),
+        expectMatcherError('Expected value of type [JsonObject]', ObjectMatchers.any()),
         { object: 1 },
       ],
     });

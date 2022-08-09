@@ -1,9 +1,9 @@
-import { Matchers } from '../../src';
+import { Matchers, ObjectMatchers } from '../../src';
 import { expectMatcherError, validateMatchFail, validateMatchFailArray } from '../test-utils/validateMatchFail';
 import { validateMatchSuccessArray } from '../test-utils/validateMatchSuccess';
 import { ValueMatcher } from '../../src/matcher/value.matcher';
 
-describe('Matchers.object()', () => {
+describe('ObjectMatchers.any()', () => {
 
   test('Some objects', () => {
     validateMatchSuccessArray({
@@ -13,9 +13,9 @@ describe('Matchers.object()', () => {
         { arraysSome: [1, 2, 3] },
       ],
       matchers: [
-        Matchers.object(),
-        Matchers.object({ canBeNull: false }),
-        Matchers.object({ canBeNull: true }),
+        ObjectMatchers.any(),
+        ObjectMatchers.any(null, { canBeNull: false }),
+        ObjectMatchers.any(null, { canBeNull: true }),
       ],
     });
   });
@@ -29,7 +29,7 @@ describe('Matchers.object()', () => {
         { arraysSome: [1, 2, 3] },
       ],
       matchers: [
-        Matchers.object({ canBeNull: true }),
+        ObjectMatchers.any(null, { canBeNull: true }),
       ],
     });
   });
@@ -43,7 +43,7 @@ describe('Matchers.object()', () => {
         { arraysSome: [1, 2, 3] },
       ],
       matchers: [
-        Matchers.object({ optional: true }),
+        ObjectMatchers.any(null, { optional: true }),
       ],
     });
   });
@@ -58,11 +58,9 @@ describe('Matchers.object()', () => {
         { stringVal: 'str', otherVal: { test: 1 }, somethingElse: 1 },
       ],
       matchers: [
-        Matchers.object({
-          match: {
-            stringVal: Matchers.string(),
-            otherVal: Matchers.anyNotNull(),
-          },
+        ObjectMatchers.any({
+          stringVal: Matchers.string(),
+          otherVal: Matchers.anyNotNull(),
         }),
       ],
     });
@@ -72,9 +70,9 @@ describe('Matchers.object()', () => {
     validateMatchFail({
       data: undefined,
       matchers: [
-        Matchers.object(),
-        Matchers.object({ canBeNull: false }),
-        Matchers.object({ canBeNull: true }),
+        ObjectMatchers.any(),
+        ObjectMatchers.any(null, { canBeNull: false }),
+        ObjectMatchers.any(null, { canBeNull: true }),
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_IS_REQUIRED),
     });
@@ -84,13 +82,13 @@ describe('Matchers.object()', () => {
     validateMatchFail({
       data: null,
       matchers: [
-        Matchers.object(),
-        Matchers.object({ canBeNull: false }),
-        Matchers.object({ optional: false }),
-        Matchers.object({ optional: true }),
-        Matchers.object({ optional: false, canBeNull: false }),
-        Matchers.object({ optional: true, canBeNull: false }),
-        Matchers.object({ match: { test: 1 } }),
+        ObjectMatchers.any(),
+        ObjectMatchers.any(null, { canBeNull: false }),
+        ObjectMatchers.any(null, { optional: false }),
+        ObjectMatchers.any(null, { optional: true }),
+        ObjectMatchers.any(null, { optional: false, canBeNull: false }),
+        ObjectMatchers.any(null, { optional: true, canBeNull: false }),
+        ObjectMatchers.any({ test: 1 }),
       ],
       errorMatch: expectMatcherError(ValueMatcher.VALUE_CANNOT_BE_NULL),
     });
@@ -105,16 +103,16 @@ describe('Matchers.object()', () => {
         [1, 2, 3],
       ],
       matchers: [
-        Matchers.object(),
-        Matchers.object({ canBeNull: false }),
-        Matchers.object({ canBeNull: true }),
-        Matchers.object({ optional: false }),
-        Matchers.object({ optional: true }),
-        Matchers.object({ optional: false, canBeNull: false }),
-        Matchers.object({ optional: true, canBeNull: false }),
-        Matchers.object({ optional: false, canBeNull: true }),
-        Matchers.object({ optional: true, canBeNull: true }),
-        Matchers.object({ match: { test: 1 } }),
+        ObjectMatchers.any(),
+        ObjectMatchers.any(null, { canBeNull: false }),
+        ObjectMatchers.any(null, { canBeNull: true }),
+        ObjectMatchers.any(null, { optional: false }),
+        ObjectMatchers.any(null, { optional: true }),
+        ObjectMatchers.any(null,  { optional: false, canBeNull: false }),
+        ObjectMatchers.any(null, { optional: true, canBeNull: false }),
+        ObjectMatchers.any(null, { optional: false, canBeNull: true }),
+        ObjectMatchers.any(null, { optional: true, canBeNull: true }),
+        ObjectMatchers.any({ test: 1 } ),
       ],
       errorMatch: expectMatcherError('Expected value of type [JsonObject]'),
     });
@@ -126,11 +124,9 @@ describe('Matchers.object()', () => {
         stringVal: 123,
         otherVal: '123',
       },
-      matchers: Matchers.object({
-        match: {
-          stringVal: Matchers.string(),
-          otherVal: Matchers.anyNotNull(),
-        },
+      matchers: ObjectMatchers.any({
+        stringVal: Matchers.string(),
+        otherVal: Matchers.anyNotNull(),
       }),
       errorMatch: {
         stringVal: {

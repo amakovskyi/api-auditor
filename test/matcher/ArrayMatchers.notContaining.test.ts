@@ -1,4 +1,4 @@
-import { ArrayMatchers, Matchers, Random } from '../../src';
+import { ArrayMatchers, Matchers, ObjectMatchers, Random } from '../../src';
 import { validateMatchFail } from '../test-utils/validateMatchFail';
 import { validateMatchSuccess } from '../test-utils/validateMatchSuccess';
 
@@ -16,7 +16,7 @@ describe('ArrayMatchers.notContaining()', () => {
         ]),
         ArrayMatchers.notContaining([
           Matchers.string(),
-          Matchers.object(),
+          ObjectMatchers.any(),
           Matchers.boolean(),
           [1, 2, 3],
           { test: 1 },
@@ -37,7 +37,7 @@ describe('ArrayMatchers.notContaining()', () => {
         ]),
         ArrayMatchers.notContaining([
           Matchers.number(),
-          Matchers.object(),
+          ObjectMatchers.any(),
           Matchers.boolean(),
           [1, 2, 3],
           { test: 1 },
@@ -60,7 +60,7 @@ describe('ArrayMatchers.notContaining()', () => {
           '100500',
           [1, 2, 3],
           ArrayMatchers.any(),
-          Matchers.object(),
+          ObjectMatchers.any(),
           { test: 1 },
         ]),
       ],
@@ -122,7 +122,7 @@ describe('ArrayMatchers.notContaining()', () => {
           { test: Matchers.string() },
           { value: 'other' },
           { value: Matchers.number() },
-          Matchers.object(),
+          ObjectMatchers.any(),
           ArrayMatchers.any({ expectedLength: 5 }),
         ]),
       ],
@@ -291,7 +291,7 @@ describe('ArrayMatchers.notContaining()', () => {
   });
 
   test('FAIL: arrays', () => {
-    let objectsArrayMatch = ArrayMatchers.any({ itemMatch: Matchers.object() });
+    let objectsArrayMatch = ArrayMatchers.any({ itemMatch: ObjectMatchers.any() });
     let arrayWithLength5Match = ArrayMatchers.any({ expectedLength: 5 });
     validateMatchFail({
       data: [

@@ -35,7 +35,7 @@ class MatchError {
   }
 }
 
-class MathValue {
+class MatchValue {
   constructor(
     readonly value: any,
   ) {
@@ -78,8 +78,8 @@ export class ValueMatcher {
     return new MatchError(`Expected value of type [${expectedType}]`);
   }
 
-  static value(value: any): MathValue {
-    return new MathValue(value);
+  static value(value: any): MatchValue {
+    return new MatchValue(value);
   }
 
   testValue(value: any): any {
@@ -125,7 +125,7 @@ export class ValueMatcher {
         );
       }
     }
-    if (matchResult instanceof MathValue) {
+    if (matchResult instanceof MatchValue) {
       return matchResult.value;
     }
     throw new Error(`Unknown from matcher [${this.name}] is null. Value = ${JSON.stringify(value)}; result=${JSON.stringify(matchResult)}.`);
@@ -137,7 +137,9 @@ export class ValueMatcher {
    * @param match
    */
   static copyWithExpectedMatch(data: any, match: any): any {
-    if (MatcherUtils.isArray(data) && MatcherUtils.isArray(match)) {
+    if (match instanceof ValueMatcher) {
+      return match.testValue(data);
+    } else if (MatcherUtils.isArray(data) && MatcherUtils.isArray(match)) {
       // making copy with size of EXPECTED
       let result = [];
       for (let i = 0; i < match.length; i++) {
@@ -157,12 +159,7 @@ export class ValueMatcher {
         }
       });
       return result;
-    } else if (match instanceof ValueMatcher) {
-      return match.testValue(data);
     } else {
-      if (match instanceof Date) {
-        return match.toISOString();
-      }
       return match;
     }
   }

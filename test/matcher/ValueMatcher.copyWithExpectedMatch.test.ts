@@ -105,4 +105,20 @@ describe('ValueMatcher.copyWithExpectedMatch()', () => {
     });
   });
 
+  test('array -> ArrayMatchers.any()', () => {
+    validateMatchResult({
+      data: [1, 2, 3],
+      match: ArrayMatchers.any(),
+      expectedResult: [1, 2, 3],
+    });
+  });
+
+  test('number -> Matcher.number()', () => {
+    validateMatchResult({
+      data: 1,
+      match: Matchers.number(),
+      expectedResult: 1,
+    });
+  });
+
 });

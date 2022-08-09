@@ -72,22 +72,6 @@ export class Matchers {
     });
   }
 
-  static object(options?: {
-    canBeNull?: boolean,
-    optional?: boolean,
-    match?: any
-  }) {
-    return valueMatcher('Matchers.object', options, value => {
-      if (!MatcherUtils.isObject(value)) {
-        return ValueMatcher.typeError('JsonObject');
-      }
-      if (options?.match != null) {
-        return ValueMatcher.value(ValueMatcher.copyWithExpectedMatch(value, options.match));
-      }
-      return ValueMatcher.success();
-    });
-  }
-
   static string(options?: {
                   canBeNull?: boolean,
                   optional?: boolean,

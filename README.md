@@ -176,12 +176,14 @@ Below is list of all matcher with link to documentation
 | [Matchers.absentOrNull()](docs/Matchers.md#matchersabsentornull)               |
 | [Matchers.anyDefined()](docs/Matchers.md#matchersanydefined)                   |
 | [Matchers.anyNotNull()](docs/Matchers.md#matchersanynotnull)                   |
-| [Matchers.object()](docs/Matchers.md#matchersobject)                           |
 | [Matchers.string()](docs/Matchers.md#matchersstring)                           |
 | [Matchers.uuid()](docs/Matchers.md#matchersuuid)                               |
 | [Matchers.boolean()](docs/Matchers.md#matchersboolean)                         |
 | [Matchers.dateTime()](docs/Matchers.md#matchersdatetime)                       |
 | [Matchers.number()](docs/Matchers.md#matchersnumber)                           |
+| [ObjectMatchers.any()](docs/Matchers.md#objectmatchersany)                     |
+| [ObjectMatchers.only()](docs/Matchers.md#objectmatchersonly)                   |
+| [ObjectMatchers.exactly()](docs/Matchers.md#objectmatchersexactly)             |
 | [ArrayMatchers.any()](docs/Matchers.md#arraymatchersany)                       |
 | [ArrayMatchers.uniqueItems()](docs/Matchers.md#arraymatchersuniqueitems)       |
 | [ArrayMatchers.containingAll()](docs/Matchers.md#arraymatcherscontainingall)   |
