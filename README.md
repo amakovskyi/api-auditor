@@ -2,6 +2,8 @@
 
 A NodeJS library for integration testing.
 
+NPM: [https://www.npmjs.com/package/@amakovskyi/api-auditor](https://www.npmjs.com/package/@amakovskyi/api-auditor)
+
 Source code: [https://github.com/amakovskyi/api-auditor](https://github.com/amakovskyi/api-auditor)
 
 # Matchers. Validate API responses easily
@@ -265,7 +267,7 @@ Useful random utils for generating random values, and also randomizing arrays.
 | RANDOM LIST                                                                                    |
 |------------------------------------------------------------------------------------------------|
 | [Random.int()](docs/Random.md#randomint)                                                       |
-| [Random.intBetween()](docs/Random.md#randomintBetween)                                         |
+| [Random.intBetween()](docs/Random.md#randomintbetween)                                         |
 | [Random.string()](docs/Random.md#randomstring)                                                 |
 | [Random.text()](docs/Random.md#randomtext)                                                     |
 | [Random.uuid()](docs/Random.md#randomuuid)                                                     |
