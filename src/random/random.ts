@@ -29,7 +29,7 @@ export class Random {
       let nextWordMaxLength = Math.min(expectedResultLength - result.length, MAX_WORD_LENGTH);
       result += Random.string(Random.intBetween(1, nextWordMaxLength));
       if (result.length < expectedResultLength - 1) {
-        result += '';
+        result += ' ';
       }
     }
     return result;

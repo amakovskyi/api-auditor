@@ -108,7 +108,7 @@ export class Matchers {
     canBeNull?: boolean,
     optional?: boolean,
   }) {
-    return valueMatcher('boolean', options, value => {
+    return valueMatcher('Matchers.boolean', options, value => {
       if (typeof value != 'boolean') {
         return ValueMatcher.typeError('boolean');
       }
@@ -134,6 +134,53 @@ export class Matchers {
       let isoFormat = new Date(date).toISOString();
       if (isoFormat != value) {
         return ValueMatcher.typeError('Date|string-ISO-date');
+      }
+      return ValueMatcher.success();
+    });
+  }
+
+  static dateTimeApprox(dateTime: Date, diff: {
+    seconds?: number,
+    minutes?: number,
+    hours?: number,
+    days?: number,
+  }) {
+    let options = { dateTime, near: diff };
+    let diffMilliseconds = 0;
+    if (diff?.seconds != null) diffMilliseconds += (diff.seconds * 1000);
+    if (diff?.minutes != null) diffMilliseconds += (diff.minutes * 60_000);
+    if (diff?.hours != null) diffMilliseconds += (diff.hours * 3600_000);
+    if (diff?.days != null) diffMilliseconds += (diff.days * 86_400_000);
+    if (diffMilliseconds < 0) {
+      throw new Error('Total diff cannot be lesser than 0')
+    }
+    return customValueMatcher('Matchers.dateTime', options, value => {
+      if (typeof value == 'undefined') {
+        return ValueMatcher.error(ValueMatcher.VALUE_IS_REQUIRED);
+      } else if (value == null) {
+        return ValueMatcher.error(ValueMatcher.VALUE_CANNOT_BE_NULL);
+      }
+      let dateTimeValue: Date = null;
+      if (value instanceof Date) {
+        dateTimeValue = value;
+      } else {
+        if (typeof value != 'string') {
+          return ValueMatcher.typeError('Date|string-ISO-date');
+        }
+        let date = Date.parse(value);
+        if (!Number.isInteger(date)) {
+          return ValueMatcher.typeError('Date|string-ISO-date');
+        } else {
+          dateTimeValue = new Date(date);
+        }
+        let isoFormat = new Date(date).toISOString();
+        if (isoFormat != value) {
+          return ValueMatcher.typeError('Date|string-ISO-date');
+        }
+      }
+      let timestamp = dateTimeValue.getTime();
+      if (Math.abs(timestamp - dateTime.getTime()) > diffMilliseconds) {
+        return ValueMatcher.error('Date time is not near expected');
       }
       return ValueMatcher.success();
     });

@@ -3,7 +3,7 @@ import { expectMatcherError, validateMatchFail, validateMatchFailArray } from '.
 import { validateMatchSuccessArray } from '../test-utils/validateMatchSuccess';
 import { ValueMatcher } from '../../src/matcher/value.matcher';
 
-describe('Matchers.date()', () => {
+describe('Matchers.dateTime()', () => {
 
   test('Date', () => {
     validateMatchSuccessArray({

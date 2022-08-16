@@ -126,6 +126,30 @@ Validates value is type of ```string``` with default javascript ISO date-time fo
 
 _________________________________________
 
+### Matchers.dateTimeApprox()
+
+```
+Matchers.dateTimeApprox(dateTime: Date, diff: {
+    seconds?: number,
+    minutes?: number,
+    hours?: number,
+    days?: number,
+})
+```
+
+Validates value is type of ```string``` with default javascript ISO date-time format or value of class ```Date```.
+After it checks is it approximately equal to ```dateTime``` with max difference specified in ```diff```.
+
+* ```dateTime``` date-time to compare
+* ```diff``` difference specification; inner fields have no bound limits, but result difference should be a not negative
+  number
+* ```diff.seconds``` seconds part of max difference
+* ```diff.minutes``` minutes part of max difference
+* ```diff.hours``` hours part of max difference
+* ```diff.days``` days part of max difference
+
+_________________________________________
+
 ### Matchers.number()
 
 ```
@@ -189,7 +213,8 @@ ObjectMatchers.only(
 )
 ```
 
-Validates value is JsonObject, value contains only fields mentioned in ```match``` and these fields matches corresponding ```match``` fields.
+Validates value is JsonObject, value contains only fields mentioned in ```match``` and these fields matches
+corresponding ```match``` fields.
 
 * ```canBeNull``` allows value to be null; in case of this all further checks ignored
 * ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
@@ -208,7 +233,8 @@ ObjectMatchers.exactly(
 )
 ```
 
-Validates value is JsonObject, value contains exactly same fields as ```match``` and these fields matches corresponding ```match``` fields.
+Validates value is JsonObject, value contains exactly same fields as ```match``` and these fields matches
+corresponding ```match``` fields.
 
 * ```canBeNull``` allows value to be null; in case of this all further checks ignored
 * ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored

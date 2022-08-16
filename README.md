@@ -180,6 +180,7 @@ Below is list of all matcher with link to documentation
 | [Matchers.uuid()](docs/Matchers.md#matchersuuid)                               |
 | [Matchers.boolean()](docs/Matchers.md#matchersboolean)                         |
 | [Matchers.dateTime()](docs/Matchers.md#matchersdatetime)                       |
+| [Matchers.dateTimeApprox()](docs/Matchers.md#matchersdatetimeapprox)           |
 | [Matchers.number()](docs/Matchers.md#matchersnumber)                           |
 | [ObjectMatchers.any()](docs/Matchers.md#objectmatchersany)                     |
 | [ObjectMatchers.only()](docs/Matchers.md#objectmatchersonly)                   |
