@@ -168,29 +168,30 @@ failure, easy to read and understand.
 
 Below is list of all matcher with link to documentation
 
-| MATCHERS LIST                                                                  |
-|--------------------------------------------------------------------------------|
-| [Matchers.anything()](docs/Matchers.md#matchersanything)                       |
-| [Matchers.equalsTo()](docs/Matchers.md#matchersequalsto)                       |
-| [Matchers.absent()](docs/Matchers.md#matchersabsent)                           |
-| [Matchers.absentOrNull()](docs/Matchers.md#matchersabsentornull)               |
-| [Matchers.anyDefined()](docs/Matchers.md#matchersanydefined)                   |
-| [Matchers.anyNotNull()](docs/Matchers.md#matchersanynotnull)                   |
-| [Matchers.string()](docs/Matchers.md#matchersstring)                           |
-| [Matchers.uuid()](docs/Matchers.md#matchersuuid)                               |
-| [Matchers.boolean()](docs/Matchers.md#matchersboolean)                         |
-| [Matchers.dateTime()](docs/Matchers.md#matchersdatetime)                       |
-| [Matchers.dateTimeApprox()](docs/Matchers.md#matchersdatetimeapprox)           |
-| [Matchers.number()](docs/Matchers.md#matchersnumber)                           |
-| [ObjectMatchers.any()](docs/Matchers.md#objectmatchersany)                     |
-| [ObjectMatchers.only()](docs/Matchers.md#objectmatchersonly)                   |
-| [ObjectMatchers.exactly()](docs/Matchers.md#objectmatchersexactly)             |
-| [ArrayMatchers.any()](docs/Matchers.md#arraymatchersany)                       |
-| [ArrayMatchers.uniqueItems()](docs/Matchers.md#arraymatchersuniqueitems)       |
-| [ArrayMatchers.containingAll()](docs/Matchers.md#arraymatcherscontainingall)   |
-| [ArrayMatchers.containingAny()](docs/Matchers.md#arraymatcherscontainingany)   |
-| [ArrayMatchers.containingOnly()](docs/Matchers.md#arraymatcherscontainingonly) |
-| [ArrayMatchers.notContaining()](docs/Matchers.md#arraymatchersnotcontaining)   |
+| MATCHERS LIST                                                                       |
+|-------------------------------------------------------------------------------------|
+| [Matchers.anything()](docs/Matchers.md#matchersanything)                            |
+| [Matchers.equalsTo()](docs/Matchers.md#matchersequalsto)                            |
+| [Matchers.absent()](docs/Matchers.md#matchersabsent)                                |
+| [Matchers.absentOrNull()](docs/Matchers.md#matchersabsentornull)                    |
+| [Matchers.anyDefined()](docs/Matchers.md#matchersanydefined)                        |
+| [Matchers.anyNotNull()](docs/Matchers.md#matchersanynotnull)                        |
+| [Matchers.string()](docs/Matchers.md#matchersstring)                                |
+| [Matchers.uuid()](docs/Matchers.md#matchersuuid)                                    |
+| [Matchers.boolean()](docs/Matchers.md#matchersboolean)                              |
+| [Matchers.dateTime()](docs/Matchers.md#matchersdatetime)                            |
+| [Matchers.dateTimeApprox()](docs/Matchers.md#matchersdatetimeapprox)                |
+| [Matchers.number()](docs/Matchers.md#matchersnumber)                                |
+| [ObjectMatchers.any()](docs/Matchers.md#objectmatchersany)                          |
+| [ObjectMatchers.only()](docs/Matchers.md#objectmatchersonly)                        |
+| [ObjectMatchers.exactly()](docs/Matchers.md#objectmatchersexactly)                  |
+| [ArrayMatchers.any()](docs/Matchers.md#arraymatchersany)                            |
+| [ArrayMatchers.uniqueItems()](docs/Matchers.md#arraymatchersuniqueitems)            |
+| [ArrayMatchers.containingAll()](docs/Matchers.md#arraymatcherscontainingall)        |
+| [ArrayMatchers.containingAny()](docs/Matchers.md#arraymatcherscontainingany)        |
+| [ArrayMatchers.containingOnly()](docs/Matchers.md#arraymatcherscontainingonly)      |
+| [ArrayMatchers.containingExactly()](docs/Matchers.md#arraymatcherscontaininexactly) |
+| [ArrayMatchers.notContaining()](docs/Matchers.md#arraymatchersnotcontaining)        |
 
 ### CUSTOM VALUE MATCHERS
 

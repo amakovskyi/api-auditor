@@ -338,6 +338,24 @@ Validates value is type of ```JsonArray``` and contains only items which match a
 
 _________________________________________
 
+### ArrayMatchers.containingExactly()
+
+```
+ArrayMatchers.containingExactly(expectedMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    allowDuplicateMatch?: boolean,
+}
+```
+
+Validates value is type of ```JsonArray``` and contains items which has matches for all of ```expectedMatches```.
+
+* ```canBeNull``` allows value to be null; in case of this all further checks ignored
+* ```optional``` allows value to be missing or ```undefined```; in case of this all further checks ignored
+* ```allowDuplicateMatch``` allows multiple array items to match same item of ```expectedMatches``` (by default matches
+
+_________________________________________
+
 ### ArrayMatchers.notContaining()
 
 ```

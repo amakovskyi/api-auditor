@@ -177,16 +177,22 @@ export class ArrayMatchers {
         return ValueMatcher.typeError('JsonArray');
       }
       let result: any[] = [];
+      let expectedFoundStatus: boolean[] = [];
+      for (let i = 0; i < expectedMatches.length; i++) {
+        expectedFoundStatus.push(false);
+      }
       for (let itemIndex = 0; itemIndex < value.length; itemIndex++) {
         let item = value[itemIndex];
         let resultItem: any = item;
         let hasMatchInExpected = false;
         let matchedWithDuplication: any = null;
+
         for (let expectedMatchIndex = 0; expectedMatchIndex < expectedMatches.length; expectedMatchIndex++) {
           let expectedMatch = expectedMatches[expectedMatchIndex];
           let match = ValueMatcher.copyWithExpectedMatch(item, expectedMatch);
           if (MatcherUtils.isFullyEquals(item, match)) {
             hasMatchInExpected = true;
+            expectedFoundStatus[expectedMatchIndex] = true;
             if (options?.allowDuplicateMatch != true) {
               for (let seekDuplicateItemIndex = 0; seekDuplicateItemIndex < value.length; seekDuplicateItemIndex++) {
                 if (itemIndex != seekDuplicateItemIndex) {
@@ -212,6 +218,82 @@ export class ArrayMatchers {
         }
         result.push(resultItem);
       }
+      if (options?.requireAll == true) {
+        expectedFoundStatus.forEach((found, index) => {
+          if (!found) {
+            let resultItem: any = new FailedMatch('ArrayMatchers.containingOnly', 'Item is required but not found', options);
+            resultItem.item = expectedMatches[index];
+            result.push(resultItem);
+          }
+        });
+      }
+      return ValueMatcher.value(result);
+    });
+  }
+
+  /**
+   * Validates is value is an array which contains exactly items from witch each one have single match exists for all of [expectedMatches]
+   * @param expectedMatches
+   * @param options
+   */
+  static containingExactly(expectedMatches: any[], options?: {
+    canBeNull?: boolean,
+    optional?: boolean,
+    allowDuplicateMatch?: boolean,
+  }) {
+    return valueMatcher('ArrayMatchers.containingExactly', options, value => {
+      if (!MatcherUtils.isArray(value)) {
+        return ValueMatcher.typeError('JsonArray');
+      }
+      let result: any[] = [];
+      let expectedFoundStatus: boolean[] = [];
+      for (let i = 0; i < expectedMatches.length; i++) {
+        expectedFoundStatus.push(false);
+      }
+      for (let itemIndex = 0; itemIndex < value.length; itemIndex++) {
+        let item = value[itemIndex];
+        let resultItem: any = item;
+        let hasMatchInExpected = false;
+        let matchedWithDuplication: any = null;
+
+        for (let expectedMatchIndex = 0; expectedMatchIndex < expectedMatches.length; expectedMatchIndex++) {
+          let expectedMatch = expectedMatches[expectedMatchIndex];
+          let match = ValueMatcher.copyWithExpectedMatch(item, expectedMatch);
+          if (MatcherUtils.isFullyEquals(item, match)) {
+            hasMatchInExpected = true;
+            expectedFoundStatus[expectedMatchIndex] = true;
+            if (options?.allowDuplicateMatch != true) {
+              for (let seekDuplicateItemIndex = 0; seekDuplicateItemIndex < value.length; seekDuplicateItemIndex++) {
+                if (itemIndex != seekDuplicateItemIndex) {
+                  let seekDuplicateItem = value[seekDuplicateItemIndex];
+                  let matchDuplication = ValueMatcher.copyWithExpectedMatch(seekDuplicateItem, expectedMatch);
+                  if (MatcherUtils.isFullyEquals(seekDuplicateItem, matchDuplication)) {
+                    matchedWithDuplication = expectedMatch;
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (hasMatchInExpected) {
+          if (matchedWithDuplication != null) {
+            resultItem = new FailedMatch('ArrayMatchers.containingExactly', 'Item matches multiple times with duplications', options);
+            resultItem.item = item;
+            resultItem.match = matchedWithDuplication;
+          }
+        } else {
+          resultItem = new FailedMatch('ArrayMatchers.containingExactly', 'Item does not match any of specified matches', options);
+          resultItem.item = item;
+        }
+        result.push(resultItem);
+      }
+      expectedFoundStatus.forEach((found, index) => {
+        if (!found) {
+          let resultItem: any = new FailedMatch('ArrayMatchers.containingExactly', 'Item is required but not found', options);
+          resultItem.item = expectedMatches[index];
+          result.push(resultItem);
+        }
+      });
       return ValueMatcher.value(result);
     });
   }
