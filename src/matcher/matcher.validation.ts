@@ -39,3 +39,8 @@ export function matchAny(...expectedMatches: any[]) {
     return ValueMatcher.error('No matches found');
   });
 }
+
+export function isMatch(data: any, expectedMatch: any): boolean {
+  let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, expectedMatch);
+  return MatcherUtils.isFullyEquals(data, dataAsExpected);
+}
