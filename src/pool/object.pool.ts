@@ -4,7 +4,7 @@ export abstract class ObjectPool<T> {
 
   private readonly arrayOfItems: T[] = [];
 
-  constructor(private readonly initCount: number) {
+  protected constructor(private readonly initCount: number) {
   }
 
   private async requireItems(count: number) {
@@ -23,7 +23,7 @@ export abstract class ObjectPool<T> {
    */
   async get(): Promise<T> {
     await this.requireItems(1);
-    let [result] = RandomArray.someItemsFrom(this.arrayOfItems, 1);
+    let [result] = RandomArray.someItems(this.arrayOfItems, 1);
     return result;
   }
 
@@ -34,7 +34,7 @@ export abstract class ObjectPool<T> {
    */
   async getArray(count: number, randomCountAdder: number = 0): Promise<T[]> {
     await this.requireItems(count);
-    return RandomArray.someItemsFrom(this.arrayOfItems, count, randomCountAdder);
+    return RandomArray.someItems(this.arrayOfItems, count, randomCountAdder);
   }
 
   /**
@@ -47,7 +47,7 @@ export abstract class ObjectPool<T> {
       total += count;
     }
     await this.requireItems(total);
-    return RandomArray.getArraysDistinctive(this.arrayOfItems, counts);
+    return RandomArray.splitToLengths(this.arrayOfItems, counts);
   }
 
   /**
@@ -59,7 +59,7 @@ export abstract class ObjectPool<T> {
     for (let count of counts) {
       total = Math.max(total, count);
     }
-    return RandomArray.getArraysWithOverlap(this.arrayOfItems, counts);
+    return RandomArray.splitToLengthsWithOverlap(this.arrayOfItems, counts);
   }
 
 }

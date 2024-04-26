@@ -73,7 +73,7 @@ export function validateMatchSuccessArray(params: {
 }) {
   for (let data of params.dataArray) {
     validateMatchSuccess({
-      data,
+      data: data,
       matchers: params.matchers,
     });
   }

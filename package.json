@@ -1,8 +1,14 @@
 {
-  "name": "api-auditor",
-  "version": "0.1.8",
-  "description": "NodeJS library for integration testing",
+  "name": "@amakovskyi/api-auditor",
+  "version": "0.2.5",
   "type": "module",
+  "keywords": [
+    "integration",
+    "test",
+    "matcher",
+    "testing",
+    "validation"
+  ],
   "private": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

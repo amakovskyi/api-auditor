@@ -1,55 +1,46 @@
-import { isDeepStrictEqual } from 'util';
 import { ValueMatcher, valueMatcher } from './value.matcher';
+import { MatcherUtils } from './matcher.utils';
 
 /**
  * In comparison with strict equation this method validates that [data] contain all information as specified in [expected],
  * but [data] itself CAN contain other information which is not noticed in [expected] and that information will not cause
  * fail.
  */
-export function validateMatch(data: any, match: any) {
-  let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, match);
-  expect(data).toEqual(dataAsExpected);
+export function validateMatch(data: any, expectedMatch: any) {
+  let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, expectedMatch);
+  if (!MatcherUtils.isFullyEquals(data, dataAsExpected)) {
+    expect(data).toEqual(dataAsExpected);
+  }
 }
 
-export function matchAll(...matchesArray: any) {
-  return valueMatcher('matchAll', value => {
-    for (let match of matchesArray) {
-      if (match instanceof ValueMatcher) {
-        let expectationResponse = match.testValue(value);
-        if (!isDeepStrictEqual(value, expectationResponse)) {
-          return expectationResponse;
-        }
-      } else {
-        let result = ValueMatcher.copyWithExpectedMatch(value, match);
-        if (!isDeepStrictEqual(value, result)) {
-          return result;
-        }
+export function matchAll(...expectedMatches: any[]) {
+  return valueMatcher('matchAll', null, value => {
+    for (let match of expectedMatches) {
+      let matchResult = ValueMatcher.copyWithExpectedMatch(value, match);
+      if (!MatcherUtils.isFullyEquals(value, matchResult)) {
+        return ValueMatcher.value(matchResult);
       }
     }
-    return value;
+    return ValueMatcher.success();
   });
 }
 
-export function matchAny(...matchesArray: any) {
-  return valueMatcher('matchAny', value => {
-    for (let match of matchesArray) {
-      if (match instanceof ValueMatcher) {
-        let expectationResponse = match.testValue(value);
-        if (isDeepStrictEqual(value, expectationResponse)) {
-          return value;
-        }
-      } else {
-        let result = ValueMatcher.copyWithExpectedMatch(value, match);
-        if (isDeepStrictEqual(value, result)) {
-          return value;
-        }
+export function matchAny(...expectedMatches: any[]) {
+  return valueMatcher('matchAny', null, value => {
+    if (expectedMatches.length == 0) {
+      return ValueMatcher.success();
+    }
+    for (let match of expectedMatches) {
+      let matchResult = ValueMatcher.copyWithExpectedMatch(value, match);
+      if (MatcherUtils.isFullyEquals(value, matchResult)) {
+        return ValueMatcher.success();
       }
     }
-    return {
-      error: 'No matches found in array with expected items',
-      expected: matchesArray,
-    };
+    return ValueMatcher.error('No matches found');
   });
 }
 
-
+export function isMatch(data: any, expectedMatch: any): boolean {
+  let dataAsExpected = ValueMatcher.copyWithExpectedMatch(data, expectedMatch);
+  return MatcherUtils.isFullyEquals(data, dataAsExpected);
+}
