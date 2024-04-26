@@ -1,6 +1,7 @@
 {
   "name": "@amakovskyi/api-auditor",
   "version": "0.2.5",
+  "description": "NodeJS library for integration testing",
   "type": "module",
   "keywords": [
     "integration",
