@@ -1,11 +1,11 @@
-import { ArrayMatchers, ConsoleLogger, matchAll, Random, RandomArray, validateMatch } from '../../src';
+import { ArrayMatchers, Logger, matchAll, Random, RandomArray, validateMatch } from '../../src';
 import { generateRandomValueArray } from '../test-utils/generateRandomValue';
 
 describe('RandomArray.splitToLengths()', () => {
 
   test('Validate', () => {
     for (let i = 1; i <= 50; i++) {
-      ConsoleLogger.log(`TIER ${i}`);
+      Logger.log(`TIER ${i}`);
       let source = generateRandomValueArray(50);
       validateMatch(source, ArrayMatchers.uniqueItems());
 

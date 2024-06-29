@@ -1,0 +1,168 @@
+{
+  "test_results": [
+    {
+      "test_name": "Test_1",
+      "duration": "10.23 seconds",
+      "execution_time": "2023-08-01T12:00:00Z",
+      "execution_result": "Passed",
+      "api_invocations": {
+        "total_invocations": 15,
+        "average_invocation_time": "0.55 seconds",
+        "endpoints": [
+          {
+            "url": "https://api.example.com/users",
+            "method": "GET",
+            "invocations": 5,
+            "average_invocation_time": "0.6 seconds",
+            "invocations_with_time": [
+              {
+                "time": "2023-08-01T12:00:00.123Z",
+                "query": "?page=1"
+              },
+              {
+                "time": "2023-08-01T12:00:00.234Z",
+                "query": "?page=2"
+              },
+              {
+                "time": "2023-08-01T12:00:00.345Z",
+                "query": "?page=3"
+              },
+              {
+                "time": "2023-08-01T12:00:00.456Z",
+                "query": "?page=4"
+              },
+              {
+                "time": "2023-08-01T12:00:00.567Z",
+                "query": "?page=5"
+              }
+            ]
+          },
+          {
+            "url": "https://api.example.com/posts",
+            "method": "POST",
+            "invocations": 10,
+            "average_invocation_time": "0.45 seconds",
+            "invocations_with_time": [
+              {
+                "time": "2023-08-01T12:00:01.123Z",
+                "query": "?title=Hello&content=World"
+              },
+              {
+                "time": "2023-08-01T12:00:01.234Z",
+                "query": "?title=Goodbye&content=World"
+              },
+              {
+                "time": "2023-08-01T12:00:01.345Z",
+                "query": "?title=Hello&content=Again"
+              },
+              {
+                "time": "2023-08-01T12:00:01.456Z",
+                "query": "?title=Goodbye&content=Again"
+              },
+              {
+                "time": "2023-08-01T12:00:01.567Z",
+                "query": "?title=Hello&content=OnceMore"
+              },
+              {
+                "time": "2023-08-01T12:00:01.678Z",
+                "query": "?title=Goodbye&content=OnceMore"
+              },
+              {
+                "time": "2023-08-01T12:00:01.789Z",
+                "query": "?title=Hello&content=ForTheLastTime"
+              },
+              {
+                "time": "2023-08-01T12:00:01.890Z",
+                "query": "?title=Goodbye&content=ForTheLastTime"
+              },
+              {
+                "time": "2023-08-01T12:00:01.901Z",
+                "query": "?title=Hello&content=FinalTime"
+              },
+              {
+                "time": "2023-08-01T12:00:02.012Z",
+                "query": "?title=Goodbye&content=FinalTime"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "test_name": "Test_2",
+      "duration": "8.99 seconds",
+      "execution_time": "2023-08-01T12:10:00Z",
+      "execution_result": "Failed",
+      "api_invocations": {
+        "total_invocations": 12,
+        "average_invocation_time": "0.75 seconds",
+        "endpoints": [
+          {
+            "url": "https://api.example.com/users",
+            "method": "GET",
+            "invocations": 5,
+            "average_invocation_time": "0.8 seconds",
+            "invocations_with_time": [
+              {
+                "time": "2023-08-01T12:10:00.123Z",
+                "query": "?page=1"
+              },
+              {
+                "time": "2023-08-01T12:10:00.234Z",
+                "query": "?page=2"
+              },
+              {
+                "time": "2023-08-01T12:10:00.345Z",
+                "query": "?page=3"
+              },
+              {
+                "time": "2023-08-01T12:10:00.456Z",
+                "query": "?page=4"
+              },
+              {
+                "time": "2023-08-01T12:10:00.567Z",
+                "query": "?page=5"
+              }
+            ]
+          },
+          {
+            "url": "https://api.example.com/posts",
+            "method": "POST",
+            "invocations": 7,
+            "average_invocation_time": "0.65 seconds",
+            "invocations_with_time": [
+              {
+                "time": "2023-08-01T12:10:01.123Z",
+                "query": "?title=Hello&content=World"
+              },
+              {
+                "time": "2023-08-01T12:10:01.234Z",
+                "query": "?title=Goodbye&content=World"
+              },
+              {
+                "time": "2023-08-01T12:10:01.345Z",
+                "query": "?title=Hello&content=Again"
+              },
+              {
+                "time": "2023-08-01T12:10:01.456Z",
+                "query": "?title=Goodbye&content=Again"
+              },
+              {
+                "time": "2023-08-01T12:10:01.567Z",
+                "query": "?title=Hello&content=OnceMore"
+              },
+              {
+                "time": "2023-08-01T12:10:01.678Z",
+                "query": "?title=Goodbye&content=OnceMore"
+              },
+              {
+                "time": "2023-08-01T12:10:01.789Z",
+                "query": "?title=Hello&content=ForTheLastTime"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

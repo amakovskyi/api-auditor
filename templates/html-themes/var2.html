@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Document</title>
+  <style>
+      body {
+          padding: 20px;
+          margin: 0;
+          font-family: Arial, sans-serif;
+      }
+
+      .container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 0;
+      }
+
+      .header {
+          background-color: #f2f2f2;
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid #ccc;
+      }
+
+      .header h1 {
+          font-size: 18px;
+          font-weight: bold;
+          color: #333;
+          margin: 0;
+      }
+
+      .btn-toggle {
+          padding: 5px 10px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+      }
+
+      .section {
+          margin: 10px 0;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 10px;
+      }
+
+      .section-header {
+          background-color: #f2f2f2;
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+      }
+
+      .section-header h2 {
+          font-size: 16px;
+          font-weight: bold;
+          color: #333;
+          margin: 0;
+      }
+
+      .section-content {
+          display: none;
+      }
+
+      /* Dark Mode CSS */
+      .dark-theme {
+          background-color: #333;
+          color: #fff;
+      }
+
+      .dark-theme .header {
+          background-color: #222;
+          border-bottom-color: #444;
+      }
+
+      .dark-theme .btn-toggle {
+          background-color: #0056b3;
+      }
+
+      .dark-theme .section {
+          border-color: #444;
+          background-color: #2f2f2f;
+      }
+
+      .dark-theme .section-header {
+          background-color: #1f1f1f;
+          border-bottom-color: #444;
+      }
+  </style>
+</head>
+<body>
+<div class='container'>
+  <div class='header'>
+    <h1>Page Title</h1>
+    <button class='btn-toggle' onclick='toggleDarkMode()'>Toggle Dark Mode</button>
+  </div>
+  <div class='section'>
+    <div class='section-header'>
+      <h2>Section 1</h2>
+      <i class='fas fa-angle-down'></i>
+    </div>
+    <div class='section-content'>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat.</p>
+    </div>
+  </div>
+
+  <div class='section'>
+    <div class='section-header'>
+      <h2>Section 2</h2>
+      <i class='fas fa-angle-down'></i>
+    </div>
+    <div class='section-content'>
+      <p>Suspendisse non suscipit justo. Proin cursus metus vel elit dictum sodales. Vestibulum ante ipsum primis
+        in faucibus orci luctus et ultrices posuere cubilia Curae; Nullam velit nisl, condimentum id lacinia a,
+        interdum ut sapien.</p>
+    </div>
+  </div>
+  <div class='section'>
+    <div class='section-header'>
+      <h2>Section 3</h2>
+      <i class='fas fa-angle-down'></i>
+    </div>
+    <div class='section-content'>
+      <p>Mauris accumsan nisl vel elit tincidunt, ut fermentum nunc feugiat. Vivamus ac ultrices justo. Praesent
+        id metus id nisl malesuada condimentum. Nam viverra fringilla erat, ut fermentum nunc feugiat eu.</p>
+    </div>
+  </div>
+  <div class='section'>
+    <div class='section-header'>
+      <h2>Section 4</h2>
+      <i class='fas fa-angle-down'></i>
+    </div>
+    <div class='section-content'>
+      <p>Cras euismod luctus ligula, vitae scelerisque nisi scelerisque ut. Nullam auctor quam id massa faucibus
+        dignissim. Nullam eget metus id nisl malesuada condimentum. Nam viverra fringilla erat, ut fermentum
+        nunc feugiat eu.</p>
+    </div>
+  </div>
+  <div class='section'>
+    <div class='section-header'>
+      <h2>Section 5</h2>
+      <i class='fas fa-angle-down'></i>
+    </div>
+    <div class='section-content'>
+      <p> Sed interdum metus et ligula malesuada condimentum. Nam viverra fringilla erat, ut fermentum nunc
+        feugiat eu.</p>
+    </div>
+  </div>
+</div>
+<script>
+  // Function to toggle dark mode
+  function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle('dark-theme');
+  }
+
+  // Function to toggle section content
+  const sectionHeaders = document.querySelectorAll('.section-header');
+
+  sectionHeaders.forEach((sectionHeader) => {
+    sectionHeader.addEventListener('click', () => {
+      const sectionContent = sectionHeader.nextElementSibling;
+      sectionContent.style.display =
+        sectionContent.style.display === 'block' ? 'none' : 'block';
+      const sectionHeaderIcon = sectionHeader.querySelector('i');
+      sectionHeaderIcon.classList.toggle('fa-angle-up');
+    });
+  });
+</script>
+</body>
+</html>

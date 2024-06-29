@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Dynamic Theming</title>
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          background-color: var(--bg-color);
+          color: var(--text-color);
+      }
+
+      header {
+          background-color: var(--header-bg-color);
+          color: var(--header-text-color);
+          padding: 10px;
+          text-align: center;
+      }
+
+      button {
+          padding: 5px 10px;
+          border-radius: 5px;
+          background-color: transparent;
+          border: 1px solid var(--btn-border-color);
+          color: var(--btn-text-color);
+          cursor: pointer;
+      }
+
+      button:hover {
+          background-color: var(--btn-hover-bg-color);
+      }
+
+      section {
+          margin: 10px 0;
+          border: 1px solid var(--section-border-color);
+          border-radius: 5px;
+          padding: 10px;
+      }
+
+      h2 {
+          font-size: 18px;
+          margin-top: 10px;
+      }
+
+      .content {
+          display: none;
+      }
+
+      .expand-icon {
+          float: right;
+          font-size: 16px;
+          cursor: pointer;
+      }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Dynamic Theming</h1>
+  <button id='themeBtn'>Toggle Theme</button>
+</header>
+
+<section>
+  <h2>Section 1 <span class='expand-icon'>+</span></h2>
+  <div class='content'>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  </div>
+</section>
+
+<section>
+  <h2>Section 2 <span class='expand-icon'>+</span></h2>
+  <div class='content'>
+    Suspendisse non suscipit justo. Proin cursus metus vel elit dictum sodales.
+  </div>
+</section>
+<!-- remaining sections -->
+<section>
+  <h2>Section 3 <span class='expand-icon'>+</span></h2>
+  <div class='content'>
+    Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+  </div>
+</section>
+<section>
+  <h2>Section 4 <span class='expand-icon'>+</span></h2>
+  <div class='content'>
+    Cras mattis consectetur purus, ut blandit diam lacinia cursus.
+  </div>
+</section>
+<section>
+  <h2>Section 5 <span class='expand-icon'>+</span></h2>
+  <div class='content'>
+    Etiam euismod eleifend nisl, ut fermentum massa feugiat sit amet.
+  </div>
+</section>
+
+<script>
+  // Get references to elements
+  const themeBtn = document.getElementById('themeBtn');
+  const sections = document.querySelectorAll('section');
+
+  // Function to toggle theme
+  function toggleTheme() {
+    const root = document.documentElement;
+    root.classList.toggle('dark-theme');
+  }
+
+  // Function to expand/collapse section
+  function toggleSection(event) {
+    const clickedElement = event.target;
+    const content = clickedElement.parentElement.nextElementSibling;
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      clickedElement.textContent = '-';
+    } else {
+      content.style.display = 'none';
+      clickedElement.textContent = '+';
+    }
+  }
+
+  // Attach click event listeners
+  themeBtn.addEventListener('click', toggleTheme);
+  for (const section of sections) {
+    const expandIcon = section.querySelector('.expand-icon');
+    expandIcon.addEventListener('click', toggleSection);
+  }
+</script>
+
+<script>
+  // Define theme colors
+  const lightTheme = {
+    '--bg-color': '#fff',
+    '--text-color': '#000',
+    '--header-bg-color': '#f0f0f0',
+    '--header-text-color': '#000',
+    '--btn-border-color': '#007bff',
+    '--btn-text-color': '#007bff',
+    '--btn-hover-bg-color': '#0056b3',
+    '--section-border-color': '#ddd',
+  };
+
+  const darkTheme = {
+    '--bg-color': '#333',
+    '--text-color': '#fff',
+    '--header-bg-color': '#222',
+    '--header-text-color': '#fff',
+    '--btn-border-color': '#fff',
+    '--btn-text-color': '#fff',
+    '--btn-hover-bg-color': '#fff',
+    '--section-border-color': '#444',
+  };
+
+  // Function to set theme colors
+  function setTheme(theme) {
+    const root = document.documentElement;
+    for (const [key, value] of Object.entries(theme)) {
+      root.style.setProperty(key, value);
+    }
+  }
+
+  // Set initial theme
+  let currentTheme = lightTheme;
+  setTheme(currentTheme);
+
+  // Toggle theme button functionality
+  document.getElementById('themeBtn').addEventListener('click', function() {
+    if (currentTheme === lightTheme) {
+      setTheme(darkTheme);
+      currentTheme = darkTheme;
+    } else {
+      setTheme(lightTheme);
+      currentTheme = lightTheme;
+    }
+  });
+</script>
+</body>
+</html>

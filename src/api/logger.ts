@@ -10,7 +10,7 @@ export const FG_DIM = '\x1b[2m';
 export const FG_GRAY = '\x1b[37m';
 export const BG_BLACK = '\x1b[40m';
 
-export class ConsoleLogger {
+export class Logger {
 
   static print(text: any) {
     process.stdout.write(text);
@@ -24,7 +24,7 @@ export class ConsoleLogger {
 
   static log(text: any) {
     this.print(text);
-    ConsoleLogger.println();
+    Logger.println();
   }
 
 }

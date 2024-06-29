@@ -1,6 +1,5 @@
 // LOGGERS
-export { ConsoleLogger } from './logging/console.logger';
-export { HttpLogger } from './logging/http.logger';
+export { Logger } from './api/logger';
 // MATCHERS
 export { validateMatch, matchAny, matchAll } from './matcher/matcher.validation';
 export { valueMatcher, customValueMatcher } from './matcher/value.matcher';
